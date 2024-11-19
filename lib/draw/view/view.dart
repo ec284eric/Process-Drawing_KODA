@@ -2,3 +2,5 @@ export 'draw_page.dart';
 export 'canvas_layer.dart';
 export 'tools.dart';
 export 'drawing_actions.dart';
+export 'color_picker.dart';
+export 'overlay_layer.dart';
