@@ -31,7 +31,7 @@ class _DrawPageState extends State<DrawPage> {
         contentType: SmoothLine,
         color: _initialState.color,
       ),
-    );
+    )..setPaintContent(SmoothLine());
     _drawingController.addListener(() => _bloc.add(DrawDrawingChanged(
           canUndo: _drawingController.canUndo(),
           canRedo: _drawingController.canRedo(),
