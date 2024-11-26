@@ -68,7 +68,7 @@ class _DrawPageState extends State<DrawPage> {
               body: Stack(
                 children: [
                   OverlayLayer(
-                    transformationController: _overlayTransformationController,
+                    transformationController: _canvasTransformationController,
                   ),
                   CanvasLayer(
                     drawingController: _drawingController,
