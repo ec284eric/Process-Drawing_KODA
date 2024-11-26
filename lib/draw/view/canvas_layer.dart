@@ -21,7 +21,7 @@ class _CanvasLayerState extends State<CanvasLayer> {
     return LayoutBuilder(
       builder: (context, constraints) {
         return IgnorePointer(
-          ignoring: false,
+          ignoring: true,
           child: DrawingBoard(
             controller: widget.drawingController,
             transformationController: widget.transformationController,

@@ -19,3 +19,15 @@ class DrawColorChanged extends DrawEvent {
 
   DrawColorChanged(this.color);
 }
+
+class DrawResizerScaleUpdated extends DrawEvent {
+  final ScaleUpdateDetails details;
+
+  DrawResizerScaleUpdated(this.details);
+}
+
+class DrawRotatorScaleUpdated extends DrawEvent {
+  final ScaleUpdateDetails details;
+
+  DrawRotatorScaleUpdated(this.details);
+}
