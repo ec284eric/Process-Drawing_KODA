@@ -5,7 +5,7 @@ import 'package:collection/collection.dart';
 
 import '../draw.dart';
 
-class CanvasLayer extends StatefulWidget {
+class CanvasLayer extends StatelessWidget {
   final DrawingController drawingController;
   final TransformationController transformationController;
 
@@ -16,11 +16,6 @@ class CanvasLayer extends StatefulWidget {
   });
 
   @override
-  State<CanvasLayer> createState() => _CanvasLayerState();
-}
-
-class _CanvasLayerState extends State<CanvasLayer> {
-  @override
   Widget build(BuildContext context) {
     final bloc = context.read<DrawBloc>();
     return BlocBuilder<DrawBloc, DrawState>(
@@ -30,8 +25,8 @@ class _CanvasLayerState extends State<CanvasLayer> {
             return IgnorePointer(
               ignoring: !state.locked,
               child: DrawingBoard(
-                controller: widget.drawingController,
-                transformationController: widget.transformationController,
+                controller: drawingController,
+                transformationController: transformationController,
                 background: Container(
                   width: constraints.maxWidth,
                   height: constraints.maxHeight,

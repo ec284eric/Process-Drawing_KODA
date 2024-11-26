@@ -1,3 +1,5 @@
+import 'dart:typed_data';
+
 import 'package:drawing_app/draw/models/models.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -24,6 +26,7 @@ class _DrawPageState extends State<DrawPage> {
   late final DrawingController _drawingController;
   late final DrawBloc _bloc;
   var showTest = true;
+  Uint8List? image;
 
   @override
   void initState() {
@@ -78,6 +81,17 @@ class _DrawPageState extends State<DrawPage> {
         child: Builder(
           builder: (context) {
             return Scaffold(
+              floatingActionButton: FloatingActionButton(
+                onPressed: () async {
+                  final byteData = await _drawingController.getImageData();
+                  final buffer = byteData?.buffer;
+                  if (buffer != null) {
+                    setState(() {
+                      image = Uint8List.view(buffer);
+                    });
+                  }
+                },
+              ),
               body: Stack(
                 children: [
                   OverlayLayer(
@@ -104,6 +118,20 @@ class _DrawPageState extends State<DrawPage> {
                         drawingController: _drawingController,
                       ),
                     ),
+                  ),
+                  Builder(
+                    builder: (context) {
+                      final image = this.image;
+                      if (image != null) {
+                        return Container(
+                          height: MediaQuery.of(context).size.height,
+                          width: MediaQuery.of(context).size.width,
+                          color: Colors.red,
+                          child: Image.memory(image),
+                        );
+                      }
+                      return Container();
+                    },
                   ),
                 ],
               ),
