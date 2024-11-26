@@ -1,3 +1,4 @@
+import 'package:drawing_app/draw/models/models.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_drawing_board/flutter_drawing_board.dart';
@@ -22,6 +23,7 @@ class _DrawPageState extends State<DrawPage> {
   final _overlayTransformationController = TransformationController();
   late final DrawingController _drawingController;
   late final DrawBloc _bloc;
+  var showTest = true;
 
   @override
   void initState() {
@@ -53,7 +55,18 @@ class _DrawPageState extends State<DrawPage> {
     return BlocProvider(
       create: (context) {
         _bloc = DrawBloc(
-          initialState: _initialState,
+          initialState: _initialState.copyWith(
+            modifiableImages: [
+              const ModifiableImage(
+                src:
+                    'https://gratisography.com/wp-content/uploads/2024/10/gratisography-cool-cat-800x525.jpg',
+              ),
+              const ModifiableImage(
+                src:
+                    'https://gratisography.com/wp-content/uploads/2024/10/gratisography-cool-cat-800x525.jpg',
+              ),
+            ],
+          ),
         );
         return _bloc;
       },

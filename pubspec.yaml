@@ -1,6 +1,6 @@
 name: drawing_app
-description: 'A new Flutter project.'
-publish_to: 'none'
+description: "A new Flutter project."
+publish_to: "none"
 version: 0.1.0
 
 environment:
@@ -12,6 +12,7 @@ dependencies:
   flutter_localizations:
     sdk: flutter
   bloc: ^8.1.4
+  collection: ^1.18.0
   extended_image: ^9.0.7
   flex_color_picker: ^3.6.0
   flutter_bloc: ^8.1.6

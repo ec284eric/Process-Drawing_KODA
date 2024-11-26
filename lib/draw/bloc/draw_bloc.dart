@@ -8,7 +8,8 @@ class DrawBloc extends Bloc<DrawEvent, DrawState> {
     on<DrawDrawingChanged>(_drawingChanged);
     on<DrawColorChanged>(_colorChanged);
     on<DrawResizerScaleUpdated>(_resizerScaleUpdated);
-    on<DrawRotatorScaleUpdated>(_rotatorScaleUpdated);
+    on<DrawImageScaleUpdated>(_imageScaleUpdated);
+    on<DrawLockPressed>(_lockPressed);
   }
 
   void _drawingChanged(DrawDrawingChanged event, Emitter<DrawState> emit) {
@@ -31,18 +32,31 @@ class DrawBloc extends Bloc<DrawEvent, DrawState> {
     ));
   }
 
-  void _rotatorScaleUpdated(
-      DrawRotatorScaleUpdated event, Emitter<DrawState> emit) {
+  void _imageScaleUpdated(
+      DrawImageScaleUpdated event, Emitter<DrawState> emit) {
+    final modifiableImages = [
+      ...state.modifiableImages,
+    ];
     var rotation = state.rotation + event.details.rotation;
-    print(rotation - state.rotation);
-    if ((rotation - state.rotation).abs() > .1) {
-      emit(state.copyWith(
+
+    if ((rotation - state.rotation).abs() > 0) {
+      modifiableImages[event.index] = modifiableImages[event.index].copyWith(
         rotation: event.details.rotation,
-        // size: state.size + event.details.focalPointDelta,
-      ));
+      );
     }
+    modifiableImages[event.index] = modifiableImages[event.index].copyWith(
+      scale: event.details.scale,
+      offset: state.modifiableImages[event.index].offset +
+          event.details.focalPointDelta,
+    );
     emit(state.copyWith(
-      size: state.size + event.details.focalPointDelta,
+      modifiableImages: modifiableImages,
+    ));
+  }
+
+  void _lockPressed(DrawLockPressed event, Emitter<DrawState> emit) {
+    emit(state.copyWith(
+      locked: !state.locked,
     ));
   }
 }

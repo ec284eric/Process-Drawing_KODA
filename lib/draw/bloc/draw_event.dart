@@ -26,8 +26,13 @@ class DrawResizerScaleUpdated extends DrawEvent {
   DrawResizerScaleUpdated(this.details);
 }
 
-class DrawRotatorScaleUpdated extends DrawEvent {
+class DrawImageScaleUpdated extends DrawEvent {
+  final int index;
   final ScaleUpdateDetails details;
 
-  DrawRotatorScaleUpdated(this.details);
+  DrawImageScaleUpdated(this.index, this.details);
+}
+
+class DrawLockPressed extends DrawEvent {
+  DrawLockPressed();
 }
