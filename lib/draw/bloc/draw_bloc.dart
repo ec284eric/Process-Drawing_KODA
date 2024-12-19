@@ -44,11 +44,19 @@ class DrawBloc extends Bloc<DrawEvent, DrawState> {
         rotation: event.details.rotation,
       );
     }
+    if (event.details.scale != 1) {
+      modifiableImages[event.index] = modifiableImages[event.index].copyWith(
+        scale: event.details.scale,
+      );
+      emit(state.copyWith(
+        modifiableImages: modifiableImages,
+      ));
+    }
     modifiableImages[event.index] = modifiableImages[event.index].copyWith(
-      scale: event.details.scale,
       offset: state.modifiableImages[event.index].offset +
           event.details.focalPointDelta,
     );
+
     emit(state.copyWith(
       modifiableImages: modifiableImages,
     ));

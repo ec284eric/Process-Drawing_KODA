@@ -17,7 +17,8 @@ class OverlayLayer extends StatelessWidget {
     return BlocBuilder<DrawBloc, DrawState>(
       builder: (context, state) {
         return Visibility(
-          visible: !state.locked,
+          // visible: !state.locked,
+visible: true,
           child: LayoutBuilder(
             builder: (context, constraint) {
               return SizedBox(

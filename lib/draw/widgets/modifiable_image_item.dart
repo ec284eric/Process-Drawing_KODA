@@ -17,19 +17,19 @@ class ModifiableImageItem extends StatelessWidget {
       offset: modifiableImage.offset,
       child: Transform.scale(
         scale: modifiableImage.scale,
-        child: Transform.rotate(
-          angle: modifiableImage.rotation,
-          child: Stack(
-            children: [
-              GestureDetector(
-                onScaleUpdate: onScaleUpdate,
-                child: Image.network(
-                  'https://gratisography.com/wp-content/uploads/2024/10/gratisography-cool-cat-800x525.jpg',
+        child: GestureDetector(
+          onScaleUpdate: onScaleUpdate,
+          child: Transform.rotate(
+            angle: modifiableImage.rotation,
+            child: Stack(
+              children: [
+                Image.network(
+                  modifiableImage.src,
                   fit: BoxFit.fill,
                   width: MediaQuery.of(context).size.width,
                 ),
-              ),
-            ],
+              ],
+            ),
           ),
         ),
       ),
