@@ -34,6 +34,7 @@ class _DrawPageState extends State<DrawPage> {
     _drawingController = DrawingController(
       config: DrawConfig(
         contentType: SmoothLine,
+        strokeWidth: 8,
         color: _initialState.color,
       ),
     )..setPaintContent(SmoothLine());
