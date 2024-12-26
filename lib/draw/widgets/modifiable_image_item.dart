@@ -4,11 +4,13 @@ import 'package:flutter/material.dart';
 class ModifiableImageItem extends StatelessWidget {
   final ModifiableImage modifiableImage;
   final ValueChanged<ScaleUpdateDetails>? onScaleUpdate;
+  final double opacity;
 
   const ModifiableImageItem({
     super.key,
     required this.modifiableImage,
     this.onScaleUpdate,
+    this.opacity = 1,
   });
 
   @override
@@ -21,14 +23,13 @@ class ModifiableImageItem extends StatelessWidget {
           onScaleUpdate: onScaleUpdate,
           child: Transform.rotate(
             angle: modifiableImage.rotation,
-            child: Stack(
-              children: [
-                Image.network(
-                  modifiableImage.src,
-                  fit: BoxFit.fill,
-                  width: MediaQuery.of(context).size.width,
-                ),
-              ],
+            child: Opacity(
+              opacity: opacity,
+              child: Image.network(
+                modifiableImage.src,
+                fit: BoxFit.fill,
+                width: MediaQuery.of(context).size.width,
+              ),
             ),
           ),
         ),

@@ -35,10 +35,14 @@ class CanvasLayer extends StatelessWidget {
                     children: state.modifiableImages
                         .mapIndexed((index, modifiableImage) {
                       if (modifiableImage != null) {
-                        return ModifiableImageItem(
-                          modifiableImage: modifiableImage,
-                          onScaleUpdate: (details) => bloc.add(
-                            DrawImageScaleUpdated(index, details),
+                        return Visibility(
+                          visible: state.locked,
+                          child: ModifiableImageItem(
+                            modifiableImage: modifiableImage,
+                            opacity: .5,
+                            onScaleUpdate: (details) => bloc.add(
+                              DrawImageScaleUpdated(index, details),
+                            ),
                           ),
                         );
                       } else {
