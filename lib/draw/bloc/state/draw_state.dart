@@ -14,6 +14,6 @@ class DrawState with _$DrawState {
     @Default(Size.square(300)) Size size,
     @Default(0) double rotation,
     @Default(1) double scale,
-    @Default([]) List<ModifiableImage> modifiableImages,
+    @Default([]) List<ModifiableImage?> modifiableImages,
   }) = _DrawState;
 }

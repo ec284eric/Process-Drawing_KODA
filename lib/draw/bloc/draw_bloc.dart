@@ -1,4 +1,6 @@
 import 'package:bloc/bloc.dart';
+import 'package:drawing_app/draw/draw.dart';
+import 'package:flutter/material.dart';
 import './bloc.dart';
 
 class DrawBloc extends Bloc<DrawEvent, DrawState> {
@@ -10,6 +12,8 @@ class DrawBloc extends Bloc<DrawEvent, DrawState> {
     on<DrawResizerScaleUpdated>(_resizerScaleUpdated);
     on<DrawImageScaleUpdated>(_imageScaleUpdated);
     on<DrawLockPressed>(_lockPressed);
+    on<DrawFirstImageSelected>(_firstImageSelected);
+    on<DrawSecondImageSelected>(_secondImageSelected);
   }
 
   void _drawingChanged(DrawDrawingChanged event, Emitter<DrawState> emit) {
@@ -40,20 +44,20 @@ class DrawBloc extends Bloc<DrawEvent, DrawState> {
     var rotation = state.rotation + event.details.rotation;
 
     if ((rotation - state.rotation).abs() > 0) {
-      modifiableImages[event.index] = modifiableImages[event.index].copyWith(
+      modifiableImages[event.index] = modifiableImages[event.index]?.copyWith(
         rotation: event.details.rotation,
       );
     }
     if (event.details.scale != 1) {
-      modifiableImages[event.index] = modifiableImages[event.index].copyWith(
+      modifiableImages[event.index] = modifiableImages[event.index]?.copyWith(
         scale: event.details.scale,
       );
       emit(state.copyWith(
         modifiableImages: modifiableImages,
       ));
     }
-    modifiableImages[event.index] = modifiableImages[event.index].copyWith(
-      offset: state.modifiableImages[event.index].offset +
+    modifiableImages[event.index] = modifiableImages[event.index]?.copyWith(
+      offset: (state.modifiableImages[event.index]?.offset ?? Offset.zero) +
           event.details.focalPointDelta,
     );
 
@@ -65,6 +69,46 @@ class DrawBloc extends Bloc<DrawEvent, DrawState> {
   void _lockPressed(DrawLockPressed event, Emitter<DrawState> emit) {
     emit(state.copyWith(
       locked: !state.locked,
+    ));
+  }
+
+  void _firstImageSelected(
+      DrawFirstImageSelected event, Emitter<DrawState> emit) {
+    final modifiableImages = [...(state.modifiableImages)];
+    if (state.modifiableImages.isNotEmpty) {
+      modifiableImages[0] = modifiableImages[0]?.copyWith(
+            src: event.image,
+          ) ??
+          ModifiableImage(
+            src: event.image,
+          );
+    } else {
+      modifiableImages.add(ModifiableImage(
+        src: event.image,
+      ));
+    }
+    emit(state.copyWith(
+      modifiableImages: modifiableImages,
+    ));
+  }
+
+  void _secondImageSelected(
+      DrawSecondImageSelected event, Emitter<DrawState> emit) {
+    final modifiableImages = [...(state.modifiableImages)];
+    if (state.modifiableImages.length >= 2) {
+      modifiableImages[1] = modifiableImages[1]?.copyWith(
+        src: event.image,
+      );
+    } else {
+      if (modifiableImages.isEmpty) {
+        modifiableImages.add(null);
+      }
+      modifiableImages.add(ModifiableImage(
+        src: event.image,
+      ));
+    }
+    emit(state.copyWith(
+      modifiableImages: modifiableImages,
     ));
   }
 }

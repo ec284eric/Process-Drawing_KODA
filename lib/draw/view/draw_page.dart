@@ -1,6 +1,5 @@
 import 'dart:typed_data';
 
-import 'package:drawing_app/draw/models/models.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_drawing_board/flutter_drawing_board.dart';
@@ -59,18 +58,7 @@ class _DrawPageState extends State<DrawPage> {
     return BlocProvider(
       create: (context) {
         _bloc = DrawBloc(
-          initialState: _initialState.copyWith(
-            modifiableImages: [
-              const ModifiableImage(
-                src:
-                    'https://t4.ftcdn.net/jpg/02/66/72/41/360_F_266724172_Iy8gdKgMa7XmrhYYxLCxyhx6J7070Pr8.jpg',
-              ),
-              const ModifiableImage(
-                src:
-                    'https://t4.ftcdn.net/jpg/02/66/72/41/360_F_266724172_Iy8gdKgMa7XmrhYYxLCxyhx6J7070Pr8.jpg',
-              ),
-            ],
-          ),
+          initialState: _initialState,
         );
         return _bloc;
       },
@@ -82,17 +70,17 @@ class _DrawPageState extends State<DrawPage> {
         child: Builder(
           builder: (context) {
             return Scaffold(
-              floatingActionButton: FloatingActionButton(
-                onPressed: () async {
-                  final byteData = await _drawingController.getImageData();
-                  final buffer = byteData?.buffer;
-                  if (buffer != null) {
-                    setState(() {
-                      image = Uint8List.view(buffer);
-                    });
-                  }
-                },
-              ),
+              // floatingActionButton: FloatingActionButton(
+              //   onPressed: () async {
+              //     final byteData = await _drawingController.getImageData();
+              //     final buffer = byteData?.buffer;
+              //     if (buffer != null) {
+              //       setState(() {
+              //         image = Uint8List.view(buffer);
+              //       });
+              //     }
+              //   },
+              // ),
               body: Stack(
                 children: [
                   OverlayLayer(

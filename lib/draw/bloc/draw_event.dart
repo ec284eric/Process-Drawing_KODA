@@ -23,16 +23,28 @@ class DrawColorChanged extends DrawEvent {
 class DrawResizerScaleUpdated extends DrawEvent {
   final ScaleUpdateDetails details;
 
-  DrawResizerScaleUpdated(this.details);
+  const DrawResizerScaleUpdated(this.details);
 }
 
 class DrawImageScaleUpdated extends DrawEvent {
   final int index;
   final ScaleUpdateDetails details;
 
-  DrawImageScaleUpdated(this.index, this.details);
+  const DrawImageScaleUpdated(this.index, this.details);
 }
 
 class DrawLockPressed extends DrawEvent {
-  DrawLockPressed();
+  const DrawLockPressed();
+}
+
+class DrawFirstImageSelected extends DrawEvent {
+  final String image;
+
+  const DrawFirstImageSelected(this.image);
+}
+
+class DrawSecondImageSelected extends DrawEvent {
+  final String image;
+
+  const DrawSecondImageSelected(this.image);
 }

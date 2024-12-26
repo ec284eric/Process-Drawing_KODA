@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_drawing_board/flutter_drawing_board.dart';
 import 'package:flutter_feather_icons/flutter_feather_icons.dart';
+import 'package:go_router/go_router.dart';
 
 class DrawingActions extends StatelessWidget {
   final DrawingController drawingController;
@@ -11,6 +12,18 @@ class DrawingActions extends StatelessWidget {
     super.key,
     required this.drawingController,
   });
+
+  void _firstImageSelected(BuildContext context, String value) {
+    final bloc = context.read<DrawBloc>();
+    bloc.add(DrawFirstImageSelected(value));
+    context.pop();
+  }
+
+  void _secondImageSelected(BuildContext context, String value) {
+    final bloc = context.read<DrawBloc>();
+    bloc.add(DrawSecondImageSelected(value));
+    context.pop();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -22,9 +35,115 @@ class DrawingActions extends StatelessWidget {
           child: Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              IconButton(
-                onPressed: () => bloc.add(DrawLockPressed()),
-                icon: Icon(state.locked ? Icons.lock : Icons.lock_open),
+              Row(
+                children: [
+                  IconButton(
+                    onPressed: () => bloc.add(const DrawLockPressed()),
+                    icon: Icon(state.locked ? Icons.lock : Icons.lock_open),
+                  ),
+                  const VerticalDivider(),
+                  OutlinedButton(
+                    onPressed: () => showBottomSheet(
+                      context: context,
+                      constraints: const BoxConstraints(
+                        maxHeight: 360,
+                      ),
+                      builder: (context) => OverlayPickerBottomSheet(
+                        onImageSelected: (value) =>
+                            _firstImageSelected(context, value),
+                      ),
+                    ),
+                    style: FilledButton.styleFrom(
+                      padding: EdgeInsets.zero,
+                      fixedSize: const Size(36, 48),
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(8),
+                      ),
+                    ),
+                    child: Builder(
+                      builder: (context) {
+                        final modifiableImages = state.modifiableImages;
+                        if (modifiableImages.isNotEmpty &&
+                            modifiableImages[0] != null) {
+                          final modifiableImage = modifiableImages[0];
+                          if (modifiableImage != null) {
+                            return ClipRRect(
+                              borderRadius: BorderRadius.circular(8),
+                              child: Image.network(
+                                modifiableImage.src,
+                                fit: BoxFit.cover,
+                                height: double.infinity,
+                              ),
+                            );
+                          } else {
+                            return Container();
+                          }
+                        } else {
+                          return const Row(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              Icon(Icons.image),
+                              Text('1'),
+                            ],
+                          );
+                        }
+                      },
+                    ),
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.only(
+                      left: 4.0,
+                    ),
+                    child: OutlinedButton(
+                      onPressed: () => showBottomSheet(
+                        context: context,
+                        constraints: const BoxConstraints(
+                          maxHeight: 360,
+                        ),
+                        builder: (context) => OverlayPickerBottomSheet(
+                          onImageSelected: (value) =>
+                              _secondImageSelected(context, value),
+                        ),
+                      ),
+                      style: FilledButton.styleFrom(
+                        padding: EdgeInsets.zero,
+                        fixedSize: const Size(36, 48),
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(8),
+                        ),
+                      ),
+                      child: Builder(
+                        builder: (context) {
+                          final modifiableImages = state.modifiableImages;
+                          if (modifiableImages.length > 1 &&
+                              modifiableImages[1] != null) {
+                            final modifiableImage = modifiableImages[1];
+                            if (modifiableImage != null) {
+                              return ClipRRect(
+                                borderRadius: BorderRadius.circular(8),
+                                child: Image.network(
+                                  modifiableImage.src,
+                                  fit: BoxFit.cover,
+                                  height: double.infinity,
+                                ),
+                              );
+                            } else {
+                              return Container();
+                            }
+                          } else {
+                            return const Row(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                Icon(Icons.image),
+                                Text('2'),
+                              ],
+                            );
+                          }
+                        },
+                      ),
+                    ),
+                  ),
+                ],
               ),
               Card(
                 child: Row(

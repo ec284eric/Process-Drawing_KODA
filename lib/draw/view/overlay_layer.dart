@@ -18,7 +18,7 @@ class OverlayLayer extends StatelessWidget {
       builder: (context, state) {
         return Visibility(
           // visible: !state.locked,
-visible: true,
+          visible: true,
           child: LayoutBuilder(
             builder: (context, constraint) {
               return SizedBox(
@@ -28,13 +28,18 @@ visible: true,
                   transformationController: transformationController,
                   child: Stack(
                     children: state.modifiableImages
-                        .mapIndexed(
-                            (index, modifiableImage) => ModifiableImageItem(
-                                  modifiableImage: modifiableImage,
-                                  onScaleUpdate: (details) => bloc.add(
-                                      DrawImageScaleUpdated(index, details)),
-                                ))
-                        .toList(),
+                        .mapIndexed((index, modifiableImage) {
+                      if (modifiableImage != null) {
+                        return ModifiableImageItem(
+                          modifiableImage: modifiableImage,
+                          onScaleUpdate: (details) => bloc.add(
+                            DrawImageScaleUpdated(index, details),
+                          ),
+                        );
+                      } else {
+                        return Container();
+                      }
+                    }).toList(),
                   ),
                 ),
               );
