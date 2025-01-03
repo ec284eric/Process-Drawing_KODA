@@ -41,7 +41,7 @@ class Tools extends StatelessWidget {
                 dimension: 48,
                 child: TextButton(
                   onPressed: null,
-                  child: Icon(Icons.layers),
+                  child: Icon(Icons.layers_outlined),
                 ),
               ),
               const SizedBox.square(
