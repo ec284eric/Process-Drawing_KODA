@@ -1,4 +1,5 @@
 import 'package:drawing_app/draw/draw.dart';
+import 'package:drawing_app/models/models.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_drawing_board/flutter_drawing_board.dart';
@@ -205,7 +206,17 @@ class DrawingActions extends StatelessWidget {
                               builder: (context) => saveFileDialog,
                             ),
                             elevation: 2,
-                            child: const Icon(Icons.save),
+                            child: Builder(builder: (context) {
+                              if (state.requestStatus !=
+                                  RequestStatus.inProgress) {
+                                return const Icon(Icons.save);
+                              } else {
+                                return const SizedBox.square(
+                                  dimension: 24,
+                                  child: CircularProgressIndicator(),
+                                );
+                              }
+                            }),
                           ),
                         ),
                       ],
