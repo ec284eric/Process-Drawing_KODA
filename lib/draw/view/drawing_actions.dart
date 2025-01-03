@@ -7,10 +7,12 @@ import 'package:go_router/go_router.dart';
 
 class DrawingActions extends StatelessWidget {
   final DrawingController drawingController;
+  final Widget saveFileDialog;
 
   const DrawingActions({
     super.key,
     required this.drawingController,
+    required this.saveFileDialog,
   });
 
   void _firstImageSelected(BuildContext context, String value) {
@@ -47,6 +49,7 @@ class DrawingActions extends StatelessWidget {
                       context: context,
                       constraints: const BoxConstraints(
                         maxHeight: 360,
+                        maxWidth: 360,
                       ),
                       builder: (context) => OverlayPickerBottomSheet(
                         onImageSelected: (value) =>
@@ -99,6 +102,7 @@ class DrawingActions extends StatelessWidget {
                         context: context,
                         constraints: const BoxConstraints(
                           maxHeight: 360,
+                          maxWidth: 360,
                         ),
                         builder: (context) => OverlayPickerBottomSheet(
                           onImageSelected: (value) =>
@@ -145,40 +149,68 @@ class DrawingActions extends StatelessWidget {
                   ),
                 ],
               ),
-              Card(
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  mainAxisSize: MainAxisSize.min,
-                  children: [
-                    Padding(
-                      padding: const EdgeInsets.only(
-                        left: 8.0,
-                      ),
-                      child: IconButton(
-                        onPressed: state.canUndo
-                            ? () => drawingController.undo()
-                            : null,
-                        icon: const Icon(FeatherIcons.cornerUpLeft),
-                      ),
+              Expanded(
+                child: Padding(
+                  padding: const EdgeInsets.only(
+                    left: 8.0,
+                  ),
+                  child: SingleChildScrollView(
+                    scrollDirection: Axis.horizontal,
+                    reverse: true,
+                    child: Row(
+                      children: [
+                        Card(
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            mainAxisSize: MainAxisSize.min,
+                            children: [
+                              Padding(
+                                padding: const EdgeInsets.only(
+                                  left: 8.0,
+                                ),
+                                child: IconButton(
+                                  onPressed: state.canUndo
+                                      ? () => drawingController.undo()
+                                      : null,
+                                  icon: const Icon(FeatherIcons.cornerUpLeft),
+                                ),
+                              ),
+                              const Padding(
+                                padding: EdgeInsets.symmetric(
+                                  vertical: 8.0,
+                                ),
+                                child: VerticalDivider(),
+                              ),
+                              Padding(
+                                padding: const EdgeInsets.only(
+                                  right: 8.0,
+                                ),
+                                child: IconButton(
+                                  onPressed: state.canRedo
+                                      ? () => drawingController.redo()
+                                      : null,
+                                  icon: const Icon(FeatherIcons.cornerUpRight),
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                        Padding(
+                          padding: const EdgeInsets.only(
+                            left: 4.0,
+                          ),
+                          child: FloatingActionButton(
+                            onPressed: () => showDialog(
+                              context: context,
+                              builder: (context) => saveFileDialog,
+                            ),
+                            elevation: 2,
+                            child: const Icon(Icons.save),
+                          ),
+                        ),
+                      ],
                     ),
-                    const Padding(
-                      padding: EdgeInsets.symmetric(
-                        vertical: 8.0,
-                      ),
-                      child: VerticalDivider(),
-                    ),
-                    Padding(
-                      padding: const EdgeInsets.only(
-                        right: 8.0,
-                      ),
-                      child: IconButton(
-                        onPressed: state.canRedo
-                            ? () => drawingController.redo()
-                            : null,
-                        icon: const Icon(FeatherIcons.cornerUpRight),
-                      ),
-                    ),
-                  ],
+                  ),
                 ),
               ),
             ],

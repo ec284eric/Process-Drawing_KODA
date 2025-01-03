@@ -1,5 +1,6 @@
 import 'dart:typed_data';
 
+import 'package:drawing_app/models/result/result.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_drawing_board/flutter_drawing_board.dart';
@@ -53,6 +54,32 @@ class _DrawPageState extends State<DrawPage> {
     super.dispose();
   }
 
+  Future<void> _requestStatusListener(
+      BuildContext context, DrawState state) async {
+    switch (state.requestStatus) {
+      case RequestStatus.waiting:
+        break;
+      case RequestStatus.inProgress:
+        final bloc = context.read<DrawBloc>();
+        await Future.delayed(const Duration(
+          seconds: 1,
+        ));
+        final byteData = await _drawingController.getImageData();
+        final buffer = byteData?.buffer;
+        if (buffer != null) {
+          bloc.add(DrawImageProcessed(Uint8List.view(buffer)));
+        }
+        break;
+      case RequestStatus.success:
+        ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+          content: Text('Drawing Saved'),
+          behavior: SnackBarBehavior.floating,
+        ));
+        break;
+      case RequestStatus.failure:
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
@@ -62,25 +89,24 @@ class _DrawPageState extends State<DrawPage> {
         );
         return _bloc;
       },
-      child: BlocListener<DrawBloc, DrawState>(
-        listenWhen: (previous, current) => previous.color != current.color,
-        listener: (context, state) => _drawingController.setStyle(
-          color: state.color,
-        ),
+      child: MultiBlocListener(
+        listeners: [
+          BlocListener<DrawBloc, DrawState>(
+            listenWhen: (previous, current) => previous.color != current.color,
+            listener: (context, state) => _drawingController.setStyle(
+              color: state.color,
+            ),
+          ),
+          BlocListener<DrawBloc, DrawState>(
+            listenWhen: (previous, current) =>
+                previous.requestStatus != current.requestStatus,
+            listener: _requestStatusListener,
+          ),
+        ],
         child: Builder(
           builder: (context) {
             return Scaffold(
-              // floatingActionButton: FloatingActionButton(
-              //   onPressed: () async {
-              //     final byteData = await _drawingController.getImageData();
-              //     final buffer = byteData?.buffer;
-              //     if (buffer != null) {
-              //       setState(() {
-              //         image = Uint8List.view(buffer);
-              //       });
-              //     }
-              //   },
-              // ),
+              resizeToAvoidBottomInset: false,
               body: Stack(
                 children: [
                   OverlayLayer(
@@ -105,6 +131,10 @@ class _DrawPageState extends State<DrawPage> {
                       padding: const EdgeInsets.all(8.0),
                       child: DrawingActions(
                         drawingController: _drawingController,
+                        saveFileDialog: SaveFileDialog(
+                          context: context,
+                          drawingController: _drawingController,
+                        ),
                       ),
                     ),
                   ),

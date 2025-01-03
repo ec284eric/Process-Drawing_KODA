@@ -1,7 +1,8 @@
 import 'package:bloc/bloc.dart';
 import 'package:drawing_app/draw/draw.dart';
+import 'package:drawing_app/models/models.dart';
 import 'package:flutter/material.dart';
-import './bloc.dart';
+import 'package:gal/gal.dart';
 
 class DrawBloc extends Bloc<DrawEvent, DrawState> {
   DrawBloc({
@@ -14,6 +15,9 @@ class DrawBloc extends Bloc<DrawEvent, DrawState> {
     on<DrawLockPressed>(_lockPressed);
     on<DrawFirstImageSelected>(_firstImageSelected);
     on<DrawSecondImageSelected>(_secondImageSelected);
+    on<DrawSavePressed>(_savePressed);
+    on<DrawDrawingNameChanged>(_drawingNameChanged);
+    on<DrawImageProcessed>(_imageProcessed);
   }
 
   void _drawingChanged(DrawDrawingChanged event, Emitter<DrawState> emit) {
@@ -109,6 +113,33 @@ class DrawBloc extends Bloc<DrawEvent, DrawState> {
     }
     emit(state.copyWith(
       modifiableImages: modifiableImages,
+    ));
+  }
+
+  void _savePressed(DrawSavePressed event, Emitter<DrawState> emit) {
+    emit(state.copyWith(
+      requestStatus: RequestStatus.inProgress,
+    ));
+  }
+
+  Future<void> _imageProcessed(
+      DrawImageProcessed event, Emitter<DrawState> emit) async {
+    await Gal.putImageBytes(
+      event.imageBytes,
+      name: state.drawingName.value,
+    );
+    emit(state.copyWith(
+      requestStatus: RequestStatus.success,
+    ));
+    emit(state.copyWith(
+      requestStatus: RequestStatus.waiting,
+    ));
+  }
+
+  void _drawingNameChanged(
+      DrawDrawingNameChanged event, Emitter<DrawState> emit) {
+    emit(state.copyWith.drawingName(
+      value: event.value,
     ));
   }
 }

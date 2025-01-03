@@ -24,6 +24,7 @@ dependencies:
   image_size_getter: ^2.2.0
   intl: any
   go_router: ^14.2.8
+  gal: ^2.3.1
   scribble: ^0.10.0+1
   value_notifier_tools: ^0.1.2
 

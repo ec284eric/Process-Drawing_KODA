@@ -1,3 +1,4 @@
+import 'package:drawing_app/models/models.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_drawing_board/flutter_drawing_board.dart';
@@ -30,13 +31,14 @@ class CanvasLayer extends StatelessWidget {
                 background: Container(
                   width: constraints.maxWidth,
                   height: constraints.maxHeight,
-                  color: Colors.transparent,
+                  color: state.locked ? Colors.white : Colors.transparent,
                   child: Stack(
                     children: state.modifiableImages
                         .mapIndexed((index, modifiableImage) {
                       if (modifiableImage != null) {
                         return Visibility(
-                          visible: state.locked,
+                          visible: state.locked &&
+                              state.requestStatus == RequestStatus.waiting,
                           child: ModifiableImageItem(
                             modifiableImage: modifiableImage,
                             opacity: .5,

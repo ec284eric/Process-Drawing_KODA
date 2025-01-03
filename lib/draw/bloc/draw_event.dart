@@ -1,3 +1,5 @@
+import 'dart:typed_data';
+
 import 'package:flutter/material.dart';
 
 sealed class DrawEvent {
@@ -47,4 +49,20 @@ class DrawSecondImageSelected extends DrawEvent {
   final String image;
 
   const DrawSecondImageSelected(this.image);
+}
+
+class DrawSavePressed extends DrawEvent {
+  const DrawSavePressed();
+}
+
+class DrawImageProcessed extends DrawEvent {
+  final Uint8List imageBytes;
+
+  const DrawImageProcessed(this.imageBytes);
+}
+
+class DrawDrawingNameChanged extends DrawEvent {
+  final String value;
+
+  const DrawDrawingNameChanged(this.value);
 }

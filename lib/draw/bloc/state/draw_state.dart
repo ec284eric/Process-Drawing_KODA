@@ -1,4 +1,5 @@
 import 'package:drawing_app/draw/models/models.dart';
+import 'package:drawing_app/models/models.dart';
 import 'package:flutter/material.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 
@@ -15,5 +16,7 @@ class DrawState with _$DrawState {
     @Default(0) double rotation,
     @Default(1) double scale,
     @Default([]) List<ModifiableImage?> modifiableImages,
+    @Default(TextFieldInput()) TextFieldInput drawingName,
+    @Default(RequestStatus.waiting) RequestStatus requestStatus,
   }) = _DrawState;
 }
