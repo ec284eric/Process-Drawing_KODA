@@ -5,3 +5,4 @@ export 'drawing_actions.dart';
 export 'color_picker.dart';
 export 'overlay_layer.dart';
 export 'save_file_dialog.dart';
+export 'video_player_dialog.dart';

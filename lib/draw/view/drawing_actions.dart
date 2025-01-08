@@ -9,11 +9,13 @@ import 'package:go_router/go_router.dart';
 class DrawingActions extends StatelessWidget {
   final DrawingController drawingController;
   final Widget saveFileDialog;
+  final Widget videoPlayerDialog;
 
   const DrawingActions({
     super.key,
     required this.drawingController,
     required this.saveFileDialog,
+    required this.videoPlayerDialog,
   });
 
   void _firstImageSelected(BuildContext context, String value) {
@@ -194,6 +196,29 @@ class DrawingActions extends StatelessWidget {
                                 ),
                               ),
                             ],
+                          ),
+                        ),
+                        Padding(
+                          padding: const EdgeInsets.only(
+                            left: 4.0,
+                          ),
+                          child: FloatingActionButton(
+                            onPressed: () => showDialog(
+                              context: context,
+                              builder: (context) => videoPlayerDialog,
+                            ),
+                            elevation: 2,
+                            child: Builder(builder: (context) {
+                              if (state.requestStatus !=
+                                  RequestStatus.inProgress) {
+                                return const Icon(Icons.video_settings);
+                              } else {
+                                return const SizedBox.square(
+                                  dimension: 24,
+                                  child: CircularProgressIndicator(),
+                                );
+                              }
+                            }),
                           ),
                         ),
                         Padding(

@@ -135,6 +135,9 @@ class _DrawPageState extends State<DrawPage> {
                           context: context,
                           drawingController: _drawingController,
                         ),
+                        videoPlayerDialog: VideoPlayerDialog(
+                          context: context,
+                        ),
                       ),
                     ),
                   ),
