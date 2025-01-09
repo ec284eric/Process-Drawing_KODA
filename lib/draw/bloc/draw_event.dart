@@ -6,6 +6,10 @@ sealed class DrawEvent {
   const DrawEvent();
 }
 
+class HideMontagePressed extends DrawEvent {
+  const HideMontagePressed();
+}
+
 class DrawDrawingChanged extends DrawEvent {
   final bool canUndo;
   final bool canRedo;

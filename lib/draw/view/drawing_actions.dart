@@ -47,107 +47,129 @@ class DrawingActions extends StatelessWidget {
                     icon: Icon(state.locked ? Icons.lock : Icons.lock_open),
                   ),
                   const VerticalDivider(),
-                  OutlinedButton(
-                    onPressed: () => showBottomSheet(
-                      context: context,
-                      constraints: const BoxConstraints(
-                        maxHeight: 360,
-                        maxWidth: 360,
-                      ),
-                      builder: (context) => OverlayPickerBottomSheet(
-                        onImageSelected: (value) =>
-                            _firstImageSelected(context, value),
-                      ),
-                    ),
-                    style: FilledButton.styleFrom(
-                      padding: EdgeInsets.zero,
-                      fixedSize: const Size(36, 48),
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(8),
-                      ),
-                    ),
-                    child: Builder(
-                      builder: (context) {
-                        final modifiableImages = state.modifiableImages;
-                        if (modifiableImages.isNotEmpty &&
-                            modifiableImages[0] != null) {
-                          final modifiableImage = modifiableImages[0];
-                          if (modifiableImage != null) {
-                            return ClipRRect(
-                              borderRadius: BorderRadius.circular(8),
-                              child: Image.network(
-                                modifiableImage.src,
-                                fit: BoxFit.cover,
-                                height: double.infinity,
-                              ),
-                            );
-                          } else {
-                            return Container();
-                          }
-                        } else {
-                          return const Row(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: [
-                              Icon(Icons.image),
-                              Text('1'),
-                            ],
-                          );
-                        }
-                      },
-                    ),
+                  IconButton(
+                    onPressed: () => bloc.add(const HideMontagePressed()),
+                    icon: Icon(
+                        state.hideMontage ? Icons.draw : Icons.draw_outlined),
                   ),
                   Padding(
-                    padding: const EdgeInsets.only(
-                      left: 4.0,
-                    ),
-                    child: OutlinedButton(
-                      onPressed: () => showBottomSheet(
-                        context: context,
-                        constraints: const BoxConstraints(
-                          maxHeight: 360,
-                          maxWidth: 360,
-                        ),
-                        builder: (context) => OverlayPickerBottomSheet(
-                          onImageSelected: (value) =>
-                              _secondImageSelected(context, value),
-                        ),
-                      ),
-                      style: FilledButton.styleFrom(
-                        padding: EdgeInsets.zero,
-                        fixedSize: const Size(36, 48),
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(8),
-                        ),
-                      ),
-                      child: Builder(
-                        builder: (context) {
-                          final modifiableImages = state.modifiableImages;
-                          if (modifiableImages.length > 1 &&
-                              modifiableImages[1] != null) {
-                            final modifiableImage = modifiableImages[1];
-                            if (modifiableImage != null) {
-                              return ClipRRect(
-                                borderRadius: BorderRadius.circular(8),
-                                child: Image.network(
-                                  modifiableImage.src,
-                                  fit: BoxFit.cover,
-                                  height: double.infinity,
-                                ),
-                              );
-                            } else {
-                              return Container();
-                            }
-                          } else {
-                            return const Row(
-                              mainAxisAlignment: MainAxisAlignment.center,
+                    padding: const EdgeInsets.all(8.0),
+                    child: AnimatedSwitcher(
+                      duration: const Duration(milliseconds: 300),
+                      switchInCurve: Curves.easeIn,
+                      switchOutCurve: Curves.easeOut,
+                      child: !state.hideMontage
+                          ? const SizedBox.shrink()
+                          : Row(
                               children: [
-                                Icon(Icons.image),
-                                Text('2'),
+                                OutlinedButton(
+                                  onPressed: () => showModalBottomSheet(
+                                    barrierColor: Colors.transparent,
+                                    context: context,
+                                    constraints: const BoxConstraints(
+                                      maxHeight: 360,
+                                      maxWidth: 360,
+                                    ),
+                                    builder: (context) =>
+                                        OverlayPickerBottomSheet(
+                                      onImageSelected: (value) =>
+                                          _firstImageSelected(context, value),
+                                    ),
+                                  ),
+                                  style: FilledButton.styleFrom(
+                                    padding: EdgeInsets.zero,
+                                    fixedSize: const Size(36, 48),
+                                    shape: RoundedRectangleBorder(
+                                      borderRadius: BorderRadius.circular(8),
+                                    ),
+                                  ),
+                                  child: Builder(
+                                    builder: (context) {
+                                      final modifiableImages =
+                                          state.modifiableImages;
+                                      if (modifiableImages.isNotEmpty &&
+                                          modifiableImages[0] != null) {
+                                        final modifiableImage =
+                                            modifiableImages[0];
+                                        return ClipRRect(
+                                          borderRadius:
+                                              BorderRadius.circular(8),
+                                          child: Image.network(
+                                            modifiableImage!.src,
+                                            fit: BoxFit.cover,
+                                            height: double.infinity,
+                                          ),
+                                        );
+                                      } else {
+                                        return const Row(
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.center,
+                                          children: [
+                                            Icon(Icons.image),
+                                            Text('1'),
+                                          ],
+                                        );
+                                      }
+                                    },
+                                  ),
+                                ),
+                                Padding(
+                                  padding: const EdgeInsets.only(left: 4.0),
+                                  child: OutlinedButton(
+                                    onPressed: () => showModalBottomSheet(
+                                        barrierColor: Colors.transparent,
+                                        context: context,
+                                        constraints: const BoxConstraints(
+                                          maxHeight: 360,
+                                          maxWidth: 360,
+                                        ),
+                                        builder: (context) {
+                                          return OverlayPickerBottomSheet(
+                                            onImageSelected: (value) =>
+                                                _secondImageSelected(
+                                                    context, value),
+                                          );
+                                        }),
+                                    style: FilledButton.styleFrom(
+                                      padding: EdgeInsets.zero,
+                                      fixedSize: const Size(36, 48),
+                                      shape: RoundedRectangleBorder(
+                                        borderRadius: BorderRadius.circular(8),
+                                      ),
+                                    ),
+                                    child: Builder(
+                                      builder: (context) {
+                                        final modifiableImages =
+                                            state.modifiableImages;
+                                        if (modifiableImages.length > 1 &&
+                                            modifiableImages[1] != null) {
+                                          final modifiableImage =
+                                              modifiableImages[1];
+                                          return ClipRRect(
+                                            borderRadius:
+                                                BorderRadius.circular(8),
+                                            child: Image.network(
+                                              modifiableImage!.src,
+                                              fit: BoxFit.cover,
+                                              height: double.infinity,
+                                            ),
+                                          );
+                                        } else {
+                                          return const Row(
+                                            mainAxisAlignment:
+                                                MainAxisAlignment.center,
+                                            children: [
+                                              Icon(Icons.image),
+                                              Text('2'),
+                                            ],
+                                          );
+                                        }
+                                      },
+                                    ),
+                                  ),
+                                ),
                               ],
-                            );
-                          }
-                        },
-                      ),
+                            ),
                     ),
                   ),
                 ],

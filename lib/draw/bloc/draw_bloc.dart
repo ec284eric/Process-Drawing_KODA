@@ -18,6 +18,13 @@ class DrawBloc extends Bloc<DrawEvent, DrawState> {
     on<DrawSavePressed>(_savePressed);
     on<DrawDrawingNameChanged>(_drawingNameChanged);
     on<DrawImageProcessed>(_imageProcessed);
+    on<HideMontagePressed>(_hideMontagePressed);
+  }
+
+  void _hideMontagePressed(HideMontagePressed event, Emitter<DrawState> emit) {
+    emit(state.copyWith(
+      hideMontage: !state.hideMontage,
+    ));
   }
 
   void _drawingChanged(DrawDrawingChanged event, Emitter<DrawState> emit) {

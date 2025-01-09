@@ -11,6 +11,7 @@ class DrawState with _$DrawState {
     @Default(false) bool canUndo,
     @Default(false) bool canRedo,
     @Default(false) bool locked,
+    @Default(false) bool hideMontage,
     @Default(Colors.black) Color color,
     @Default(Size.square(300)) Size size,
     @Default(0) double rotation,
