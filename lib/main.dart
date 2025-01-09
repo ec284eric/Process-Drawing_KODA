@@ -1,4 +1,5 @@
 import 'package:drawing_app/draw/draw.dart';
+import 'package:drawing_app/splash_screen/view/view.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
@@ -14,12 +15,18 @@ class DrawingApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final GoRouter router = GoRouter(
-      initialLocation: DrawPage.route,
+      initialLocation: SplashScreenPage.route,
       routes: <RouteBase>[
         GoRoute(
           path: DrawPage.route,
           builder: (BuildContext context, GoRouterState state) {
             return const DrawPage();
+          },
+        ),
+        GoRoute(
+          path: SplashScreenPage.route,
+          builder: (BuildContext context, GoRouterState state) {
+            return const SplashScreenPage();
           },
         ),
       ],
