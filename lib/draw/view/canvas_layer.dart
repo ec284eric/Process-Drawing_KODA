@@ -36,8 +36,6 @@ class CanvasLayer extends StatelessWidget {
                     children: state.modifiableImages
                         .mapIndexed((index, modifiableImage) {
                       if (modifiableImage != null) {
-                        print("ASDLAYER canva layer: $index");
-
                         return Visibility(
                           visible: state.locked &&
                               state.requestStatus == RequestStatus.waiting,
