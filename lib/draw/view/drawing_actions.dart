@@ -48,7 +48,10 @@ class DrawingActions extends StatelessWidget {
                   ),
                   const VerticalDivider(),
                   IconButton(
-                    onPressed: () => bloc.add(const HideMontagePressed()),
+                    onPressed: () {
+                      bloc.add(const HideMontagePressed());
+                      context.pop();
+                    },
                     icon: Icon(
                         state.hideMontage ? Icons.draw : Icons.draw_outlined),
                   ),
@@ -63,8 +66,7 @@ class DrawingActions extends StatelessWidget {
                           : Row(
                               children: [
                                 OutlinedButton(
-                                  onPressed: () => showModalBottomSheet(
-                                    barrierColor: Colors.transparent,
+                                  onPressed: () => showBottomSheet(
                                     context: context,
                                     constraints: const BoxConstraints(
                                       maxHeight: 360,
@@ -116,8 +118,7 @@ class DrawingActions extends StatelessWidget {
                                 Padding(
                                   padding: const EdgeInsets.only(left: 4.0),
                                   child: OutlinedButton(
-                                    onPressed: () => showModalBottomSheet(
-                                        barrierColor: Colors.transparent,
+                                    onPressed: () => showBottomSheet(
                                         context: context,
                                         constraints: const BoxConstraints(
                                           maxHeight: 360,

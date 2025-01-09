@@ -43,10 +43,15 @@ class OverlayPickerBottomSheet extends StatelessWidget {
                 InkWell(
                   onTap: () => onImageSelected?.call(
                       'https://static.vecteezy.com/system/resources/thumbnails/008/951/892/small_2x/cute-puppy-pomeranian-mixed-breed-pekingese-dog-run-on-the-grass-with-happiness-photo.jpg'),
-                  child: Image.network(
-                    'https://static.vecteezy.com/system/resources/thumbnails/008/951/892/small_2x/cute-puppy-pomeranian-mixed-breed-pekingese-dog-run-on-the-grass-with-happiness-photo.jpg',
-                    fit: BoxFit.cover,
-                    width: MediaQuery.of(context).size.width,
+                  child: Transform(
+                    alignment: Alignment.center,
+                    transform: Matrix4.identity()
+                      ..scale(-1.0, 1.0), // Flip horizontally
+                    child: Image.network(
+                      'https://static.vecteezy.com/system/resources/thumbnails/008/951/892/small_2x/cute-puppy-pomeranian-mixed-breed-pekingese-dog-run-on-the-grass-with-happiness-photo.jpg',
+                      fit: BoxFit.cover,
+                      width: MediaQuery.of(context).size.width,
+                    ),
                   ),
                 ),
               ],
