@@ -5,12 +5,14 @@ class ModifiableImageItem extends StatelessWidget {
   final ModifiableImage modifiableImage;
   final ValueChanged<ScaleUpdateDetails>? onScaleUpdate;
   final double opacity;
+  final bool secondImage;
 
   const ModifiableImageItem({
     super.key,
     required this.modifiableImage,
     this.onScaleUpdate,
     this.opacity = 1,
+    required this.secondImage,
   });
 
   @override
@@ -25,11 +27,22 @@ class ModifiableImageItem extends StatelessWidget {
             angle: modifiableImage.rotation,
             child: Opacity(
               opacity: opacity,
-              child: Image.network(
-                modifiableImage.src,
-                fit: BoxFit.fill,
-                width: MediaQuery.of(context).size.width,
-              ),
+              child: secondImage == true
+                  ? Transform(
+                      alignment: Alignment.center,
+                      transform: Matrix4.identity()
+                        ..scale(-1.0, 1.0), // Flip horizontally
+                      child: Image.network(
+                        modifiableImage.src,
+                        fit: BoxFit.fill,
+                        width: MediaQuery.of(context).size.width,
+                      ),
+                    )
+                  : Image.network(
+                      modifiableImage.src,
+                      fit: BoxFit.fill,
+                      width: MediaQuery.of(context).size.width,
+                    ),
             ),
           ),
         ),

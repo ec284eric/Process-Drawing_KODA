@@ -29,11 +29,13 @@ class OverlayLayer extends StatelessWidget {
                     children: state.modifiableImages
                         .mapIndexed((index, modifiableImage) {
                       if (modifiableImage != null) {
+                        print("ASDLAYER over_layer: $index");
                         return ModifiableImageItem(
                           modifiableImage: modifiableImage,
                           onScaleUpdate: (details) => bloc.add(
                             DrawImageScaleUpdated(index, details),
                           ),
+                          secondImage: false,
                         );
                       } else {
                         return Container();
