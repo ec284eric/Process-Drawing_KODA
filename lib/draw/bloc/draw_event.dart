@@ -6,6 +6,10 @@ sealed class DrawEvent {
   const DrawEvent();
 }
 
+class DrawingIconPresed extends DrawEvent {
+  const DrawingIconPresed();
+}
+
 class HideMontagePressed extends DrawEvent {
   const HideMontagePressed();
 }

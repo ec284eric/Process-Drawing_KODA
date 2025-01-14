@@ -123,6 +123,9 @@ class _DrawPageState extends State<DrawPage> {
                       colorPicker: ColorPicker(
                         context: context,
                       ),
+                      videoPlayerDialog: VideoPlayerDialog(
+                        context: context,
+                      ),
                     ),
                   ),
                   Align(
