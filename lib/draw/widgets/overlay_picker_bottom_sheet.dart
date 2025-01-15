@@ -42,16 +42,11 @@ class OverlayPickerBottomSheet extends StatelessWidget {
                 ),
                 InkWell(
                   onTap: () => onImageSelected?.call(
-                      'https://t4.ftcdn.net/jpg/02/66/72/41/360_F_266724172_Iy8gdKgMa7XmrhYYxLCxyhx6J7070Pr8.jpg'),
-                  child: Transform(
-                    alignment: Alignment.center,
-                    transform: Matrix4.identity()
-                      ..scale(-1.0, 1.0), // Flip horizontally
-                    child: Image.network(
-                      'https://t4.ftcdn.net/jpg/02/66/72/41/360_F_266724172_Iy8gdKgMa7XmrhYYxLCxyhx6J7070Pr8.jpg',
-                      fit: BoxFit.cover,
-                      width: MediaQuery.of(context).size.width,
-                    ),
+                      'https://encrypted-tbn3.gstatic.com/images?q=tbn:ANd9GcQP5QQKcY4t1-_XAOvt_5Ii9LGJqTDX0B7u5sOZJFeU8QCGJ2jReifGEDftXkScCw-lMm8nmFUYF2QXwMR2KrzTsw'),
+                  child: Image.network(
+                    'https://encrypted-tbn3.gstatic.com/images?q=tbn:ANd9GcQP5QQKcY4t1-_XAOvt_5Ii9LGJqTDX0B7u5sOZJFeU8QCGJ2jReifGEDftXkScCw-lMm8nmFUYF2QXwMR2KrzTsw',
+                    fit: BoxFit.cover,
+                    width: MediaQuery.of(context).size.width,
                   ),
                 ),
               ],

@@ -1,5 +1,7 @@
 import 'dart:typed_data';
 
+import 'package:drawing_app/draw/view/appbar_drawing.dart';
+import 'package:drawing_app/draw/view/montage_acetate.dart';
 import 'package:drawing_app/models/result/result.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -107,6 +109,14 @@ class _DrawPageState extends State<DrawPage> {
           builder: (context) {
             return Scaffold(
               resizeToAvoidBottomInset: false,
+              appBar: PreferredSize(
+                  preferredSize: const Size.fromHeight(kToolbarHeight),
+                  child: AppBarDrawing(
+                    saveFileDialog: SaveFileDialog(
+                      context: context,
+                      drawingController: _drawingController,
+                    ),
+                  )),
               body: Stack(
                 children: [
                   OverlayLayer(
@@ -126,22 +136,7 @@ class _DrawPageState extends State<DrawPage> {
                       videoPlayerDialog: VideoPlayerDialog(
                         context: context,
                       ),
-                    ),
-                  ),
-                  Align(
-                    alignment: Alignment.bottomCenter,
-                    child: Padding(
-                      padding: const EdgeInsets.all(8.0),
-                      child: DrawingActions(
-                        drawingController: _drawingController,
-                        saveFileDialog: SaveFileDialog(
-                          context: context,
-                          drawingController: _drawingController,
-                        ),
-                        videoPlayerDialog: VideoPlayerDialog(
-                          context: context,
-                        ),
-                      ),
+                      transformationController: _canvasTransformationController,
                     ),
                   ),
                   Builder(

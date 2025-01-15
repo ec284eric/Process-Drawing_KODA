@@ -30,8 +30,7 @@ class ModifiableImageItem extends StatelessWidget {
               child: secondImage == true
                   ? Transform(
                       alignment: Alignment.center,
-                      transform: Matrix4.identity()
-                        ..scale(-1.0, 1.0), // Flip horizontally
+                      transform: Matrix4.identity()..scale(-1.0, 1.0),
                       child: Image.network(
                         modifiableImage.src,
                         fit: BoxFit.fill,

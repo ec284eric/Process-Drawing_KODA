@@ -6,8 +6,24 @@ sealed class DrawEvent {
   const DrawEvent();
 }
 
+class PenSelectorPressed extends DrawEvent {
+  const PenSelectorPressed();
+}
+
 class DrawingIconPresed extends DrawEvent {
   const DrawingIconPresed();
+}
+
+class PenIconPressed extends DrawEvent {
+  const PenIconPressed();
+}
+
+class BrushIconPressed extends DrawEvent {
+  const BrushIconPressed();
+}
+
+class ImageFlippedIconPressed extends DrawEvent {
+  const ImageFlippedIconPressed();
 }
 
 class HideMontagePressed extends DrawEvent {

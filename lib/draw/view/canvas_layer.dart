@@ -21,6 +21,11 @@ class CanvasLayer extends StatelessWidget {
     final bloc = context.read<DrawBloc>();
     return BlocBuilder<DrawBloc, DrawState>(
       builder: (context, state) {
+        if (state.locked) {
+          WidgetsBinding.instance.addPostFrameCallback((_) {
+            transformationController.value = Matrix4.identity(); // Reset zoom
+          });
+        }
         return LayoutBuilder(
           builder: (context, constraints) {
             return IgnorePointer(
@@ -28,25 +33,30 @@ class CanvasLayer extends StatelessWidget {
               child: DrawingBoard(
                 controller: drawingController,
                 transformationController: transformationController,
-                background: Container(
+                onInteractionUpdate: (p0) {},
+                background: SizedBox(
                   width: constraints.maxWidth,
                   height: constraints.maxHeight,
-                  color: state.locked ? Colors.white : Colors.transparent,
                   child: Stack(
                     children: state.modifiableImages
                         .mapIndexed((index, modifiableImage) {
-                      if (modifiableImage != null) {
-                        return Visibility(
-                          visible: state.locked &&
-                              state.requestStatus == RequestStatus.waiting,
-                          child: ModifiableImageItem(
-                            modifiableImage: modifiableImage,
-                            opacity: 0.5,
-                            onScaleUpdate: (details) => bloc.add(
-                              DrawImageScaleUpdated(index, details),
-                            ),
-                            secondImage: index == 1 ? true : false,
+                      if (index == 0 && modifiableImage != null) {
+                        return ModifiableImageItem(
+                          modifiableImage: modifiableImage,
+                          opacity: 0.5,
+                          onScaleUpdate: (details) => bloc.add(
+                            DrawImageScaleUpdated(index, details),
                           ),
+                          secondImage: false,
+                        );
+                      } else if (index == 1 && modifiableImage != null) {
+                        return ModifiableImageItem(
+                          modifiableImage: modifiableImage,
+                          opacity: 0.5,
+                          onScaleUpdate: (details) => bloc.add(
+                            DrawImageScaleUpdated(index, details),
+                          ),
+                          secondImage: state.imageFlipped ? true : false,
                         );
                       } else {
                         return Container();

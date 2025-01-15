@@ -1,4 +1,5 @@
 import 'package:drawing_app/draw/draw.dart';
+import 'package:drawing_app/models/result/result.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:collection/collection.dart';
@@ -17,24 +18,39 @@ class OverlayLayer extends StatelessWidget {
     return BlocBuilder<DrawBloc, DrawState>(
       builder: (context, state) {
         return Visibility(
-          visible: !state.locked,
+          visible: !state.locked ? true : false,
           child: LayoutBuilder(
             builder: (context, constraint) {
               return SizedBox(
                 height: constraint.maxHeight,
                 width: constraint.maxWidth,
                 child: InteractiveViewer(
+                  onInteractionUpdate: (details) {
+                    print("HERE DD ZOOM 3 OV: $details");
+                  },
                   transformationController: transformationController,
                   child: Stack(
                     children: state.modifiableImages
                         .mapIndexed((index, modifiableImage) {
-                      if (modifiableImage != null) {
+                      print("HERE MODIF IMAGE: $modifiableImage");
+
+                      if (index == 0 && modifiableImage != null) {
                         return ModifiableImageItem(
                           modifiableImage: modifiableImage,
+                          opacity: 1,
                           onScaleUpdate: (details) => bloc.add(
                             DrawImageScaleUpdated(index, details),
                           ),
                           secondImage: false,
+                        );
+                      } else if (index == 1 && modifiableImage != null) {
+                        return ModifiableImageItem(
+                          modifiableImage: modifiableImage,
+                          opacity: 0.8,
+                          onScaleUpdate: (details) => bloc.add(
+                            DrawImageScaleUpdated(index, details),
+                          ),
+                          secondImage: state.imageFlipped ? true : false,
                         );
                       } else {
                         return Container();

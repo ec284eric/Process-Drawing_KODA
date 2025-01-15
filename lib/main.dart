@@ -15,7 +15,7 @@ class DrawingApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final GoRouter router = GoRouter(
-      initialLocation: SplashScreenPage.route,
+      initialLocation: DrawPage.route,
       routes: <RouteBase>[
         GoRoute(
           path: DrawPage.route,
@@ -33,6 +33,7 @@ class DrawingApp extends StatelessWidget {
     );
 
     return MaterialApp.router(
+      debugShowCheckedModeBanner: false,
       routerConfig: router,
       localizationsDelegates: const [
         AppLocalizations.delegate,
@@ -43,6 +44,13 @@ class DrawingApp extends StatelessWidget {
       supportedLocales: const [
         Locale('en'),
       ],
+      theme: ThemeData(
+          appBarTheme: const AppBarTheme(
+            backgroundColor: Color.fromARGB(255, 136, 132, 132),
+          ),
+          cardTheme: const CardTheme(
+            color: Color.fromARGB(255, 136, 132, 132),
+          )),
     );
   }
 }

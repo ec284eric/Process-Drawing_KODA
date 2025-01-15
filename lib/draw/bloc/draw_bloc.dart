@@ -20,11 +20,48 @@ class DrawBloc extends Bloc<DrawEvent, DrawState> {
     on<DrawImageProcessed>(_imageProcessed);
     on<HideMontagePressed>(_hideMontagePressed);
     on<DrawingIconPresed>(_drawingIconPresed);
+    on<ImageFlippedIconPressed>(_imageFlippedIconPressed);
+    on<PenSelectorPressed>(_penSelectorPressed);
+    on<PenIconPressed>(_penIconPressed);
+    on<BrushIconPressed>(_brushIconPressed);
+  }
+
+  void _penSelectorPressed(PenSelectorPressed event, Emitter<DrawState> emit) {
+    emit(
+      state.copyWith(
+        penSelector: !state.penSelector,
+      ),
+    );
+  }
+
+  void _penIconPressed(PenIconPressed event, Emitter<DrawState> emit) {
+    emit(
+      state.copyWith(
+        color: const Color.fromARGB(255, 139, 139, 139),
+        pencilSelected: true,
+        brushSelected: false,
+      ),
+    );
+  }
+
+  void _brushIconPressed(BrushIconPressed event, Emitter<DrawState> emit) {
+    emit(
+      state.copyWith(
+        color: const Color(0xff000000),
+        brushSelected: true,
+        pencilSelected: false,
+      ),
+    );
+  }
+
+  void _imageFlippedIconPressed(
+      ImageFlippedIconPressed event, Emitter<DrawState> emit) {
+    emit(state.copyWith(imageFlipped: !state.imageFlipped));
   }
 
   void _drawingIconPresed(DrawingIconPresed event, Emitter<DrawState> emit) {
     emit(state.copyWith(
-      drawingLocked: !state.drawingLocked,
+      newDrawingSelected: !state.newDrawingSelected,
     ));
   }
 
@@ -49,6 +86,7 @@ class DrawBloc extends Bloc<DrawEvent, DrawState> {
 
   void _resizerScaleUpdated(
       DrawResizerScaleUpdated event, Emitter<DrawState> emit) {
+    print("HERE TEST PRINT ZOOM 1");
     emit(state.copyWith(
       size: state.size + event.details.focalPointDelta,
     ));
@@ -56,6 +94,8 @@ class DrawBloc extends Bloc<DrawEvent, DrawState> {
 
   void _imageScaleUpdated(
       DrawImageScaleUpdated event, Emitter<DrawState> emit) {
+    print("HERE TEST PRINT ZOOM 2");
+
     final modifiableImages = [
       ...state.modifiableImages,
     ];
