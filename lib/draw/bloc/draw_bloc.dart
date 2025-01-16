@@ -37,7 +37,7 @@ class DrawBloc extends Bloc<DrawEvent, DrawState> {
   void _penIconPressed(PenIconPressed event, Emitter<DrawState> emit) {
     emit(
       state.copyWith(
-        color: const Color.fromARGB(255, 139, 139, 139),
+        color: const Color.fromARGB(255, 41, 43, 42),
         pencilSelected: true,
         brushSelected: false,
       ),
@@ -86,7 +86,6 @@ class DrawBloc extends Bloc<DrawEvent, DrawState> {
 
   void _resizerScaleUpdated(
       DrawResizerScaleUpdated event, Emitter<DrawState> emit) {
-    print("HERE TEST PRINT ZOOM 1");
     emit(state.copyWith(
       size: state.size + event.details.focalPointDelta,
     ));
@@ -94,8 +93,6 @@ class DrawBloc extends Bloc<DrawEvent, DrawState> {
 
   void _imageScaleUpdated(
       DrawImageScaleUpdated event, Emitter<DrawState> emit) {
-    print("HERE TEST PRINT ZOOM 2");
-
     final modifiableImages = [
       ...state.modifiableImages,
     ];

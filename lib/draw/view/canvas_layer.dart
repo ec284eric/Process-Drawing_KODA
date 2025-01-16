@@ -1,4 +1,3 @@
-import 'package:drawing_app/models/models.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_drawing_board/flutter_drawing_board.dart';
@@ -23,7 +22,7 @@ class CanvasLayer extends StatelessWidget {
       builder: (context, state) {
         if (state.locked) {
           WidgetsBinding.instance.addPostFrameCallback((_) {
-            transformationController.value = Matrix4.identity(); // Reset zoom
+            transformationController.value = Matrix4.identity();
           });
         }
         return LayoutBuilder(

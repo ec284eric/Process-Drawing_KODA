@@ -4,7 +4,6 @@ import 'package:drawing_app/draw/view/pen_selector.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_drawing_board/flutter_drawing_board.dart';
-import 'package:flutter_drawing_board/paint_contents.dart';
 import 'package:go_router/go_router.dart';
 
 class Tools extends StatelessWidget {

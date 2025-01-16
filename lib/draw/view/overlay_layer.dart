@@ -1,5 +1,4 @@
 import 'package:drawing_app/draw/draw.dart';
-import 'package:drawing_app/models/result/result.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:collection/collection.dart';
@@ -25,15 +24,10 @@ class OverlayLayer extends StatelessWidget {
                 height: constraint.maxHeight,
                 width: constraint.maxWidth,
                 child: InteractiveViewer(
-                  onInteractionUpdate: (details) {
-                    print("HERE DD ZOOM 3 OV: $details");
-                  },
                   transformationController: transformationController,
                   child: Stack(
                     children: state.modifiableImages
                         .mapIndexed((index, modifiableImage) {
-                      print("HERE MODIF IMAGE: $modifiableImage");
-
                       if (index == 0 && modifiableImage != null) {
                         return ModifiableImageItem(
                           modifiableImage: modifiableImage,

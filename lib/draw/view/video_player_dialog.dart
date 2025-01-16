@@ -1,3 +1,4 @@
+import 'package:chewie/chewie.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:video_player/video_player.dart';
@@ -17,20 +18,25 @@ class VideoPlayerDialog extends StatefulWidget {
 }
 
 class _VideoPlayerDialogState extends State<VideoPlayerDialog> {
-  late VideoPlayerController _controller;
+  late ChewieController chewieController;
+  late Chewie playerWidget;
+
+  final videoPlayerController = VideoPlayerController.networkUrl(Uri.parse(
+      'https://videos.pexels.com/video-files/20422317/20422317-hd_1920_1080_25fps.mp4'));
 
   @override
   void initState() {
     super.initState();
-    _controller = VideoPlayerController.networkUrl(
-      Uri.parse(
-          'https://flutter.github.io/assets-for-api-docs/assets/videos/bee.mp4'),
-    )
-      ..setLooping(true)
-      ..initialize().then((_) {
-        setState(() {});
-      });
-    _controller.play();
+    videoPlayerController.initialize();
+    chewieController = ChewieController(
+      videoPlayerController: videoPlayerController,
+      autoPlay: true,
+      looping: true,
+      aspectRatio: 16 / 9,
+    );
+    playerWidget = Chewie(
+      controller: chewieController,
+    );
   }
 
   @override
@@ -39,40 +45,34 @@ class _VideoPlayerDialogState extends State<VideoPlayerDialog> {
       value: widget.context.read<DrawBloc>(),
       child: Builder(
         builder: (context) {
-          return SimpleDialog(
-            title: const Text('Video Tutorial'),
-            children: [
-              AspectRatio(
-                aspectRatio: _controller.value.isInitialized
-                    ? _controller.value.aspectRatio
-                    : 1.0,
-                child: _controller.value.isInitialized
-                    ? Container(
-                        padding: const EdgeInsets.all(25),
-                        child: VideoPlayer(_controller))
-                    : const Center(child: CircularProgressIndicator()),
+          return Transform.scale(
+            scale: 0.5,
+            child: SimpleDialog(
+              contentPadding: const EdgeInsets.all(
+                0,
               ),
-              const SizedBox(height: 16),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  FloatingActionButton(
-                    onPressed: () {
-                      setState(() {
-                        _controller.value.isPlaying
-                            ? _controller.pause()
-                            : _controller.play();
-                      });
-                    },
-                    child: Icon(
-                      _controller.value.isPlaying
-                          ? Icons.pause
-                          : Icons.play_arrow,
-                    ),
+              shape: const RoundedRectangleBorder(
+                borderRadius: BorderRadius.all(
+                  Radius.zero,
+                ),
+              ),
+              children: [
+                AspectRatio(
+                  aspectRatio: playerWidget
+                          .controller.videoPlayerController.value.isInitialized
+                      ? 1.0
+                      : 16 / 9,
+                  child: Container(
+                    child: playerWidget.controller.videoPlayerController.value
+                            .isInitialized
+                        ? playerWidget
+                        : const Center(
+                            child: CircularProgressIndicator(),
+                          ),
                   ),
-                ],
-              ),
-            ],
+                ),
+              ],
+            ),
           );
         },
       ),
@@ -81,7 +81,8 @@ class _VideoPlayerDialogState extends State<VideoPlayerDialog> {
 
   @override
   void dispose() {
-    _controller.dispose();
+    videoPlayerController.dispose();
+    chewieController.dispose();
     super.dispose();
   }
 }

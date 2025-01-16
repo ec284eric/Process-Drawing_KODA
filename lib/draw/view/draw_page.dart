@@ -1,7 +1,5 @@
 import 'dart:typed_data';
-
 import 'package:drawing_app/draw/view/appbar_drawing.dart';
-import 'package:drawing_app/draw/view/montage_acetate.dart';
 import 'package:drawing_app/models/result/result.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';

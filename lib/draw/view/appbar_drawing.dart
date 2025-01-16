@@ -7,7 +7,6 @@ class AppBarDrawing extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final GlobalKey<TooltipState> tooltipKey = GlobalKey<TooltipState>();
     return AppBar(
       leadingWidth: 500,
       leading: Row(
@@ -72,19 +71,7 @@ class AppBarDrawing extends StatelessWidget {
                 width: 32,
                 height: 32,
               ),
-              onPressed: null
-              // onPressed: () => showDialog(
-              //   context: context,
-              //   builder: (context) {
-              //     return const AlertDialog(
-              //       content: Text(
-              //         'Process and Wellness Drawing was conceived by Eric A. Chan and has been created for you.\n\n“Process Drawing”, “Wellness Drawing”, “Process and Wellness Drawing”, and “MontageAcetates” are copyright © Eric A. Chan. All rights reserved.',
-              //         textAlign: TextAlign.center,
-              //       ),
-              //     );
-              //   },
-              // ),
-              ),
+              onPressed: null),
         ),
       ],
     );
