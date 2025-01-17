@@ -1,3 +1,4 @@
+import 'package:el_tooltip/el_tooltip.dart';
 import 'package:flutter/material.dart';
 
 class AppBarDrawing extends StatelessWidget {
@@ -18,9 +19,7 @@ class AppBarDrawing extends StatelessWidget {
               width: 32,
               height: 32,
             ),
-            onPressed: () {
-              print('Search pressed');
-            },
+            onPressed: () {},
           ),
           IconButton(
             icon: Image.asset(
@@ -28,9 +27,7 @@ class AppBarDrawing extends StatelessWidget {
               width: 32,
               height: 32,
             ),
-            onPressed: () {
-              print('HERES Search pressed');
-            },
+            onPressed: () {},
           ),
           IconButton(
             icon: Image.asset(
@@ -59,19 +56,30 @@ class AppBarDrawing extends StatelessWidget {
             print('Search pressed');
           },
         ),
-        Tooltip(
-          triggerMode: TooltipTriggerMode.tap,
-          verticalOffset: 48,
-          height: 24,
-          message:
-              "Process and Wellness Drawing was conceived by Eric A. Chan and has been created for you.\n\n“Process Drawing”, “Wellness Drawing”, “Process and Wellness Drawing”, and “MontageAcetates” are copyright © Eric A. Chan. All rights reserved.",
+        ElTooltip(
+          // triggerMode: TooltipTriggerMode.tap,
+          // verticalOffset: 48,
+          // height: 24,
+          // message:
+          //     "Process and Wellness Drawing was conceived by Eric A. Chan and has been created for you.\n\n“Process Drawing”, “Wellness Drawing”, “Process and Wellness Drawing”, and “MontageAcetates” are copyright © Eric A. Chan. All rights reserved.",
+          showModal: false,
+          distance: 10,
+          position: ElTooltipPosition.bottomEnd,
+          color: const Color.fromARGB(255, 136, 132, 132),
+          content: const Text(
+            'Process and Wellness Drawing was conceived by Eric A. Chan and has been created for you. “Process Drawing”, “Wellness Drawing”, “Process and Wellness Drawing”, and “MontageAcetates” are copyright © Eric A. Chan. All rights reserved.',
+            style: TextStyle(
+              color: Colors.white,
+            ),
+          ),
           child: IconButton(
-              icon: Image.asset(
-                'assets/icons/info-01.png',
-                width: 32,
-                height: 32,
-              ),
-              onPressed: null),
+            icon: Image.asset(
+              'assets/icons/info-01.png',
+              width: 32,
+              height: 32,
+            ),
+            onPressed: null,
+          ),
         ),
       ],
     );

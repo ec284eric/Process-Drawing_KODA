@@ -38,6 +38,12 @@ class SaveFileDialog extends StatelessWidget {
             ),
             actions: [
               TextButton(
+                style: ButtonStyle(
+                  foregroundColor: WidgetStateProperty.all(
+                    const Color.fromARGB(
+                        255, 136, 132, 132), // Change to your desired color
+                  ),
+                ),
                 onPressed: () => context.pop(),
                 child: const Text('Cancel'),
               ),

@@ -58,17 +58,9 @@ class _VideoPlayerDialogState extends State<VideoPlayerDialog> {
               ),
               children: [
                 AspectRatio(
-                  aspectRatio: playerWidget
-                          .controller.videoPlayerController.value.isInitialized
-                      ? 1.0
-                      : 16 / 9,
+                  aspectRatio: 16 / 9,
                   child: Container(
-                    child: playerWidget.controller.videoPlayerController.value
-                            .isInitialized
-                        ? playerWidget
-                        : const Center(
-                            child: CircularProgressIndicator(),
-                          ),
+                    child: playerWidget,
                   ),
                 ),
               ],

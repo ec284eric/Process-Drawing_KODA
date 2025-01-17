@@ -87,10 +87,10 @@ class Tools extends StatelessWidget {
                                     ? Colors.black54
                                     : Colors.transparent,
                                 child: IconButton(
-                                  onPressed: () => state.newDrawingSelected
-                                      ? {
-                                          bloc.add(const HideMontagePressed()),
-                                          context.pop(),
+                                  onPressed: state.newDrawingSelected
+                                      ? () {
+                                          bloc.add(const HideMontagePressed());
+                                          context.pop();
                                         }
                                       : null,
                                   icon: Image.asset(
@@ -98,12 +98,16 @@ class Tools extends StatelessWidget {
                                     width: 32,
                                     height: 32,
                                     color: state.newDrawingSelected
-                                        ? Colors.white
+                                        ? (state.hideMontage
+                                            ? const Color.fromARGB(
+                                                255, 37, 150, 190)
+                                            : Colors.white)
                                         : Colors.grey,
                                   ),
                                 ),
                               ),
                             ),
+
                             SizedBox.square(
                               dimension: 45,
                               child: CircleAvatar(
@@ -123,7 +127,10 @@ class Tools extends StatelessWidget {
                                     width: 32,
                                     height: 32,
                                     color: state.modifiableImages.length == 2
-                                        ? Colors.white
+                                        ? (state.imageFlipped
+                                            ? const Color.fromARGB(
+                                                255, 37, 150, 190)
+                                            : Colors.white)
                                         : Colors.grey,
                                   ),
                                 ),
@@ -158,12 +165,16 @@ class Tools extends StatelessWidget {
                                     width: 32,
                                     height: 32,
                                     color: state.modifiableImages.isNotEmpty
-                                        ? Colors.white
+                                        ? (state.locked
+                                            ? const Color.fromARGB(
+                                                255, 37, 150, 190)
+                                            : Colors.white)
                                         : Colors.grey,
                                   ),
                                 ),
                               ),
                             ),
+
                             SizedBox.square(
                               dimension: 45,
                               child: CircleAvatar(
@@ -181,7 +192,10 @@ class Tools extends StatelessWidget {
                                     width: 32,
                                     height: 32,
                                     color: state.locked
-                                        ? Colors.white
+                                        ? (state.penSelector
+                                            ? const Color.fromARGB(
+                                                255, 37, 150, 190)
+                                            : Colors.white)
                                         : Colors.grey,
                                   ),
                                 ),

@@ -3,7 +3,6 @@ import 'package:drawing_app/draw/bloc/draw_event.dart';
 import 'package:drawing_app/draw/bloc/state/draw_state.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:go_router/go_router.dart';
 
 class PenSelector extends StatefulWidget {
   const PenSelector({super.key});
@@ -13,18 +12,6 @@ class PenSelector extends StatefulWidget {
 }
 
 class _PenSelectorState extends State<PenSelector> {
-  void _firstImageSelected(BuildContext context, String value) {
-    final bloc = context.read<DrawBloc>();
-    bloc.add(DrawFirstImageSelected(value));
-    context.pop();
-  }
-
-  void _secondImageSelected(BuildContext context, String value) {
-    final bloc = context.read<DrawBloc>();
-    bloc.add(DrawSecondImageSelected(value));
-    context.pop();
-  }
-
   @override
   Widget build(BuildContext context) {
     return BlocBuilder<DrawBloc, DrawState>(
@@ -58,11 +45,10 @@ class _PenSelectorState extends State<PenSelector> {
                                   ),
                                   side: const BorderSide(
                                     color: Colors.white,
-                                  ), // Border color
+                                  ),
                                   backgroundColor: state.brushSelected
                                       ? Colors.black54
-                                      : Colors
-                                          .transparent, // Button background color
+                                      : Colors.transparent,
                                 ),
                                 child: const Icon(
                                   Icons.brush,
@@ -86,8 +72,7 @@ class _PenSelectorState extends State<PenSelector> {
                                       color: Colors.white), // Border color
                                   backgroundColor: state.pencilSelected
                                       ? Colors.black54
-                                      : Colors
-                                          .transparent, // Button background color
+                                      : Colors.transparent,
                                 ),
                                 child: const Icon(
                                   Icons.edit,

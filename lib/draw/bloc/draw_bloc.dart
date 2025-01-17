@@ -37,7 +37,8 @@ class DrawBloc extends Bloc<DrawEvent, DrawState> {
   void _penIconPressed(PenIconPressed event, Emitter<DrawState> emit) {
     emit(
       state.copyWith(
-        color: const Color.fromARGB(255, 41, 43, 42),
+        // color: const Color.fromARGB(255, 41, 43, 42),
+        color: const Color.fromARGB(255, 58, 61, 59),
         pencilSelected: true,
         brushSelected: false,
       ),

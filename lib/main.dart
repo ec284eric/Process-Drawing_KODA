@@ -45,12 +45,20 @@ class DrawingApp extends StatelessWidget {
         Locale('en'),
       ],
       theme: ThemeData(
-          appBarTheme: const AppBarTheme(
-            backgroundColor: Color.fromARGB(255, 136, 132, 132),
+        filledButtonTheme: const FilledButtonThemeData(
+          style: ButtonStyle(
+            backgroundColor: WidgetStatePropertyAll(
+              Color.fromARGB(255, 136, 132, 132),
+            ),
           ),
-          cardTheme: const CardTheme(
-            color: Color.fromARGB(255, 136, 132, 132),
-          )),
+        ),
+        appBarTheme: const AppBarTheme(
+          backgroundColor: Color.fromARGB(255, 136, 132, 132),
+        ),
+        cardTheme: const CardTheme(
+          color: Color.fromARGB(255, 136, 132, 132),
+        ),
+      ),
     );
   }
 }

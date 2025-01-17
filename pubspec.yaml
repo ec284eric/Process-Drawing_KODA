@@ -29,6 +29,7 @@ dependencies:
   value_notifier_tools: ^0.1.2
   video_player: ^2.9.2
   chewie: ^1.9.2
+  el_tooltip: ^2.2.1
 
 dev_dependencies:
   flutter_test:
