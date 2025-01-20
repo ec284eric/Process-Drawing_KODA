@@ -15,7 +15,7 @@ class DrawingApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final GoRouter router = GoRouter(
-      initialLocation: DrawPage.route,
+      initialLocation: SplashScreenPage.route,
       routes: <RouteBase>[
         GoRoute(
           path: DrawPage.route,
