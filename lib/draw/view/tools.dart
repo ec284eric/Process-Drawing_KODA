@@ -175,6 +175,26 @@ class Tools extends StatelessWidget {
                               ),
                             ),
 
+                            // SizedBox.square(
+                            //   dimension: 45,
+                            //   child: CircleAvatar(
+                            //     backgroundColor: state.locked
+                            //         ? Colors.black54
+                            //         : Colors.transparent,
+                            //     child: IconButton(
+                            //       onPressed: () =>
+                            //           {bloc.add(const DrawLockPressed())},
+                            //       icon: Image.asset('assets/icons/file-01.png',
+                            //           width: 32,
+                            //           height: 32,
+                            //           color: (state.locked
+                            //               ? const Color.fromARGB(
+                            //                   255, 37, 150, 190)
+                            //               : Colors.white)),
+                            //     ),
+                            //   ),
+                            // ),
+
                             SizedBox.square(
                               dimension: 45,
                               child: CircleAvatar(
@@ -282,6 +302,18 @@ class Tools extends StatelessWidget {
                                   width: 32,
                                   height: 32,
                                   color: Colors.white,
+                                ),
+                              ),
+                            ),
+                            SizedBox.square(
+                              dimension: 45,
+                              child: IconButton(
+                                onPressed: () => state.locked ? {} : null,
+                                icon: Image.asset(
+                                  'assets/icons/copy-drawing-01.png',
+                                  width: 32,
+                                  height: 32,
+                                  color: Colors.grey,
                                 ),
                               ),
                             ),
