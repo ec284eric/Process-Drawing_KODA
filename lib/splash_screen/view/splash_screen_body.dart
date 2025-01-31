@@ -24,10 +24,9 @@ class _SplashScreenBodyState extends State<SplashScreenBody> {
       backgroundColor: const Color.fromARGB(255, 136, 132, 132),
       body: Center(
         child: Image.asset(
-          'assets/icons/logo-01.png',
+          'assets/icons/logo_animation.gif',
           width: 100,
           height: 100,
-          color: Colors.white,
         ),
       ),
     );
