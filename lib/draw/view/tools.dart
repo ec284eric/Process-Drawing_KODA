@@ -20,6 +20,36 @@ class Tools extends StatelessWidget {
     required this.transformationController,
   });
 
+  Future<void> _restart(BuildContext context) async {
+    final bloc = context.read<DrawBloc>();
+    var result = await showDialog(
+      context: context,
+      builder: (context) {
+        return AlertDialog(
+          title: const Text('Are you sure?'),
+          content: const Text(
+              'This will override your current changes and starts a new one.'),
+          actions: [
+            TextButton(
+              onPressed: () => Navigator.pop(context, false),
+              child: const Text('Cancel'),
+            ),
+            TextButton(
+              onPressed: () => Navigator.pop(context, true),
+              child: const Text('Restart'),
+            )
+          ],
+        );
+      },
+    );
+
+    if (result == null || !result) {
+      return;
+    }
+
+    bloc.add(const DrawRestartPressed());
+  }
+
   @override
   Widget build(BuildContext context) {
     final bloc = context.read<DrawBloc>();
@@ -83,11 +113,14 @@ class Tools extends StatelessWidget {
                             SizedBox.square(
                               dimension: 45,
                               child: CircleAvatar(
-                                backgroundColor: state.hideMontage
+                                backgroundColor: state.hideMontage &&
+                                        state.modifiableImages.isNotEmpty &&
+                                        state.modifiableImages.length != 2
                                     ? Colors.black54
                                     : Colors.transparent,
                                 child: IconButton(
-                                  onPressed: state.newDrawingSelected
+                                  onPressed: state.newDrawingSelected &&
+                                          !state.locked
                                       ? () {
                                           bloc.add(const HideMontagePressed());
                                           context.pop();
@@ -97,8 +130,14 @@ class Tools extends StatelessWidget {
                                     'assets/icons/half-tone-01.png',
                                     width: 32,
                                     height: 32,
-                                    color: state.newDrawingSelected
-                                        ? (state.hideMontage
+                                    color: state.newDrawingSelected &&
+                                            !state.locked
+                                        ? (state.hideMontage &&
+                                                (state.modifiableImages
+                                                        .isNotEmpty &&
+                                                    state.modifiableImages
+                                                            .length !=
+                                                        2)
                                             ? const Color.fromARGB(
                                                 255, 37, 150, 190)
                                             : Colors.white)
@@ -116,7 +155,8 @@ class Tools extends StatelessWidget {
                                     : Colors.transparent,
                                 child: IconButton(
                                   onPressed: () =>
-                                      state.modifiableImages.length == 2
+                                      state.modifiableImages.length == 2 &&
+                                              !state.locked
                                           ? {
                                               bloc.add(
                                                   const ImageFlippedIconPressed()),
@@ -126,7 +166,8 @@ class Tools extends StatelessWidget {
                                     'assets/icons/icon-02-01.png',
                                     width: 32,
                                     height: 32,
-                                    color: state.modifiableImages.length == 2
+                                    color: state.modifiableImages.length == 2 &&
+                                            !state.locked
                                         ? (state.imageFlipped
                                             ? const Color.fromARGB(
                                                 255, 37, 150, 190)
@@ -156,15 +197,17 @@ class Tools extends StatelessWidget {
                                     ? Colors.black54
                                     : Colors.transparent,
                                 child: IconButton(
-                                  onPressed: () =>
-                                      state.modifiableImages.length == 2
-                                          ? {bloc.add(const DrawLockPressed())}
-                                          : null,
+                                  onPressed: () => (state
+                                              .modifiableImages.isNotEmpty &&
+                                          state.modifiableImages.length == 2)
+                                      ? {bloc.add(const DrawLockPressed())}
+                                      : null,
                                   icon: Image.asset(
                                     'assets/icons/file-01.png',
                                     width: 32,
                                     height: 32,
-                                    color: state.modifiableImages.isNotEmpty
+                                    color: (state.modifiableImages.isNotEmpty &&
+                                            state.modifiableImages.length == 2)
                                         ? (state.locked
                                             ? const Color.fromARGB(
                                                 255, 37, 150, 190)
@@ -290,18 +333,25 @@ class Tools extends StatelessWidget {
                             SizedBox.square(
                               dimension: 45,
                               child: IconButton(
-                                onPressed: () => {
-                                  WidgetsBinding.instance
-                                      .addPostFrameCallback((_) {
-                                    transformationController.value =
-                                        Matrix4.identity(); // Reset zoom
-                                  })
-                                },
+                                onPressed: (state.modifiableImages.isNotEmpty &&
+                                        state.modifiableImages.length == 2)
+                                    ? () => {
+                                          WidgetsBinding.instance
+                                              .addPostFrameCallback((_) {
+                                            transformationController.value =
+                                                Matrix4
+                                                    .identity(); // Reset zoom
+                                          })
+                                        }
+                                    : null,
                                 icon: Image.asset(
                                   'assets/icons/resize-01.png',
                                   width: 32,
                                   height: 32,
-                                  color: Colors.white,
+                                  color: (state.modifiableImages.isNotEmpty &&
+                                          state.modifiableImages.length == 2)
+                                      ? Colors.white
+                                      : Colors.grey,
                                 ),
                               ),
                             ),
@@ -317,14 +367,43 @@ class Tools extends StatelessWidget {
                                 ),
                               ),
                             ),
+                            SizedBox.square(
+                              dimension: 45,
+                              child: IconButton(
+                                onPressed: () => _restart(context),
+                                icon: Icon(
+                                  Icons.refresh,
+                                  size: 32,
+                                  color: state.newDrawingSelected &&
+                                          state.modifiableImages.isNotEmpty
+                                      ? Colors.white
+                                      : Colors.grey,
+                                ),
+                              ),
+                            ),
                           ],
                         ),
                       ],
                     ),
                   ),
                 ),
-                const Positioned(top: 90, left: 50, child: MontageAcetate()),
-                const Positioned(top: 270, left: 50, child: PenSelector()),
+                Visibility(
+                  visible: state.modifiableImages.isEmpty ||
+                      state.modifiableImages.length < 2,
+                  child: const Positioned(
+                    top: 90,
+                    left: 50,
+                    child: MontageAcetate(),
+                  ),
+                ),
+                Visibility(
+                  visible: state.penSelector,
+                  child: const Positioned(
+                    top: 270,
+                    left: 50,
+                    child: PenSelector(),
+                  ),
+                ),
               ],
             ),
           ],

@@ -90,3 +90,7 @@ class DrawDrawingNameChanged extends DrawEvent {
 
   const DrawDrawingNameChanged(this.value);
 }
+
+class DrawRestartPressed extends DrawEvent {
+  const DrawRestartPressed();
+}
