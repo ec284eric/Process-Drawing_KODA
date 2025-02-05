@@ -17,6 +17,7 @@ class DrawState with _$DrawState {
     @Default(false) bool pencilSelected,
     @Default(false) bool newDrawingSelected,
     @Default(true) bool brushSelected,
+    @Default(false) bool drawingFlipped,
     @Default(Colors.black) Color color,
     @Default(Size.square(300)) Size size,
     @Default(0) double rotation,
@@ -24,5 +25,7 @@ class DrawState with _$DrawState {
     @Default([]) List<ModifiableImage?> modifiableImages,
     @Default(TextFieldInput()) TextFieldInput drawingName,
     @Default(RequestStatus.waiting) RequestStatus requestStatus,
+    @Default(ModifiableImageData()) ModifiableImageData reflectedImage,
+    @Default(RequestStatus.waiting) RequestStatus imageCollectRequestStatus,
   }) = _DrawState;
 }

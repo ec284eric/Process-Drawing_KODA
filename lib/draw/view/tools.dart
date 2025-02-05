@@ -11,6 +11,7 @@ class Tools extends StatelessWidget {
   final Widget colorPicker;
   final Widget videoPlayerDialog;
   final TransformationController transformationController;
+  final VoidCallback? onFlipPressed;
 
   const Tools({
     super.key,
@@ -18,6 +19,7 @@ class Tools extends StatelessWidget {
     required this.colorPicker,
     required this.videoPlayerDialog,
     required this.transformationController,
+    this.onFlipPressed,
   });
 
   Future<void> _restart(BuildContext context) async {
@@ -47,6 +49,7 @@ class Tools extends StatelessWidget {
       return;
     }
 
+    drawingController.clear();
     bloc.add(const DrawRestartPressed());
   }
 
@@ -355,15 +358,22 @@ class Tools extends StatelessWidget {
                                 ),
                               ),
                             ),
-                            SizedBox.square(
-                              dimension: 45,
+                            CircleAvatar(
+                              backgroundColor: state.drawingFlipped
+                                  ? Colors.black54
+                                  : Colors.transparent,
                               child: IconButton(
-                                onPressed: () => state.locked ? {} : null,
+                                onPressed: state.locked ? onFlipPressed : null,
                                 icon: Image.asset(
                                   'assets/icons/copy-drawing-01.png',
                                   width: 32,
                                   height: 32,
-                                  color: Colors.grey,
+                                  color: state.locked
+                                      ? (state.drawingFlipped
+                                          ? const Color.fromARGB(
+                                              255, 37, 150, 190)
+                                          : Colors.white)
+                                      : Colors.grey,
                                 ),
                               ),
                             ),
