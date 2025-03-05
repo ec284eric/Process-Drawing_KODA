@@ -90,3 +90,28 @@ class DrawDrawingNameChanged extends DrawEvent {
 
   const DrawDrawingNameChanged(this.value);
 }
+
+class DrawRestartPressed extends DrawEvent {
+  const DrawRestartPressed();
+}
+
+class DrawingFlippedPressed extends DrawEvent {
+  const DrawingFlippedPressed();
+}
+
+class DrawPaintedImageCollected extends DrawEvent {
+  final Uint8List image;
+
+  const DrawPaintedImageCollected(this.image);
+}
+
+class DrawReflectedImageScaleUpdated extends DrawEvent {
+  final ScaleUpdateDetails details;
+  const DrawReflectedImageScaleUpdated(this.details);
+}
+
+class DrawImageProcessOpened extends DrawEvent {
+  final bool open;
+
+  const DrawImageProcessOpened(this.open);
+}

@@ -38,10 +38,12 @@ class _DrawPageState extends State<DrawPage> {
         color: _initialState.color,
       ),
     )..setPaintContent(SmoothLine());
-    _drawingController.addListener(() => _bloc.add(DrawDrawingChanged(
-          canUndo: _drawingController.canUndo(),
-          canRedo: _drawingController.canRedo(),
-        )));
+    _drawingController.addListener(() {
+      _bloc.add(DrawDrawingChanged(
+        canUndo: _drawingController.canUndo(),
+        canRedo: _drawingController.canRedo(),
+      ));
+    });
     _canvasTransformationController.addListener(() {
       _overlayTransformationController.value =
           _canvasTransformationController.value;
@@ -52,6 +54,53 @@ class _DrawPageState extends State<DrawPage> {
   void dispose() {
     _drawingController.dispose();
     super.dispose();
+  }
+
+  Future<void> _onFlipPressed(BuildContext context) async {
+    final bloc = context.read<DrawBloc>();
+
+    bloc.add(const DrawImageProcessOpened(true));
+
+    showDialog(
+      context: context,
+      builder: (context) {
+        return const Center(
+          child: SizedBox(
+            width: 100,
+            height: 100,
+            child: CircularProgressIndicator(
+              backgroundColor: Colors.cyan,
+            ),
+          ),
+        );
+      },
+    );
+
+    await Future.delayed(const Duration(milliseconds: 10));
+
+    final Uint8List? data =
+        (await _drawingController.getImageData())?.buffer.asUint8List();
+
+    if (data == null) {
+      if (context.mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+          content: Text('Image null'),
+          behavior: SnackBarBehavior.floating,
+        ));
+        Navigator.of(context).pop();
+      }
+
+      return;
+    }
+
+    bloc.add(DrawPaintedImageCollected(data.buffer.asUint8List()));
+    bloc.add(const DrawImageProcessOpened(false));
+
+    bloc.add(const DrawingFlippedPressed());
+
+    if (context.mounted) {
+      Navigator.of(context).pop();
+    }
   }
 
   Future<void> _requestStatusListener(
@@ -135,6 +184,7 @@ class _DrawPageState extends State<DrawPage> {
                         context: context,
                       ),
                       transformationController: _canvasTransformationController,
+                      onFlipPressed: () => _onFlipPressed(context),
                     ),
                   ),
                   Builder(

@@ -24,6 +24,11 @@ class DrawBloc extends Bloc<DrawEvent, DrawState> {
     on<PenSelectorPressed>(_penSelectorPressed);
     on<PenIconPressed>(_penIconPressed);
     on<BrushIconPressed>(_brushIconPressed);
+    on<DrawRestartPressed>(_restartPressed);
+    on<DrawingFlippedPressed>(_drawingFlipped);
+    on<DrawReflectedImageScaleUpdated>(_reflectedImageScaleUpdated);
+    on<DrawPaintedImageCollected>(_paintedImageCollected);
+    on<DrawImageProcessOpened>(_imageProcessOpened);
   }
 
   void _penSelectorPressed(PenSelectorPressed event, Emitter<DrawState> emit) {
@@ -41,6 +46,7 @@ class DrawBloc extends Bloc<DrawEvent, DrawState> {
         color: const Color.fromARGB(255, 58, 61, 59),
         pencilSelected: true,
         brushSelected: false,
+        penSelector: !state.penSelector,
       ),
     );
   }
@@ -51,6 +57,7 @@ class DrawBloc extends Bloc<DrawEvent, DrawState> {
         color: const Color(0xff000000),
         brushSelected: true,
         pencilSelected: false,
+        penSelector: !state.penSelector,
       ),
     );
   }
@@ -192,6 +199,84 @@ class DrawBloc extends Bloc<DrawEvent, DrawState> {
       DrawDrawingNameChanged event, Emitter<DrawState> emit) {
     emit(state.copyWith.drawingName(
       value: event.value,
+    ));
+  }
+
+  void _restartPressed(DrawRestartPressed event, Emitter<DrawState> emit) {
+    emit(state.copyWith(
+      canUndo: false,
+      canRedo: false,
+      locked: false,
+      hideMontage: false,
+      imageFlipped: false,
+      penSelector: false,
+      pencilSelected: false,
+      newDrawingSelected: false,
+      brushSelected: true,
+      drawingFlipped: false,
+      color: Colors.black,
+      size: const Size.square((300)),
+      rotation: 0,
+      scale: 1,
+      modifiableImages: [],
+      drawingName: state.drawingName.copyWith(
+        value: '',
+        error: '',
+        errorType: ErrorType.none,
+      ),
+      requestStatus: RequestStatus.waiting,
+      reflectedImage: const ModifiableImageData(),
+      imageCollectRequestStatus: RequestStatus.waiting,
+    ));
+  }
+
+  void _paintedImageCollected(
+      DrawPaintedImageCollected event, Emitter<DrawState> emit) {
+    emit(state.copyWith.reflectedImage(
+      src: event.image,
+    ));
+  }
+
+  void _drawingFlipped(DrawingFlippedPressed event, Emitter<DrawState> emit) {
+    emit(
+      state.copyWith(
+        drawingFlipped: !state.drawingFlipped,
+      ),
+    );
+  }
+
+  void _reflectedImageScaleUpdated(
+      DrawReflectedImageScaleUpdated event, Emitter<DrawState> emit) {
+    var modifiableImage = state.reflectedImage;
+    var rotation = state.rotation + event.details.rotation;
+    if ((rotation - state.rotation).abs() > 0) {
+      modifiableImage = modifiableImage.copyWith(
+        rotation: event.details.rotation,
+      );
+    }
+    if (event.details.scale != 1) {
+      modifiableImage = modifiableImage.copyWith(
+        scale: event.details.scale,
+      );
+      emit(
+        state.copyWith(
+          reflectedImage: modifiableImage,
+        ),
+      );
+    }
+    modifiableImage = modifiableImage.copyWith(
+      offset: (state.reflectedImage.offset) + event.details.focalPointDelta,
+    );
+    emit(state.copyWith(
+      reflectedImage: modifiableImage,
+    ));
+  }
+
+  void _imageProcessOpened(
+      DrawImageProcessOpened event, Emitter<DrawState> emit) {
+    emit(state.copyWith(
+      imageCollectRequestStatus:
+          event.open ? RequestStatus.inProgress : RequestStatus.success,
     ));
   }
 }
