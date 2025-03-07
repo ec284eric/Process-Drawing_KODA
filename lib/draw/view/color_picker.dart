@@ -1,6 +1,6 @@
 import 'package:drawing_app/draw/bloc/bloc.dart';
 import 'package:flutter/material.dart';
-import 'package:flex_color_picker/flex_color_picker.dart' as flex_color_picker;
+// import 'package:flex_color_picker/flex_color_picker.dart' as flex_color_picker;
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 class ColorPicker extends StatelessWidget {
