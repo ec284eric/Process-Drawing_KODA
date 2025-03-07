@@ -31,13 +31,13 @@ class ModifiableImageItem extends StatelessWidget {
                   ? Transform(
                       alignment: Alignment.center,
                       transform: Matrix4.identity()..scale(-1.0, 1.0),
-                      child: Image.network(
+                      child: Image.asset(
                         modifiableImage.src,
                         fit: BoxFit.fill,
                         width: MediaQuery.of(context).size.width,
                       ),
                     )
-                  : Image.network(
+                  : Image.asset(
                       modifiableImage.src,
                       fit: BoxFit.fill,
                       width: MediaQuery.of(context).size.width,
