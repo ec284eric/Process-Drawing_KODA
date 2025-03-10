@@ -22,6 +22,7 @@ class DrawState with _$DrawState {
     @Default(Size.square(300)) Size size,
     @Default(0) double rotation,
     @Default(1) double scale,
+    @Default(-1) int selectedIndex,
     @Default([]) List<ModifiableImage?> modifiableImages,
     @Default(TextFieldInput()) TextFieldInput drawingName,
     @Default(RequestStatus.waiting) RequestStatus requestStatus,

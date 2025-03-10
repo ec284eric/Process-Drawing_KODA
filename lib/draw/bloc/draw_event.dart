@@ -65,8 +65,9 @@ class DrawLockPressed extends DrawEvent {
 
 class DrawFirstImageSelected extends DrawEvent {
   final String image;
+  final int index;
 
-  const DrawFirstImageSelected(this.image);
+  const DrawFirstImageSelected(this.image, this.index);
 }
 
 class DrawSecondImageSelected extends DrawEvent {

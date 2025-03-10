@@ -156,6 +156,7 @@ class DrawBloc extends Bloc<DrawEvent, DrawState> {
   void _firstImageSelected(
       DrawFirstImageSelected event, Emitter<DrawState> emit) {
     final modifiableImages = [...(state.modifiableImages)];
+
     if (state.modifiableImages.isNotEmpty) {
       modifiableImages[0] = modifiableImages[0]?.copyWith(
             src: event.image,
@@ -170,6 +171,7 @@ class DrawBloc extends Bloc<DrawEvent, DrawState> {
     }
     emit(state.copyWith(
       modifiableImages: modifiableImages,
+      selectedIndex: event.index,
     ));
   }
 
@@ -236,6 +238,7 @@ class DrawBloc extends Bloc<DrawEvent, DrawState> {
       size: const Size.square((300)),
       rotation: 0,
       scale: 1,
+      selectedIndex: -1,
       modifiableImages: [],
       drawingName: state.drawingName.copyWith(
         value: '',
