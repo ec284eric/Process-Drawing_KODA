@@ -1,10 +1,9 @@
 import 'package:drawing_app/draw/bloc/draw_bloc.dart';
 import 'package:drawing_app/draw/bloc/draw_event.dart';
 import 'package:drawing_app/draw/bloc/state/draw_state.dart';
-import 'package:drawing_app/draw/widgets/overlay_picker_bottom_sheet.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:go_router/go_router.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class MontageAcetate extends StatefulWidget {
   const MontageAcetate({super.key});
@@ -14,10 +13,18 @@ class MontageAcetate extends StatefulWidget {
 }
 
 class _MontageAcetateState extends State<MontageAcetate> {
-  void _firstImageSelected(BuildContext context, String value) {
+  static const List<String> imageAssets = [
+    'assets/images/image_01.jpg',
+    'assets/images/image_02.jpg',
+    'assets/images/image_03.jpg',
+    'assets/images/image_04.jpg',
+    'assets/images/image_05.jpg',
+    'assets/images/image_06.jpg',
+  ];
+
+  void _imageSelected(BuildContext context, int index, String value) {
     final bloc = context.read<DrawBloc>();
-    bloc.add(DrawFirstImageSelected(value));
-    context.pop();
+    bloc.add(DrawFirstImageSelected(value, index));
   }
 
   @override
@@ -33,59 +40,94 @@ class _MontageAcetateState extends State<MontageAcetate> {
               : Stack(
                   children: [
                     Positioned(
-                      child: Card(
-                        margin: const EdgeInsets.fromLTRB(15, 0, 0, 0),
-                        child: Padding(
-                          padding: const EdgeInsets.all(12),
-                          child: OutlinedButton(
-                            onPressed: () => showBottomSheet(
-                              context: context,
-                              constraints: const BoxConstraints(
-                                maxHeight: 360,
-                                maxWidth: 360,
-                              ),
-                              builder: (context) {
-                                return OverlayPickerBottomSheet(
-                                  onImageSelected: (value) =>
-                                      _firstImageSelected(context, value),
-                                );
-                              },
+                      child: SizedBox(
+                        width: 300,
+                        height: 480,
+                        child: Container(
+                          margin: const EdgeInsets.fromLTRB(15, 0, 0, 0),
+                          decoration: const BoxDecoration(
+                            color: Color.fromARGB(255, 136, 132, 132),
+                            borderRadius: BorderRadius.all(
+                              Radius.circular(12),
                             ),
-                            style: FilledButton.styleFrom(
-                              padding: EdgeInsets.zero,
-                              fixedSize: const Size(36, 48),
-                              shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(8),
-                              ),
-                              side: const BorderSide(color: Colors.white),
-                              backgroundColor: Colors.white,
-                            ),
-                            child: Builder(
-                              builder: (context) {
-                                final modifiableImages = state.modifiableImages;
-
-                                if (modifiableImages.isNotEmpty &&
-                                    modifiableImages[0] != null) {
-                                  final modifiableImage = modifiableImages[0];
-
-                                  return ClipRRect(
-                                    borderRadius: BorderRadius.circular(8),
-                                    child: Image.asset(
-                                      modifiableImage!.src,
-                                      fit: BoxFit.cover,
-                                      height: double.infinity,
+                          ),
+                          child: Padding(
+                            padding: const EdgeInsets.all(12.0),
+                            child: Column(
+                              children: [
+                                Padding(
+                                  padding: const EdgeInsets.only(
+                                    bottom: 24.0,
+                                  ),
+                                  child: Align(
+                                    alignment: Alignment.centerLeft,
+                                    child: Text(
+                                      AppLocalizations.of(context)
+                                              ?.montageAcetates ??
+                                          '',
+                                      style: const TextStyle(
+                                        fontSize: 18,
+                                        color: Colors.white,
+                                        fontWeight: FontWeight.bold,
+                                      ),
                                     ),
-                                  );
-                                } else {
-                                  return const Row(
-                                    mainAxisAlignment: MainAxisAlignment.center,
-                                    children: [
-                                      Icon(Icons.image),
-                                      Text('1'),
-                                    ],
-                                  );
-                                }
-                              },
+                                  ),
+                                ),
+                                Expanded(
+                                  child: Container(
+                                    decoration: const BoxDecoration(
+                                      color: Colors.white,
+                                      borderRadius: BorderRadius.all(
+                                        Radius.circular(12),
+                                      ),
+                                    ),
+                                    child: Padding(
+                                      padding: const EdgeInsets.all(12.0),
+                                      child: GridView.builder(
+                                        physics:
+                                            const NeverScrollableScrollPhysics(),
+                                        gridDelegate:
+                                            const SliverGridDelegateWithFixedCrossAxisCount(
+                                          crossAxisCount: 2,
+                                          crossAxisSpacing: 8,
+                                          mainAxisSpacing: 8,
+                                        ),
+                                        itemCount: imageAssets.length,
+                                        itemBuilder: (context, index) {
+                                          final imagePath = imageAssets[index];
+
+                                          return InkWell(
+                                            onTap: () => _imageSelected(
+                                                context, index, imagePath),
+                                            child: Container(
+                                              decoration: BoxDecoration(
+                                                border: Border.all(
+                                                  color: state.selectedIndex ==
+                                                          index
+                                                      ? Colors.blue
+                                                      : Colors.grey,
+                                                  width: state.selectedIndex ==
+                                                          index
+                                                      ? 3
+                                                      : 1,
+                                                ),
+                                              ),
+                                              child: Padding(
+                                                padding:
+                                                    const EdgeInsets.all(8.0),
+                                                child: Image.asset(
+                                                  imagePath,
+                                                  fit: BoxFit.cover,
+                                                ),
+                                              ),
+                                            ),
+                                          );
+                                        },
+                                      ),
+                                    ),
+                                  ),
+                                ),
+                              ],
                             ),
                           ),
                         ),
