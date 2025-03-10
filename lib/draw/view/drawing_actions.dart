@@ -20,7 +20,7 @@ class DrawingActions extends StatelessWidget {
 
   void _firstImageSelected(BuildContext context, String value) {
     final bloc = context.read<DrawBloc>();
-    bloc.add(DrawFirstImageSelected(value));
+    bloc.add(DrawFirstImageSelected(value, 0));
     context.pop();
   }
 

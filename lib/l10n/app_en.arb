@@ -2,7 +2,10 @@
   "areYouSure": "Are you sure?",
   "cancel": "Cancel",
   "chooseImage": "Choose Image",
+  "confirmRestart": "Confirm Restart",
   "helloWorld": "Hello World!",
+  "montageAcetates": "Montage Acetates",
+  "overrideChanges": "This will override your current changes and starts a new one.",
   "restart": "Restart",
-  "overrideChanges": "This will override your current changes and starts a new one."
+  "restartMessage": "This will erase all your current changes and start a new drawing.\nThis action cannot be undone. Do you want to proceed?"
 }

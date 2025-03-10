@@ -28,16 +28,37 @@ class Tools extends StatelessWidget {
       context: context,
       builder: (context) {
         return AlertDialog(
-          title: Text(AppLocalizations.of(context)?.areYouSure ?? ''),
-          content: Text(AppLocalizations.of(context)?.overrideChanges ?? ''),
+          backgroundColor: const Color.fromARGB(255, 136, 132, 132),
+          title: Text(
+            AppLocalizations.of(context)?.confirmRestart ?? '',
+            style: const TextStyle(
+              color: Colors.white,
+            ),
+          ),
+          content: Text(
+            AppLocalizations.of(context)?.restartMessage ?? '',
+            style: const TextStyle(
+              color: Colors.white,
+            ),
+          ),
           actions: [
             TextButton(
               onPressed: () => Navigator.pop(context, false),
-              child: Text(AppLocalizations.of(context)?.cancel ?? ''),
+              child: Text(
+                AppLocalizations.of(context)?.cancel ?? '',
+                style: const TextStyle(
+                  color: Colors.white,
+                ),
+              ),
             ),
             TextButton(
               onPressed: () => Navigator.pop(context, true),
-              child: Text(AppLocalizations.of(context)?.restart ?? ''),
+              child: Text(
+                AppLocalizations.of(context)?.restart ?? '',
+                style: const TextStyle(
+                  color: Colors.red,
+                ),
+              ),
             )
           ],
         );
