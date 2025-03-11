@@ -422,7 +422,6 @@ class Tools extends StatelessWidget {
                   visible: state.modifiableImages.isEmpty ||
                       state.modifiableImages.length < 2,
                   child: const Positioned(
-                    top: 90,
                     left: 50,
                     child: MontageAcetate(),
                   ),

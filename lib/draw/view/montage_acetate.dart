@@ -42,7 +42,7 @@ class _MontageAcetateState extends State<MontageAcetate> {
                     Positioned(
                       child: SizedBox(
                         width: 300,
-                        height: 480,
+                        height: 500,
                         child: Container(
                           margin: const EdgeInsets.fromLTRB(15, 0, 0, 0),
                           decoration: const BoxDecoration(
@@ -57,7 +57,8 @@ class _MontageAcetateState extends State<MontageAcetate> {
                               children: [
                                 Padding(
                                   padding: const EdgeInsets.only(
-                                    bottom: 24.0,
+                                    bottom: 32.0,
+                                    left: 8.0,
                                   ),
                                   child: Align(
                                     alignment: Alignment.centerLeft,
@@ -66,7 +67,26 @@ class _MontageAcetateState extends State<MontageAcetate> {
                                               ?.montageAcetates ??
                                           '',
                                       style: const TextStyle(
-                                        fontSize: 18,
+                                        fontSize: 20,
+                                        color: Colors.white,
+                                        fontWeight: FontWeight.bold,
+                                      ),
+                                    ),
+                                  ),
+                                ),
+                                Padding(
+                                  padding: const EdgeInsets.only(
+                                    bottom: 8.0,
+                                    left: 8.0,
+                                  ),
+                                  child: Align(
+                                    alignment: Alignment.centerLeft,
+                                    child: Text(
+                                      AppLocalizations.of(context)
+                                              ?.tapToPreview ??
+                                          '',
+                                      style: const TextStyle(
+                                        fontSize: 12,
                                         color: Colors.white,
                                         fontWeight: FontWeight.bold,
                                       ),
@@ -95,7 +115,6 @@ class _MontageAcetateState extends State<MontageAcetate> {
                                         itemCount: imageAssets.length,
                                         itemBuilder: (context, index) {
                                           final imagePath = imageAssets[index];
-
                                           return InkWell(
                                             onTap: () => _imageSelected(
                                                 context, index, imagePath),
@@ -135,7 +154,7 @@ class _MontageAcetateState extends State<MontageAcetate> {
                     ),
                     Positioned(
                       left: 1,
-                      top: 15,
+                      top: 108,
                       child: CustomPaint(
                         size: const Size(15, 15),
                         painter: TrianglePainter(),
