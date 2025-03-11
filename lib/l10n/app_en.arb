@@ -7,5 +7,6 @@
   "montageAcetates": "Montage Acetates",
   "overrideChanges": "This will override your current changes and starts a new one.",
   "restart": "Restart",
-  "restartMessage": "This will erase all your current changes and start a new drawing.\nThis action cannot be undone. Do you want to proceed?"
+  "restartMessage": "This will erase all your current changes and start a new drawing.\nThis action cannot be undone. Do you want to proceed?",
+  "tapToPreview": "Tap to preview"
 }
