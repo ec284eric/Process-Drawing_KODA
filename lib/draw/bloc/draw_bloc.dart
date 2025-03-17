@@ -276,17 +276,7 @@ class DrawBloc extends Bloc<DrawEvent, DrawState> {
         rotation: event.details.rotation,
       );
     }
-    // Remove reflected drawing scaled
-    // if (event.details.scale != 1) {
-    //   modifiableImage = modifiableImage.copyWith(
-    //     scale: event.details.scale,
-    //   );
-    //   emit(
-    //     state.copyWith(
-    //       reflectedImage: modifiableImage,
-    //     ),
-    //   );
-    // }
+
     modifiableImage = modifiableImage.copyWith(
       offset: (state.reflectedImage.offset) + event.details.focalPointDelta,
     );
