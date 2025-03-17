@@ -67,7 +67,10 @@ class DrawFirstImageSelected extends DrawEvent {
   final String image;
   final int index;
 
-  const DrawFirstImageSelected(this.image, this.index);
+  const DrawFirstImageSelected({
+    required this.image,
+    required this.index,
+  });
 }
 
 class DrawSecondImageSelected extends DrawEvent {
