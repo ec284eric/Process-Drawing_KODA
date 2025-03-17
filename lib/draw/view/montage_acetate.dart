@@ -1,3 +1,4 @@
+import 'package:drawing_app/constants/constants.dart';
 import 'package:drawing_app/draw/bloc/draw_bloc.dart';
 import 'package:drawing_app/draw/bloc/draw_event.dart';
 import 'package:drawing_app/draw/bloc/state/draw_state.dart';
@@ -14,17 +15,24 @@ class MontageAcetate extends StatefulWidget {
 
 class _MontageAcetateState extends State<MontageAcetate> {
   static const List<String> imageAssets = [
-    'assets/images/image_01.jpg',
-    'assets/images/image_02.jpg',
-    'assets/images/image_03.jpg',
-    'assets/images/image_04.jpg',
-    'assets/images/image_05.jpg',
-    'assets/images/image_06.jpg',
+    Assets.acetateMontageImg1,
+    Assets.acetateMontageImg2,
+    Assets.acetateMontageImg3,
+    Assets.acetateMontageImg4,
+    Assets.acetateMontageImg5,
+    Assets.acetateMontageImg6,
   ];
 
-  void _imageSelected(BuildContext context, int index, String value) {
+  void _imageSelected({
+    required BuildContext context,
+    required int index,
+    required String value,
+  }) {
     final bloc = context.read<DrawBloc>();
-    bloc.add(DrawFirstImageSelected(value, index));
+    bloc.add(DrawFirstImageSelected(
+      image: value,
+      index: index,
+    ));
   }
 
   @override
@@ -117,7 +125,10 @@ class _MontageAcetateState extends State<MontageAcetate> {
                                           final imagePath = imageAssets[index];
                                           return InkWell(
                                             onTap: () => _imageSelected(
-                                                context, index, imagePath),
+                                              context: context,
+                                              index: index,
+                                              value: imagePath,
+                                            ),
                                             child: Container(
                                               decoration: BoxDecoration(
                                                 border: Border.all(
