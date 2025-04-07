@@ -4,7 +4,7 @@ import 'package:drawing_app/draw/view/pen_selector.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_drawing_board/flutter_drawing_board.dart';
-import 'package:go_router/go_router.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class Tools extends StatelessWidget {
   final DrawingController drawingController;
@@ -28,17 +28,37 @@ class Tools extends StatelessWidget {
       context: context,
       builder: (context) {
         return AlertDialog(
-          title: const Text('Are you sure?'),
-          content: const Text(
-              'This will override your current changes and starts a new one.'),
+          backgroundColor: const Color.fromARGB(255, 136, 132, 132),
+          title: Text(
+            AppLocalizations.of(context)?.confirmRestart ?? '',
+            style: const TextStyle(
+              color: Colors.white,
+            ),
+          ),
+          content: Text(
+            AppLocalizations.of(context)?.restartMessage ?? '',
+            style: const TextStyle(
+              color: Colors.white,
+            ),
+          ),
           actions: [
             TextButton(
               onPressed: () => Navigator.pop(context, false),
-              child: const Text('Cancel'),
+              child: Text(
+                AppLocalizations.of(context)?.cancel ?? '',
+                style: const TextStyle(
+                  color: Colors.white,
+                ),
+              ),
             ),
             TextButton(
               onPressed: () => Navigator.pop(context, true),
-              child: const Text('Restart'),
+              child: Text(
+                AppLocalizations.of(context)?.restart ?? '',
+                style: const TextStyle(
+                  color: Colors.red,
+                ),
+              ),
             )
           ],
         );
@@ -126,7 +146,9 @@ class Tools extends StatelessWidget {
                                           !state.locked
                                       ? () {
                                           bloc.add(const HideMontagePressed());
-                                          context.pop();
+                                          if (Navigator.of(context).canPop()) {
+                                            Navigator.of(context).pop();
+                                          }
                                         }
                                       : null,
                                   icon: Image.asset(
@@ -149,7 +171,6 @@ class Tools extends StatelessWidget {
                                 ),
                               ),
                             ),
-
                             SizedBox.square(
                               dimension: 45,
                               child: CircleAvatar(
@@ -158,7 +179,7 @@ class Tools extends StatelessWidget {
                                     : Colors.transparent,
                                 child: IconButton(
                                   onPressed: () =>
-                                      state.modifiableImages.length == 2 &&
+                                      state.modifiableImages.isNotEmpty &&
                                               !state.locked
                                           ? {
                                               bloc.add(
@@ -169,7 +190,7 @@ class Tools extends StatelessWidget {
                                     'assets/icons/icon-02-01.png',
                                     width: 32,
                                     height: 32,
-                                    color: state.modifiableImages.length == 2 &&
+                                    color: state.modifiableImages.isNotEmpty &&
                                             !state.locked
                                         ? (state.imageFlipped
                                             ? const Color.fromARGB(
@@ -203,7 +224,9 @@ class Tools extends StatelessWidget {
                                   onPressed: () => (state
                                               .modifiableImages.isNotEmpty &&
                                           state.modifiableImages.length == 2)
-                                      ? {bloc.add(const DrawLockPressed())}
+                                      ? {
+                                          bloc.add(const DrawLockPressed()),
+                                        }
                                       : null,
                                   icon: Image.asset(
                                     'assets/icons/file-01.png',
@@ -220,7 +243,6 @@ class Tools extends StatelessWidget {
                                 ),
                               ),
                             ),
-
                             // SizedBox.square(
                             //   dimension: 45,
                             //   child: CircleAvatar(
@@ -240,7 +262,6 @@ class Tools extends StatelessWidget {
                             //     ),
                             //   ),
                             // ),
-
                             SizedBox.square(
                               dimension: 45,
                               child: CircleAvatar(
@@ -401,7 +422,6 @@ class Tools extends StatelessWidget {
                   visible: state.modifiableImages.isEmpty ||
                       state.modifiableImages.length < 2,
                   child: const Positioned(
-                    top: 90,
                     left: 50,
                     child: MontageAcetate(),
                   ),

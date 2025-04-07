@@ -1,10 +1,10 @@
+import 'package:drawing_app/constants/constants.dart';
 import 'package:drawing_app/draw/bloc/draw_bloc.dart';
 import 'package:drawing_app/draw/bloc/draw_event.dart';
 import 'package:drawing_app/draw/bloc/state/draw_state.dart';
-import 'package:drawing_app/draw/widgets/overlay_picker_bottom_sheet.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:go_router/go_router.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class MontageAcetate extends StatefulWidget {
   const MontageAcetate({super.key});
@@ -14,16 +14,25 @@ class MontageAcetate extends StatefulWidget {
 }
 
 class _MontageAcetateState extends State<MontageAcetate> {
-  void _firstImageSelected(BuildContext context, String value) {
-    final bloc = context.read<DrawBloc>();
-    bloc.add(DrawFirstImageSelected(value));
-    context.pop();
-  }
+  static const List<String> imageAssets = [
+    Assets.acetateMontageImg1,
+    Assets.acetateMontageImg2,
+    Assets.acetateMontageImg3,
+    Assets.acetateMontageImg4,
+    Assets.acetateMontageImg5,
+    Assets.acetateMontageImg6,
+  ];
 
-  void _secondImageSelected(BuildContext context, String value) {
+  void _imageSelected({
+    required BuildContext context,
+    required int index,
+    required String value,
+  }) {
     final bloc = context.read<DrawBloc>();
-    bloc.add(DrawSecondImageSelected(value));
-    context.pop();
+    bloc.add(DrawFirstImageSelected(
+      image: value,
+      index: index,
+    ));
   }
 
   @override
@@ -39,130 +48,124 @@ class _MontageAcetateState extends State<MontageAcetate> {
               : Stack(
                   children: [
                     Positioned(
-                      child: Card(
-                        margin: const EdgeInsets.fromLTRB(15, 0, 0, 0),
-                        child: Padding(
-                          padding: const EdgeInsets.all(12),
-                          child: Row(
-                            children: [
-                              OutlinedButton(
-                                onPressed: () => showBottomSheet(
-                                  context: context,
-                                  constraints: const BoxConstraints(
-                                    maxHeight: 360,
-                                    maxWidth: 360,
+                      child: SizedBox(
+                        width: 300,
+                        height: 500,
+                        child: Container(
+                          margin: const EdgeInsets.fromLTRB(15, 0, 0, 0),
+                          decoration: const BoxDecoration(
+                            color: Color.fromARGB(255, 136, 132, 132),
+                            borderRadius: BorderRadius.all(
+                              Radius.circular(12),
+                            ),
+                          ),
+                          child: Padding(
+                            padding: const EdgeInsets.all(12.0),
+                            child: Column(
+                              children: [
+                                Padding(
+                                  padding: const EdgeInsets.only(
+                                    bottom: 32.0,
+                                    left: 8.0,
                                   ),
-                                  builder: (context) =>
-                                      OverlayPickerBottomSheet(
-                                    onImageSelected: (value) =>
-                                        _firstImageSelected(context, value),
-                                  ),
-                                ),
-                                style: FilledButton.styleFrom(
-                                  padding: EdgeInsets.zero,
-                                  fixedSize: const Size(36, 48),
-                                  shape: RoundedRectangleBorder(
-                                    borderRadius: BorderRadius.circular(8),
-                                  ),
-                                  side: const BorderSide(
-                                      color: Colors.white), // Border color
-                                  backgroundColor:
-                                      Colors.white, // Button background color
-                                ),
-                                child: Builder(
-                                  builder: (context) {
-                                    final modifiableImages =
-                                        state.modifiableImages;
-                                    if (modifiableImages.isNotEmpty &&
-                                        modifiableImages[0] != null) {
-                                      final modifiableImage =
-                                          modifiableImages[0];
-                                      return ClipRRect(
-                                        borderRadius: BorderRadius.circular(8),
-                                        child: Image.network(
-                                          modifiableImage!.src,
-                                          fit: BoxFit.cover,
-                                          height: double.infinity,
-                                        ),
-                                      );
-                                    } else {
-                                      return const Row(
-                                        mainAxisAlignment:
-                                            MainAxisAlignment.center,
-                                        children: [
-                                          Icon(Icons.image),
-                                          Text('1'),
-                                        ],
-                                      );
-                                    }
-                                  },
-                                ),
-                              ),
-                              const SizedBox(
-                                width: 12,
-                              ),
-                              OutlinedButton(
-                                onPressed: () => showBottomSheet(
-                                    context: context,
-                                    constraints: const BoxConstraints(
-                                      maxHeight: 360,
-                                      maxWidth: 360,
+                                  child: Align(
+                                    alignment: Alignment.centerLeft,
+                                    child: Text(
+                                      AppLocalizations.of(context)
+                                              ?.montageAcetates ??
+                                          '',
+                                      style: const TextStyle(
+                                        fontSize: 20,
+                                        color: Colors.white,
+                                        fontWeight: FontWeight.bold,
+                                      ),
                                     ),
-                                    builder: (context) {
-                                      return OverlayPickerBottomSheet(
-                                        onImageSelected: (value) =>
-                                            _secondImageSelected(
-                                                context, value),
-                                      );
-                                    }),
-                                style: FilledButton.styleFrom(
-                                  padding: EdgeInsets.zero,
-                                  fixedSize: const Size(36, 48),
-                                  shape: RoundedRectangleBorder(
-                                    borderRadius: BorderRadius.circular(8),
                                   ),
-                                  side: const BorderSide(
-                                      color: Colors.white), // Border color
-                                  backgroundColor:
-                                      Colors.white, // Button background color
                                 ),
-                                child: Builder(
-                                  builder: (context) {
-                                    final modifiableImages =
-                                        state.modifiableImages;
-                                    if (modifiableImages.length > 1 &&
-                                        modifiableImages[1] != null) {
-                                      final modifiableImage =
-                                          modifiableImages[1];
-                                      return ClipRRect(
-                                        borderRadius: BorderRadius.circular(8),
-                                        child: Image.network(
-                                          modifiableImage!.src,
-                                          fit: BoxFit.cover,
-                                          height: double.infinity,
+                                Padding(
+                                  padding: const EdgeInsets.only(
+                                    bottom: 8.0,
+                                    left: 8.0,
+                                  ),
+                                  child: Align(
+                                    alignment: Alignment.centerLeft,
+                                    child: Text(
+                                      AppLocalizations.of(context)
+                                              ?.tapToPreview ??
+                                          '',
+                                      style: const TextStyle(
+                                        fontSize: 12,
+                                        color: Colors.white,
+                                        fontWeight: FontWeight.bold,
+                                      ),
+                                    ),
+                                  ),
+                                ),
+                                Expanded(
+                                  child: Container(
+                                    decoration: const BoxDecoration(
+                                      color: Colors.white,
+                                      borderRadius: BorderRadius.all(
+                                        Radius.circular(12),
+                                      ),
+                                    ),
+                                    child: Padding(
+                                      padding: const EdgeInsets.all(12.0),
+                                      child: GridView.builder(
+                                        physics:
+                                            const NeverScrollableScrollPhysics(),
+                                        gridDelegate:
+                                            const SliverGridDelegateWithFixedCrossAxisCount(
+                                          crossAxisCount: 2,
+                                          crossAxisSpacing: 8,
+                                          mainAxisSpacing: 8,
                                         ),
-                                      );
-                                    } else {
-                                      return const Row(
-                                        mainAxisAlignment:
-                                            MainAxisAlignment.center,
-                                        children: [
-                                          Icon(Icons.image),
-                                          Text('2'),
-                                        ],
-                                      );
-                                    }
-                                  },
+                                        itemCount: imageAssets.length,
+                                        itemBuilder: (context, index) {
+                                          final imagePath = imageAssets[index];
+                                          return InkWell(
+                                            onTap: () => _imageSelected(
+                                              context: context,
+                                              index: index,
+                                              value: imagePath,
+                                            ),
+                                            child: Container(
+                                              decoration: BoxDecoration(
+                                                border: Border.all(
+                                                  color: state.selectedIndex ==
+                                                          index
+                                                      ? Colors.blue
+                                                      : Colors.grey,
+                                                  width: state.selectedIndex ==
+                                                          index
+                                                      ? 3
+                                                      : 1,
+                                                ),
+                                              ),
+                                              child: Padding(
+                                                padding:
+                                                    const EdgeInsets.all(8.0),
+                                                child: Image.asset(
+                                                  imagePath,
+                                                  fit: BoxFit.cover,
+                                                ),
+                                              ),
+                                            ),
+                                          );
+                                        },
+                                      ),
+                                    ),
+                                  ),
                                 ),
-                              ),
-                            ],
+                              ],
+                            ),
                           ),
                         ),
                       ),
                     ),
                     Positioned(
                       left: 1,
-                      top: 15,
+                      top: 108,
                       child: CustomPaint(
                         size: const Size(15, 15),
                         painter: TrianglePainter(),

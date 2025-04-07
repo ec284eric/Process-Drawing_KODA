@@ -64,7 +64,25 @@ class DrawBloc extends Bloc<DrawEvent, DrawState> {
 
   void _imageFlippedIconPressed(
       ImageFlippedIconPressed event, Emitter<DrawState> emit) {
-    emit(state.copyWith(imageFlipped: !state.imageFlipped));
+    final modifiableImages =
+        List<ModifiableImage?>.from(state.modifiableImages);
+
+    while (modifiableImages.length < 2) {
+      modifiableImages.add(null);
+    }
+
+    if (modifiableImages[1] == null && modifiableImages[0] != null) {
+      modifiableImages[1] = modifiableImages[0]!.copyWith(
+        offset: modifiableImages[0]!.offset,
+        scale: modifiableImages[0]!.scale,
+        rotation: modifiableImages[0]!.rotation,
+      );
+    }
+
+    emit(state.copyWith(
+      modifiableImages: modifiableImages,
+      imageFlipped: !state.imageFlipped,
+    ));
   }
 
   void _drawingIconPresed(DrawingIconPresed event, Emitter<DrawState> emit) {
@@ -111,7 +129,7 @@ class DrawBloc extends Bloc<DrawEvent, DrawState> {
         rotation: event.details.rotation,
       );
     }
-    if (event.details.scale != 1) {
+    if (event.details.scale != 1 && event.index == 0) {
       modifiableImages[event.index] = modifiableImages[event.index]?.copyWith(
         scale: event.details.scale,
       );
@@ -138,6 +156,7 @@ class DrawBloc extends Bloc<DrawEvent, DrawState> {
   void _firstImageSelected(
       DrawFirstImageSelected event, Emitter<DrawState> emit) {
     final modifiableImages = [...(state.modifiableImages)];
+
     if (state.modifiableImages.isNotEmpty) {
       modifiableImages[0] = modifiableImages[0]?.copyWith(
             src: event.image,
@@ -152,6 +171,7 @@ class DrawBloc extends Bloc<DrawEvent, DrawState> {
     }
     emit(state.copyWith(
       modifiableImages: modifiableImages,
+      selectedIndex: event.index,
     ));
   }
 
@@ -218,6 +238,7 @@ class DrawBloc extends Bloc<DrawEvent, DrawState> {
       size: const Size.square((300)),
       rotation: 0,
       scale: 1,
+      selectedIndex: -1,
       modifiableImages: [],
       drawingName: state.drawingName.copyWith(
         value: '',
@@ -249,21 +270,13 @@ class DrawBloc extends Bloc<DrawEvent, DrawState> {
       DrawReflectedImageScaleUpdated event, Emitter<DrawState> emit) {
     var modifiableImage = state.reflectedImage;
     var rotation = state.rotation + event.details.rotation;
+
     if ((rotation - state.rotation).abs() > 0) {
       modifiableImage = modifiableImage.copyWith(
         rotation: event.details.rotation,
       );
     }
-    if (event.details.scale != 1) {
-      modifiableImage = modifiableImage.copyWith(
-        scale: event.details.scale,
-      );
-      emit(
-        state.copyWith(
-          reflectedImage: modifiableImage,
-        ),
-      );
-    }
+
     modifiableImage = modifiableImage.copyWith(
       offset: (state.reflectedImage.offset) + event.details.focalPointDelta,
     );

@@ -73,13 +73,15 @@ class CanvasLayer extends StatelessWidget {
                     visible: state.drawingFlipped ? true : false,
                     child: Opacity(
                       opacity: state.drawingFlipped ? 1 : 0,
-                      child: Container(
+                      child: SizedBox(
                         width: constraints.maxWidth,
                         height: constraints.maxHeight,
                         child: ModifiableImageItemData(
                           modifiableImage: state.reflectedImage,
-                          onScaleUpdate: (value) =>
-                              bloc.add(DrawReflectedImageScaleUpdated(value)),
+                          onScaleUpdate: state.locked
+                              ? (value) => bloc
+                                  .add(DrawReflectedImageScaleUpdated(value))
+                              : null,
                           secondImage: false,
                         ),
                       ),

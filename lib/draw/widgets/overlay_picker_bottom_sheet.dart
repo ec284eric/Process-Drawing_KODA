@@ -1,7 +1,17 @@
+import 'package:drawing_app/constants/constants.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class OverlayPickerBottomSheet extends StatelessWidget {
   final ValueChanged<String>? onImageSelected;
+  static const List<String> imageAssets = [
+    Assets.acetateMontageImg1,
+    Assets.acetateMontageImg2,
+    Assets.acetateMontageImg3,
+    Assets.acetateMontageImg4,
+    Assets.acetateMontageImg5,
+    Assets.acetateMontageImg6,
+  ];
 
   const OverlayPickerBottomSheet({
     super.key,
@@ -12,44 +22,38 @@ class OverlayPickerBottomSheet extends StatelessWidget {
   Widget build(BuildContext context) {
     return Column(
       children: [
-        const Padding(
-          padding: EdgeInsets.only(
+        Padding(
+          padding: const EdgeInsets.only(
             top: 16.0,
           ),
           child: Text(
-            'Choose Image',
-            style: TextStyle(
+            AppLocalizations.of(context)?.chooseImage ?? '',
+            style: const TextStyle(
               fontSize: 24,
             ),
           ),
         ),
         Expanded(
           child: Padding(
-            padding: const EdgeInsets.only(
-              top: 16.0,
-            ),
-            child: GridView.count(
-              crossAxisCount: 3,
-              children: [
-                InkWell(
-                  onTap: () => onImageSelected?.call(
-                      'https://t4.ftcdn.net/jpg/02/66/72/41/360_F_266724172_Iy8gdKgMa7XmrhYYxLCxyhx6J7070Pr8.jpg'),
-                  child: Image.network(
-                    'https://t4.ftcdn.net/jpg/02/66/72/41/360_F_266724172_Iy8gdKgMa7XmrhYYxLCxyhx6J7070Pr8.jpg',
+            padding: const EdgeInsets.all(16.0),
+            child: GridView.builder(
+              gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+                crossAxisCount: 3,
+                crossAxisSpacing: 8,
+                mainAxisSpacing: 8,
+              ),
+              itemCount: imageAssets.length,
+              itemBuilder: (context, index) {
+                return InkWell(
+                  onTap: () => onImageSelected?.call(imageAssets[index]),
+                  child: Image.asset(
+                    imageAssets[index],
                     fit: BoxFit.cover,
                     width: MediaQuery.of(context).size.width,
+                    gaplessPlayback: true,
                   ),
-                ),
-                InkWell(
-                  onTap: () => onImageSelected?.call(
-                      'https://encrypted-tbn3.gstatic.com/images?q=tbn:ANd9GcQP5QQKcY4t1-_XAOvt_5Ii9LGJqTDX0B7u5sOZJFeU8QCGJ2jReifGEDftXkScCw-lMm8nmFUYF2QXwMR2KrzTsw'),
-                  child: Image.network(
-                    'https://encrypted-tbn3.gstatic.com/images?q=tbn:ANd9GcQP5QQKcY4t1-_XAOvt_5Ii9LGJqTDX0B7u5sOZJFeU8QCGJ2jReifGEDftXkScCw-lMm8nmFUYF2QXwMR2KrzTsw',
-                    fit: BoxFit.cover,
-                    width: MediaQuery.of(context).size.width,
-                  ),
-                ),
-              ],
+                );
+              },
             ),
           ),
         ),
