@@ -1,4 +1,5 @@
 import 'package:drawing_app/draw/bloc/bloc.dart';
+
 import 'package:drawing_app/models/models.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -23,9 +24,14 @@ class CanvasLayer extends StatelessWidget {
       builder: (context, state) {
         if (state.locked) {
           WidgetsBinding.instance.addPostFrameCallback((_) {
-            transformationController.value = Matrix4.identity();
+            // transformationController.value = Matrix4.identity();
+            transformationController.value = Matrix4.identity()
+              ..rotateZ(state.previousRotation)
+              ..translate(state.modifiableImages[0]?.offset.dx ?? 0.0,
+                  state.modifiableImages[0]?.offset.dy ?? 0.0);
           });
         }
+
         return LayoutBuilder(
           builder: (context, constraints) {
             return IgnorePointer(
@@ -52,6 +58,8 @@ class CanvasLayer extends StatelessWidget {
                                     onScaleUpdate: (details) => bloc.add(
                                       DrawImageScaleUpdated(index, details),
                                     ),
+                                    onScaleEnd: () =>
+                                        bloc.add(DrawGestureEnded(index)),
                                     secondImage:
                                         index == 1 && state.imageFlipped
                                             ? true

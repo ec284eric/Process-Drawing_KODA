@@ -4,6 +4,8 @@ import 'package:flutter/material.dart';
 class ModifiableImageItem extends StatelessWidget {
   final ModifiableImage modifiableImage;
   final ValueChanged<ScaleUpdateDetails>? onScaleUpdate;
+  final VoidCallback? onScaleEnd; // <-- Add this line
+
   final double opacity;
   final bool secondImage;
 
@@ -11,6 +13,7 @@ class ModifiableImageItem extends StatelessWidget {
     super.key,
     required this.modifiableImage,
     this.onScaleUpdate,
+    this.onScaleEnd, // <-- Add this to the constructor
     this.opacity = 1,
     required this.secondImage,
   });

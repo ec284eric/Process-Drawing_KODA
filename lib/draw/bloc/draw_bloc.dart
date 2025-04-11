@@ -29,6 +29,7 @@ class DrawBloc extends Bloc<DrawEvent, DrawState> {
     on<DrawReflectedImageScaleUpdated>(_reflectedImageScaleUpdated);
     on<DrawPaintedImageCollected>(_paintedImageCollected);
     on<DrawImageProcessOpened>(_imageProcessOpened);
+    on<DrawGestureEnded>(_onGestureEnded);
   }
 
   void _penSelectorPressed(PenSelectorPressed event, Emitter<DrawState> emit) {
@@ -47,6 +48,7 @@ class DrawBloc extends Bloc<DrawEvent, DrawState> {
         pencilSelected: true,
         brushSelected: false,
         penSelector: !state.penSelector,
+        strokeWidth: 1.5,
       ),
     );
   }
@@ -58,6 +60,7 @@ class DrawBloc extends Bloc<DrawEvent, DrawState> {
         brushSelected: true,
         pencilSelected: false,
         penSelector: !state.penSelector,
+        strokeWidth: 8.0,
       ),
     );
   }
@@ -117,33 +120,156 @@ class DrawBloc extends Bloc<DrawEvent, DrawState> {
     ));
   }
 
+  // void _imageScaleUpdated(
+  //     DrawImageScaleUpdated event, Emitter<DrawState> emit) {
+  //   final modifiableImages = [
+  //     ...state.modifiableImages,
+  //   ];
+  //   var rotation = state.rotation + event.details.rotation;
+
+  //   if ((rotation - state.rotation).abs() > 0.1) {
+  //     modifiableImages[event.index] = modifiableImages[event.index]?.copyWith(
+  //       rotation: event.details.rotation,
+  //     );
+  //   }
+  //   if (event.details.scale != 1 && event.index == 0) {
+  //     modifiableImages[event.index] = modifiableImages[event.index]?.copyWith(
+  //       scale: event.details.scale,
+  //     );
+  //     emit(state.copyWith(
+  //       modifiableImages: modifiableImages,
+  //     ));
+  //   }
+  //   modifiableImages[event.index] = modifiableImages[event.index]?.copyWith(
+  //     offset: (state.modifiableImages[event.index]?.offset ?? Offset.zero) +
+  //         event.details.focalPointDelta,
+  //   );
+
+  //   emit(state.copyWith(
+  //     modifiableImages: modifiableImages,
+  //   ));
+  // }
+
+  // void _imageScaleUpdated(
+  //     DrawImageScaleUpdated event, Emitter<DrawState> emit) {
+  //   final modifiableImages = [
+  //     ...state.modifiableImages,
+  //   ];
+  //   final currentImage = modifiableImages[event.index];
+  //   if (currentImage == null) return;
+
+  //   double rotationDelta = event.details.rotation - state.previousRotation;
+  //   const rotationFactor = 0.01;
+  //   double newRotation = state.rotation + rotationDelta * rotationFactor;
+
+  //   if (newRotation < -180) {
+  //     newRotation = -180; // Stop rotating further counterclockwise
+  //   } else if (newRotation > 180) {
+  //     newRotation = 180; // Stop rotating further clockwise
+  //   }
+
+  //   if (rotationDelta.abs() > 0.001) {
+  //     modifiableImages[event.index] =
+  //         currentImage.copyWith(rotation: newRotation);
+  //   }
+
+  //   if (event.details.scale != 1.0 && event.index == 0) {
+  //     final currentScale = state.modifiableImages[event.index]?.scale ?? 1.0;
+  //     const zoomFactor = 0.08;
+  //     final deltaScale = (event.details.scale - 1) * zoomFactor;
+  //     final newScale = (currentScale + deltaScale).clamp(0.3, 6.0);
+
+  //     if ((newScale - currentScale).abs() > 0.001) {
+  //       modifiableImages[event.index] = modifiableImages[event.index]?.copyWith(
+  //         scale: newScale,
+  //       );
+  //       emit(state.copyWith(
+  //         modifiableImages: modifiableImages,
+  //       ));
+  //     }
+  //     modifiableImages[event.index] = modifiableImages[event.index]?.copyWith(
+  //       offset: (state.modifiableImages[event.index]?.offset ?? Offset.zero) +
+  //           event.details.focalPointDelta,
+  //     );
+
+  //     emit(state.copyWith(
+  //       modifiableImages: modifiableImages,
+  //       rotation: newRotation,
+  //     ));
+  //   }
+  // }
+
   void _imageScaleUpdated(
       DrawImageScaleUpdated event, Emitter<DrawState> emit) {
     final modifiableImages = [
       ...state.modifiableImages,
     ];
-    var rotation = state.rotation + event.details.rotation;
+    final currentImage = modifiableImages[event.index];
+    if (currentImage == null) return;
 
-    if ((rotation - state.rotation).abs() > 0) {
-      modifiableImages[event.index] = modifiableImages[event.index]?.copyWith(
-        rotation: event.details.rotation,
-      );
-    }
-    if (event.details.scale != 1 && event.index == 0) {
-      modifiableImages[event.index] = modifiableImages[event.index]?.copyWith(
-        scale: event.details.scale,
-      );
+    final gestureStart = state.gestureRotationStart;
+    final currentGestureRotation = event.details.rotation;
+
+    final currentImageRotation = currentImage.rotation;
+
+    if (gestureStart == null) {
       emit(state.copyWith(
-        modifiableImages: modifiableImages,
+        gestureRotationStart: currentGestureRotation,
+        previousRotation: currentImageRotation,
       ));
+      return;
     }
-    modifiableImages[event.index] = modifiableImages[event.index]?.copyWith(
-      offset: (state.modifiableImages[event.index]?.offset ?? Offset.zero) +
-          event.details.focalPointDelta,
+
+    final rotationDelta = (currentGestureRotation - gestureStart) * 0.2;
+
+    final newRotation = state.previousRotation + rotationDelta;
+
+    final clampedRotation = newRotation.clamp(-180.0, 180.0);
+
+    modifiableImages[event.index] = currentImage.copyWith(
+      rotation: clampedRotation,
     );
 
     emit(state.copyWith(
       modifiableImages: modifiableImages,
+      previousRotation: clampedRotation,
+    ));
+
+    if (event.details.scale != 1.0 && event.index == 0) {
+      final currentScale = state.modifiableImages[event.index]?.scale ?? 1.0;
+      const zoomSensitivity = 0.08;
+      final deltaScale = (event.details.scale - 1) * zoomSensitivity;
+      final newScale = (currentScale + deltaScale).clamp(0.3, 6.0);
+
+      if ((newScale - currentScale).abs() > 0.001) {
+        modifiableImages[event.index] = modifiableImages[event.index]?.copyWith(
+          scale: newScale,
+        );
+        emit(state.copyWith(
+          modifiableImages: modifiableImages,
+        ));
+      }
+      modifiableImages[event.index] = modifiableImages[event.index]?.copyWith(
+        offset: (state.modifiableImages[event.index]?.offset ?? Offset.zero) +
+            event.details.focalPointDelta,
+      );
+
+      emit(state.copyWith(
+        modifiableImages: modifiableImages,
+        // rotation: newRotation,
+      ));
+    }
+  }
+
+  void _onGestureEnded(DrawGestureEnded event, Emitter<DrawState> emit) {
+    final currentImageRotation =
+        state.modifiableImages[event.index]?.rotation ?? 0.0;
+
+    emit(state.copyWith(
+      previousRotation: currentImageRotation,
+      gestureRotationStart: null,
+      gestureOffset:
+          (state.modifiableImages[event.index]?.offset ?? Offset.zero),
     ));
   }
 

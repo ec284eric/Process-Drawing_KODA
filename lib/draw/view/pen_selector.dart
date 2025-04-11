@@ -35,7 +35,9 @@ class _PenSelectorState extends State<PenSelector> {
                             children: [
                               OutlinedButton(
                                 onPressed: () {
-                                  bloc.add(const BrushIconPressed());
+                                  bloc.add(const BrushIconPressed(
+                                    8.0,
+                                  ));
                                 },
                                 style: FilledButton.styleFrom(
                                   padding: EdgeInsets.zero,
@@ -60,7 +62,9 @@ class _PenSelectorState extends State<PenSelector> {
                               ),
                               OutlinedButton(
                                 onPressed: () {
-                                  bloc.add(const PenIconPressed());
+                                  bloc.add(const PenIconPressed(
+                                    strokeWidth: 1.5,
+                                  ));
                                 },
                                 style: FilledButton.styleFrom(
                                   padding: EdgeInsets.zero,
@@ -84,14 +88,38 @@ class _PenSelectorState extends State<PenSelector> {
                         ),
                       ),
                     ),
-                    Positioned(
-                      left: 1,
-                      top: 15,
-                      child: CustomPaint(
-                        size: const Size(15, 15),
-                        painter: TrianglePainter(),
-                      ),
-                    ),
+                    // Positioned(
+                    //   left: 1,
+                    //   top: 15,
+                    //   child: CustomPaint(
+                    //     size: const Size(15, 15),
+                    //     // painter: TrianglePainter(),
+                    //     painter: TrianglePainter(),
+                    //   ),
+                    // ),
+                    // Positioned(
+                    //   left: 1,
+                    //   top: 15,
+                    //   child: GestureDetector(
+                    //     onPanUpdate: (details) {
+                    //       final localPosition = details.localPosition;
+
+                    //       context.read<DrawBloc>().add(AddPoint(localPosition));
+                    //     },
+                    //     onPanEnd: (_) {
+                    //       context
+                    //           .read<DrawBloc>()
+                    //           .add(const AddPoint(null)); // Mark end of stroke
+                    //     },
+                    //     child: CustomPaint(
+                    //       size: const Size(200, 200), // make it bigger for test
+                    //       painter: DrawingPainter(
+                    //         points: state.points,
+                    //         strokeWidth: state.strokeWidth,
+                    //       ),
+                    //     ),
+                    //   ),
+                    // ),
                   ],
                 ),
         );
@@ -100,20 +128,47 @@ class _PenSelectorState extends State<PenSelector> {
   }
 }
 
-class TrianglePainter extends CustomPainter {
-  @override
-  void paint(Canvas canvas, Size size) {
-    final Paint paint = Paint()
-      ..color = const Color.fromARGB(255, 136, 132, 132);
-    // ..color = Colors.red;
-    final Path path = Path()
-      ..moveTo(size.width, 0) // Top right
-      ..lineTo(0, size.height / 2) // Left center (arrow point)
-      ..lineTo(size.width, size.height) // Bottom right
-      ..close();
-    canvas.drawPath(path, paint);
-  }
+// class TrianglePainter extends CustomPainter {
+//   @override
+//   void paint(Canvas canvas, Size size) {
+//     final Paint paint = Paint()
+//       ..color = const Color.fromARGB(255, 136, 132, 132);
+//     // ..color = Colors.red;
+//     final Path path = Path()
+//       ..moveTo(size.width, 0) // Top right
+//       ..lineTo(0, size.height / 2) // Left center (arrow point)
+//       ..lineTo(size.width, size.height) // Bottom right
+//       ..close();
+//     canvas.drawPath(path, paint);
+//   }
 
-  @override
-  bool shouldRepaint(covariant CustomPainter oldDelegate) => false;
-}
+//   @override
+//   bool shouldRepaint(covariant CustomPainter oldDelegate) => false;
+// }
+
+// class DrawingPainter extends CustomPainter {
+//   final List<Offset?> points;
+//   final double strokeWidth;
+
+//   DrawingPainter({required this.points, required this.strokeWidth});
+
+//   @override
+//   void paint(Canvas canvas, Size size) {
+//     final paint = Paint()
+//       ..color = Colors.black // Pencil color
+//       ..strokeCap = StrokeCap.round
+//       ..strokeJoin = StrokeJoin.round
+//       ..strokeWidth = strokeWidth; // Use the fixed strokeWidth
+
+//     for (int i = 0; i < points.length - 1; i++) {
+//       if (points[i] != null && points[i + 1] != null) {
+//         canvas.drawLine(points[i]!, points[i + 1]!, paint);
+//       }
+//     }
+//   }
+
+//   @override
+//   bool shouldRepaint(covariant CustomPainter oldDelegate) {
+//     return true; // Always repaint
+//   }
+// }

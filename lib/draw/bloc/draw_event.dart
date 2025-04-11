@@ -15,11 +15,18 @@ class DrawingIconPresed extends DrawEvent {
 }
 
 class PenIconPressed extends DrawEvent {
-  const PenIconPressed();
+  final double strokeWidth;
+
+  const PenIconPressed({
+    required this.strokeWidth,
+  });
 }
 
 class BrushIconPressed extends DrawEvent {
-  const BrushIconPressed();
+  final double strokeWidth;
+  const BrushIconPressed(
+    this.strokeWidth,
+  );
 }
 
 class ImageFlippedIconPressed extends DrawEvent {
@@ -118,4 +125,9 @@ class DrawImageProcessOpened extends DrawEvent {
   final bool open;
 
   const DrawImageProcessOpened(this.open);
+}
+
+class DrawGestureEnded extends DrawEvent {
+  final int index;
+  const DrawGestureEnded(this.index);
 }

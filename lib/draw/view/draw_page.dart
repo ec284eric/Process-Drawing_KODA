@@ -21,6 +21,8 @@ class _DrawPageState extends State<DrawPage> {
   final _initialState = const DrawState(
     color: Colors.black,
   );
+
+  // late final TransformationController _canvasTransformationController;
   final _canvasTransformationController = TransformationController();
   final _overlayTransformationController = TransformationController();
   late final DrawingController _drawingController;
@@ -31,13 +33,17 @@ class _DrawPageState extends State<DrawPage> {
   @override
   void initState() {
     super.initState();
+
+    // _canvasTransformationController = TransformationController();
+
     _drawingController = DrawingController(
       config: DrawConfig(
-        contentType: SmoothLine,
-        strokeWidth: 8,
+        contentType: SimpleLine,
+        strokeWidth: _initialState.strokeWidth,
         color: _initialState.color,
       ),
-    )..setPaintContent(SmoothLine());
+    )..setPaintContent(SimpleLine());
+
     _drawingController.addListener(() {
       _bloc.add(DrawDrawingChanged(
         canUndo: _drawingController.canUndo(),
@@ -140,6 +146,13 @@ class _DrawPageState extends State<DrawPage> {
       },
       child: MultiBlocListener(
         listeners: [
+          BlocListener<DrawBloc, DrawState>(
+            listenWhen: (previous, current) =>
+                previous.strokeWidth != current.strokeWidth,
+            listener: (context, state) => _drawingController.setStyle(
+              strokeWidth: state.strokeWidth,
+            ),
+          ),
           BlocListener<DrawBloc, DrawState>(
             listenWhen: (previous, current) => previous.color != current.color,
             listener: (context, state) => _drawingController.setStyle(

@@ -28,5 +28,9 @@ class DrawState with _$DrawState {
     @Default(RequestStatus.waiting) RequestStatus requestStatus,
     @Default(ModifiableImageData()) ModifiableImageData reflectedImage,
     @Default(RequestStatus.waiting) RequestStatus imageCollectRequestStatus,
+    @Default(0) double previousRotation,
+    @Default(0.0) double? gestureRotationStart,
+    @Default(0.0) double strokeWidth,
+    @Default(Offset.zero) Offset gestureOffset,
   }) = _DrawState;
 }

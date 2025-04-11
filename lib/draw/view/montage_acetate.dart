@@ -68,19 +68,46 @@ class _MontageAcetateState extends State<MontageAcetate> {
                                     bottom: 32.0,
                                     left: 8.0,
                                   ),
-                                  child: Align(
-                                    alignment: Alignment.centerLeft,
-                                    child: Text(
-                                      AppLocalizations.of(context)
-                                              ?.montageAcetates ??
-                                          '',
-                                      style: const TextStyle(
-                                        fontSize: 20,
-                                        color: Colors.white,
-                                        fontWeight: FontWeight.bold,
-                                      ),
-                                    ),
-                                  ),
+                                  child: Row(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.spaceBetween,
+                                      children: [
+                                        Text(
+                                          AppLocalizations.of(context)
+                                                  ?.montageAcetates ??
+                                              '',
+                                          style: const TextStyle(
+                                            fontSize: 20,
+                                            color: Colors.white,
+                                            fontWeight: FontWeight.bold,
+                                          ),
+                                        ),
+                                        Container(
+                                          width: 30,
+                                          height: 30,
+                                          decoration: const BoxDecoration(
+                                            shape: BoxShape.circle,
+                                            color: Colors.grey,
+                                          ),
+                                          child: IconButton(
+                                            icon: const Icon(
+                                              Icons.close_rounded,
+                                              color: Colors.white,
+                                            ),
+                                            onPressed: () {
+                                              setState(() {
+                                                context.read<DrawBloc>().add(
+                                                    const HideMontagePressed());
+                                              });
+                                            },
+                                            iconSize: 20,
+                                            padding: EdgeInsets.zero,
+                                            splashRadius: 20,
+                                            constraints: const BoxConstraints(),
+                                            color: Colors.transparent,
+                                          ),
+                                        ),
+                                      ]),
                                 ),
                                 Padding(
                                   padding: const EdgeInsets.only(
@@ -163,14 +190,7 @@ class _MontageAcetateState extends State<MontageAcetate> {
                         ),
                       ),
                     ),
-                    Positioned(
-                      left: 1,
-                      top: 108,
-                      child: CustomPaint(
-                        size: const Size(15, 15),
-                        painter: TrianglePainter(),
-                      ),
-                    ),
+                    //
                   ],
                 ),
         );
