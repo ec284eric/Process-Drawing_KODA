@@ -22,7 +22,8 @@ class CanvasLayer extends StatelessWidget {
     final bloc = context.read<DrawBloc>();
     return BlocBuilder<DrawBloc, DrawState>(
       builder: (context, state) {
-        if (state.locked) {
+        if (state.locked &&
+            transformationController.value != Matrix4.identity()) {
           WidgetsBinding.instance.addPostFrameCallback((_) {
             // transformationController.value = Matrix4.identity();
             transformationController.value = Matrix4.identity()
@@ -40,7 +41,6 @@ class CanvasLayer extends StatelessWidget {
                 children: [
                   DrawingBoard(
                     controller: drawingController,
-                    transformationController: transformationController,
                     onInteractionUpdate: (p0) {},
                     onPointerUp: (pue) {},
                     background: state.imageCollectRequestStatus !=
