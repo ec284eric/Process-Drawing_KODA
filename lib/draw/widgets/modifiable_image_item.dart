@@ -36,7 +36,8 @@ class ModifiableImageItem extends StatelessWidget {
                       transform: Matrix4.identity()..scale(-1.0, 1.0),
                       child: Image.asset(
                         modifiableImage.src,
-                        fit: BoxFit.fill,
+                        // fit: BoxFit.fill,
+                        fit: BoxFit.contain,
                         width: MediaQuery.of(context).size.width,
                       ),
                     )

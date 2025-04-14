@@ -1,4 +1,5 @@
 import 'dart:typed_data';
+
 import 'package:drawing_app/draw/view/appbar_drawing.dart';
 import 'package:drawing_app/models/result/result.dart';
 import 'package:flutter/material.dart';
@@ -26,6 +27,7 @@ class _DrawPageState extends State<DrawPage> {
   final _canvasTransformationController = TransformationController();
   final _overlayTransformationController = TransformationController();
   late final DrawingController _drawingController;
+
   late final DrawBloc _bloc;
   var showTest = true;
   Uint8List? image;
@@ -116,14 +118,19 @@ class _DrawPageState extends State<DrawPage> {
         break;
       case RequestStatus.inProgress:
         final bloc = context.read<DrawBloc>();
+
         await Future.delayed(const Duration(
           seconds: 1,
         ));
+
         final byteData = await _drawingController.getImageData();
+
         final buffer = byteData?.buffer;
+
         if (buffer != null) {
           bloc.add(DrawImageProcessed(Uint8List.view(buffer)));
         }
+
         break;
       case RequestStatus.success:
         ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
