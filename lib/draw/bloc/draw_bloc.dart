@@ -269,6 +269,7 @@ class DrawBloc extends Bloc<DrawEvent, DrawState> {
       brushSelected: true,
       drawingFlipped: false,
       color: Colors.black,
+      strokeWidth: 8.0,
       size: const Size.square((300)),
       rotation: 0,
       scale: 1,
