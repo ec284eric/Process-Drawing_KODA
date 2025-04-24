@@ -6,7 +6,7 @@
         android:requestLegacyExternalStorage="true">
         <activity
             android:name=".MainActivity"
-            android:screenOrientation="portrait"
+            android:screenOrientation="landscape"
             android:exported="true"
             android:launchMode="singleTop"
             android:taskAffinity=""
