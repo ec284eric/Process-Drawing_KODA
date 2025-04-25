@@ -28,25 +28,28 @@ class ModifiableImageItem extends StatelessWidget {
           onScaleUpdate: onScaleUpdate,
           child: Transform.rotate(
             angle: modifiableImage.rotation,
-            child: Opacity(
-              opacity: opacity,
-              child: secondImage == true
-                  ? Transform(
-                      alignment: Alignment.center,
-                      transform: Matrix4.identity()..scale(-1.0, 1.0),
+            // child: Opacity(
+            //   opacity: opacity,
+            child: secondImage == true
+                ? Transform(
+                    alignment: Alignment.center,
+                    transform: Matrix4.identity()..scale(-1.0, 1.0),
+                    child: Opacity(
+                      opacity: opacity,
                       child: Image.asset(
                         modifiableImage.src,
                         // fit: BoxFit.fill,
                         fit: BoxFit.contain,
                         width: MediaQuery.of(context).size.width,
                       ),
-                    )
-                  : Image.asset(
-                      modifiableImage.src,
-                      fit: BoxFit.fill,
-                      width: MediaQuery.of(context).size.width,
-                    ),
-            ),
+                    ))
+                : Image.asset(
+                    modifiableImage.src,
+                    // fit: BoxFit.fill,
+                    fit: BoxFit.contain,
+                    width: MediaQuery.of(context).size.width,
+                  ),
+            // ),
           ),
         ),
       ),
