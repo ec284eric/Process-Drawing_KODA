@@ -229,7 +229,7 @@ class DrawBloc extends Bloc<DrawEvent, DrawState> {
     ));
   }
 
-  void _savePressed(DrawSavePressed event, Emitter<DrawState> emit) {
+  void _savePressed(DrawSavePressed event, Emitter<DrawState> emit) async {
     emit(state.copyWith(
       requestStatus: RequestStatus.inProgress,
     ));

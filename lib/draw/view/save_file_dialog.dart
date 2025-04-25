@@ -14,12 +14,6 @@ class SaveFileDialog extends StatelessWidget {
     required this.drawingController,
   });
 
-  void _processImageBytes(BuildContext context) {
-    final bloc = context.read<DrawBloc>();
-    bloc.add(const DrawSavePressed());
-    context.pop();
-  }
-
   @override
   Widget build(BuildContext context) {
     final bloc = this.context.read<DrawBloc>();
@@ -48,7 +42,10 @@ class SaveFileDialog extends StatelessWidget {
                 child: const Text('Cancel'),
               ),
               FilledButton(
-                onPressed: () => _processImageBytes(context),
+                onPressed: () {
+                  bloc.add(const DrawSavePressed());
+                  context.pop();
+                },
                 child: const Text('Save'),
               ),
             ],
