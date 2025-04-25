@@ -270,8 +270,6 @@ class Tools extends StatelessWidget {
                                     ? Colors.black54
                                     : Colors.transparent,
                                 child: IconButton(
-                                  // onPressed: () => state
-                                  //         .modifiableImages.isNotEmpty
                                   onPressed: () => (state.locked &&
                                           state.modifiableImages.isNotEmpty)
                                       ? {bloc.add(const PenSelectorPressed())}
