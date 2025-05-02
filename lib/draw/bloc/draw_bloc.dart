@@ -2,6 +2,7 @@ import 'package:bloc/bloc.dart';
 import 'package:drawing_app/draw/draw.dart';
 import 'package:drawing_app/models/models.dart';
 import 'package:flutter/material.dart';
+
 import 'package:gal/gal.dart';
 
 class DrawBloc extends Bloc<DrawEvent, DrawState> {
@@ -30,6 +31,8 @@ class DrawBloc extends Bloc<DrawEvent, DrawState> {
     on<DrawPaintedImageCollected>(_paintedImageCollected);
     on<DrawImageProcessOpened>(_imageProcessOpened);
     on<DrawGestureEnded>(_onGestureEnded);
+    on<DrawClearModifiableImages>(_clearModifiableImages);
+    on<DrawRestoreModifiableImages>(_restoreModifiableImages);
   }
 
   void _penSelectorPressed(PenSelectorPressed event, Emitter<DrawState> emit) {
@@ -164,6 +167,7 @@ class DrawBloc extends Bloc<DrawEvent, DrawState> {
     emit(state.copyWith(
       modifiableImages: modifiableImages,
       previousRotation: newRotation,
+      selectedIndex: event.index,
     ));
   }
 
@@ -178,6 +182,9 @@ class DrawBloc extends Bloc<DrawEvent, DrawState> {
       gestureRotationStart: null,
       gestureOffset:
           (state.modifiableImages[event.index]?.offset ?? Offset.zero),
+    ));
+    emit(state.copyWith(
+      selectedIndex: event.index,
     ));
   }
 
@@ -326,5 +333,17 @@ class DrawBloc extends Bloc<DrawEvent, DrawState> {
       imageCollectRequestStatus:
           event.open ? RequestStatus.inProgress : RequestStatus.success,
     ));
+  }
+
+  void _clearModifiableImages(
+      DrawClearModifiableImages event, Emitter<DrawState> emit) {
+    emit(state.copyWith(
+      modifiableImages: [],
+    ));
+  }
+
+  void _restoreModifiableImages(
+      DrawRestoreModifiableImages event, Emitter<DrawState> emit) {
+    emit(state.copyWith(modifiableImages: event.images));
   }
 }

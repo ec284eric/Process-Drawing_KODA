@@ -1,5 +1,6 @@
 import 'dart:typed_data';
 
+import 'package:drawing_app/draw/draw.dart';
 import 'package:flutter/material.dart';
 
 sealed class DrawEvent {
@@ -130,4 +131,13 @@ class DrawImageProcessOpened extends DrawEvent {
 class DrawGestureEnded extends DrawEvent {
   final int index;
   const DrawGestureEnded(this.index);
+}
+
+class DrawClearModifiableImages extends DrawEvent {
+  const DrawClearModifiableImages();
+}
+
+class DrawRestoreModifiableImages extends DrawEvent {
+  final List<ModifiableImage?> images;
+  const DrawRestoreModifiableImages(this.images);
 }

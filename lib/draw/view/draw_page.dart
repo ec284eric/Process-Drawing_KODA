@@ -1,4 +1,5 @@
 import 'dart:typed_data';
+import 'dart:ui' as ui;
 
 import 'package:drawing_app/draw/view/appbar_drawing.dart';
 import 'package:drawing_app/models/result/result.dart';
@@ -61,7 +62,52 @@ class _DrawPageState extends State<DrawPage> {
   @override
   void dispose() {
     _drawingController.dispose();
+    _canvasTransformationController.dispose();
+    _overlayTransformationController.dispose();
     super.dispose();
+  }
+
+  Future<Uint8List?> _exportWithWhiteBackground(
+    DrawState state,
+  ) async {
+    final recorder = ui.PictureRecorder();
+    final canvas = Canvas(recorder);
+
+    const int width = 2048;
+    const int height = 1536;
+
+    final backgroundPaint = Paint()..color = Colors.white;
+    canvas.drawRect(Rect.fromLTWH(0, 0, width.toDouble(), height.toDouble()),
+        backgroundPaint);
+
+    final byteData = await _drawingController.getImageData();
+    if (byteData == null) return null;
+
+    final codec = await ui.instantiateImageCodec(byteData.buffer.asUint8List());
+    final frame = await codec.getNextFrame();
+    final drawingImage = frame.image;
+
+    final dx = (width - drawingImage.width) / 2;
+    final dy = (height - drawingImage.height) / 2;
+    final offset = Offset(dx, dy);
+
+    canvas.drawImage(drawingImage, offset, Paint());
+
+    if (state.drawingFlipped) {
+      canvas.save();
+      canvas.translate(width.toDouble(), 0);
+      canvas.scale(-1, 1);
+      canvas.drawImage(drawingImage, offset, Paint());
+      canvas.restore();
+    } else {
+      canvas.drawImage(drawingImage, offset, Paint());
+    }
+
+    final composedImage = await recorder.endRecording().toImage(width, height);
+    final pngBytes =
+        await composedImage.toByteData(format: ui.ImageByteFormat.png);
+
+    return pngBytes?.buffer.asUint8List();
   }
 
   Future<void> _onFlipPressed(BuildContext context) async {
@@ -84,7 +130,7 @@ class _DrawPageState extends State<DrawPage> {
       },
     );
 
-    await Future.delayed(const Duration(milliseconds: 10));
+    await Future.delayed(const Duration(milliseconds: 5));
 
     final Uint8List? data =
         (await _drawingController.getImageData())?.buffer.asUint8List();
@@ -101,11 +147,11 @@ class _DrawPageState extends State<DrawPage> {
       return;
     }
 
+    bloc.add(const DrawingFlippedPressed());
+
     bloc.add(DrawPaintedImageCollected(data.buffer.asUint8List()));
 
     bloc.add(const DrawImageProcessOpened(false));
-
-    bloc.add(const DrawingFlippedPressed());
 
     if (context.mounted) {
       Navigator.of(context).pop();
@@ -114,32 +160,45 @@ class _DrawPageState extends State<DrawPage> {
 
   Future<void> _requestStatusListener(
       BuildContext context, DrawState state) async {
+    final bloc = context.read<DrawBloc>();
+
     switch (state.requestStatus) {
       case RequestStatus.waiting:
         break;
+
       case RequestStatus.inProgress:
-        final bloc = context.read<DrawBloc>();
+        bloc.add(const DrawImageProcessOpened(true));
 
-        await Future.delayed(const Duration(
-          seconds: 1,
-        ));
+        final originalImages = state.modifiableImages;
 
-        final byteData = await _drawingController.getImageData();
+        bloc.add(const DrawClearModifiableImages());
 
-        final buffer = byteData?.buffer;
+        await Future.doWhile(() async {
+          await Future.delayed(const Duration(milliseconds: 10));
+          return bloc.state.modifiableImages.isNotEmpty;
+        });
 
-        if (buffer != null) {
-          bloc.add(DrawImageProcessed(Uint8List.view(buffer)));
+        final Uint8List? bytes = await _exportWithWhiteBackground(state);
+
+        bloc.add(DrawRestoreModifiableImages(originalImages));
+
+        if (bytes != null) {
+          bloc.add(DrawImageProcessed(bytes));
         }
 
+        bloc.add(const DrawImageProcessOpened(false));
         break;
+
       case RequestStatus.success:
+        if (!mounted) return;
         ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
           content: Text('Drawing Saved'),
           behavior: SnackBarBehavior.floating,
         ));
         break;
+
       case RequestStatus.failure:
+        break;
     }
   }
 
