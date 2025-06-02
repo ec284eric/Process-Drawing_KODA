@@ -3,7 +3,7 @@ import 'package:drawing_app/splash_screen/view/view.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
-import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:drawing_app/l10n/app_localizations.dart';
 import 'package:flutter/services.dart';
 
 void main() async {
@@ -63,7 +63,7 @@ class DrawingApp extends StatelessWidget {
         appBarTheme: const AppBarTheme(
           backgroundColor: Color.fromARGB(255, 136, 132, 132),
         ),
-        cardTheme: const CardTheme(
+        cardTheme: const CardThemeData(
           color: Color.fromARGB(255, 136, 132, 132),
         ),
       ),

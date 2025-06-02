@@ -4,7 +4,7 @@ import 'package:drawing_app/draw/view/pen_selector.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_drawing_board/flutter_drawing_board.dart';
-import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:drawing_app/l10n/app_localizations.dart';
 
 class Tools extends StatelessWidget {
   final DrawingController drawingController;
@@ -303,16 +303,16 @@ class Tools extends StatelessWidget {
                             // SizedBox.square(
                             //   dimension: 45,
                             //   child: IconButton(
-                            // onPressed: () => state.locked
-                            //     ? {
-                            //         showDialog(
-                            //           context: context,
-                            //           builder: (context) => Dialog(
-                            //             child: colorPicker,
-                            //           ),
-                            //         ),
-                            //       }
-                            //     : null,
+                            //     onPressed: () => state.locked
+                            //         ? {
+                            //             showDialog(
+                            //               context: context,
+                            //               builder: (context) => Dialog(
+                            //                 child: colorPicker,
+                            //               ),
+                            //             ),
+                            //           }
+                            //         : null,
                             //     icon: Image.asset(
                             //       'assets/icons/color-01.png',
                             //       width: 32,
@@ -322,6 +322,54 @@ class Tools extends StatelessWidget {
                             //     ),
                             //   ),
                             // ),
+                            // SizedBox.square(
+                            //   dimension: 45,
+                            //   child: IconButton(
+                            //     onPressed: state.locked ? () {} : null,
+                            //     icon: Image.asset(
+                            //       'assets/icons/toggle-left.png',
+                            //       width: 32,
+                            //       height: 32,
+                            //       color:
+                            //           state.locked ? state.color : Colors.grey,
+                            //     ),
+                            //   ),
+                            // ),
+                            // SizedBox.square(
+                            //   dimension: 45,
+                            //   child: IconButton(
+                            //     onPressed: state.locked ? () {} : null,
+                            //     icon: Image.asset(
+                            //       'assets/icons/link.png',
+                            //       width: 32,
+                            //       height: 32,
+                            //       color:
+                            //           state.locked ? state.color : Colors.grey,
+                            //     ),
+                            //   ),
+                            // ),
+                            SizedBox.square(
+                              dimension: 45,
+                              child: IconButton(
+                                onPressed: (state.locked &&
+                                        state.modifiableImages.length == 2)
+                                    ? () {
+                                        bloc.add(
+                                            const DrawSecondMontageDeleted());
+                                      }
+                                    : null,
+                                icon: Image.asset(
+                                  'assets/icons/trash.png',
+                                  width: 32,
+                                  height: 32,
+                                  color: (state.locked &&
+                                          state.modifiableImages.length == 2)
+                                      ? Colors.white
+                                      : Colors.grey,
+                                ),
+                              ),
+                            ),
+
                             SizedBox.square(
                               dimension: 45,
                               child: IconButton(
