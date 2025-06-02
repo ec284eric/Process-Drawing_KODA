@@ -352,7 +352,9 @@ class Tools extends StatelessWidget {
                               dimension: 45,
                               child: IconButton(
                                 onPressed: (state.locked &&
-                                        state.modifiableImages.length == 2)
+                                            state.modifiableImages.length ==
+                                                2) ||
+                                        state.imageFlipped
                                     ? () {
                                         bloc.add(
                                             const DrawSecondMontageDeleted());
@@ -363,7 +365,9 @@ class Tools extends StatelessWidget {
                                   width: 32,
                                   height: 32,
                                   color: (state.locked &&
-                                          state.modifiableImages.length == 2)
+                                              state.modifiableImages.length ==
+                                                  2) ||
+                                          state.imageFlipped
                                       ? Colors.white
                                       : Colors.grey,
                                 ),

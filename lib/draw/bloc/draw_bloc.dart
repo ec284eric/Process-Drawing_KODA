@@ -33,6 +33,7 @@ class DrawBloc extends Bloc<DrawEvent, DrawState> {
     on<DrawGestureEnded>(_onGestureEnded);
     on<DrawClearModifiableImages>(_clearModifiableImages);
     on<DrawRestoreModifiableImages>(_restoreModifiableImages);
+    on<DrawSecondMontageDeleted>(_secondMontageDeleted);
   }
 
   void _penSelectorPressed(PenSelectorPressed event, Emitter<DrawState> emit) {
@@ -349,5 +350,19 @@ class DrawBloc extends Bloc<DrawEvent, DrawState> {
   void _restoreModifiableImages(
       DrawRestoreModifiableImages event, Emitter<DrawState> emit) {
     emit(state.copyWith(modifiableImages: event.images));
+  }
+
+  void _secondMontageDeleted(
+      DrawSecondMontageDeleted event, Emitter<DrawState> emit) {
+    if (state.modifiableImages.length == 2) {
+      final updatedImages = List.of(state.modifiableImages)..removeLast();
+      emit(state.copyWith(
+        modifiableImages: updatedImages,
+        locked: false,
+        imageFlipped: false,
+        previousRotation: 0.0,
+        hideMontage: false,
+      ));
+    }
   }
 }

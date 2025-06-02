@@ -141,3 +141,7 @@ class DrawRestoreModifiableImages extends DrawEvent {
   final List<ModifiableImage?> images;
   const DrawRestoreModifiableImages(this.images);
 }
+
+class DrawSecondMontageDeleted extends DrawEvent {
+  const DrawSecondMontageDeleted();
+}
