@@ -171,7 +171,6 @@ class DrawBloc extends Bloc<DrawEvent, DrawState> {
     emit(state.copyWith(
       modifiableImages: modifiableImages,
       previousRotation: newRotation,
-      selectedIndex: event.index,
     ));
   }
 
@@ -186,9 +185,6 @@ class DrawBloc extends Bloc<DrawEvent, DrawState> {
       gestureRotationStart: null,
       gestureOffset:
           (state.modifiableImages[event.index]?.offset ?? Offset.zero),
-    ));
-    emit(state.copyWith(
-      selectedIndex: event.index,
     ));
   }
 
@@ -277,7 +273,7 @@ class DrawBloc extends Bloc<DrawEvent, DrawState> {
       penSelector: false,
       pencilSelected: false,
       newDrawingSelected: false,
-      brushSelected: true,
+      brushSelected: false,
       drawingFlipped: false,
       color: Colors.black,
       strokeWidth: 8.0,
