@@ -36,9 +36,11 @@ class DrawBloc extends Bloc<DrawEvent, DrawState> {
   }
 
   void _penSelectorPressed(PenSelectorPressed event, Emitter<DrawState> emit) {
+    final opening = !state.penSelector;
     emit(
       state.copyWith(
-        penSelector: !state.penSelector,
+        penSelector: opening,
+        canDraw: (state.pencilSelected || state.brushSelected) && opening,
       ),
     );
   }
@@ -46,11 +48,11 @@ class DrawBloc extends Bloc<DrawEvent, DrawState> {
   void _penIconPressed(PenIconPressed event, Emitter<DrawState> emit) {
     emit(
       state.copyWith(
-        // color: const Color.fromARGB(255, 41, 43, 42),
         color: const Color.fromARGB(255, 58, 61, 59),
         pencilSelected: true,
         brushSelected: false,
-        penSelector: !state.penSelector,
+        penSelector: false,
+        canDraw: true,
         strokeWidth: 1.5,
       ),
     );
@@ -62,7 +64,8 @@ class DrawBloc extends Bloc<DrawEvent, DrawState> {
         color: const Color(0xff000000),
         brushSelected: true,
         pencilSelected: false,
-        penSelector: !state.penSelector,
+        penSelector: false,
+        canDraw: true,
         strokeWidth: 8.0,
       ),
     );
@@ -278,8 +281,9 @@ class DrawBloc extends Bloc<DrawEvent, DrawState> {
       color: Colors.black,
       strokeWidth: 8.0,
       size: const Size.square((300)),
-      rotation: 0,
-      scale: 1,
+      rotation: 0.0,
+      scale: 1.0,
+      gestureOffset: Offset.zero,
       selectedIndex: -1,
       modifiableImages: [],
       drawingName: state.drawingName.copyWith(

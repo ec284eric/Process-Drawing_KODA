@@ -39,43 +39,46 @@ class CanvasLayer extends StatelessWidget {
               ignoring: !state.locked,
               child: Stack(
                 children: [
-                  DrawingBoard(
-                    controller: drawingController,
-                    onInteractionUpdate: (p0) {},
-                    onPointerUp: (pue) {},
-                    background: state.imageCollectRequestStatus !=
-                            RequestStatus.inProgress
-                        ? SizedBox(
-                            width: constraints.maxWidth,
-                            height: constraints.maxHeight,
-                            child: Stack(
-                              children: state.modifiableImages
-                                  .mapIndexed((index, modifiableImage) {
-                                if (modifiableImage != null) {
-                                  return ModifiableImageItem(
-                                    modifiableImage: modifiableImage,
-                                    opacity: 0.5,
-                                    onScaleUpdate: (details) => bloc.add(
-                                      DrawImageScaleUpdated(index, details),
-                                    ),
-                                    onScaleEnd: () =>
-                                        bloc.add(DrawGestureEnded(index)),
-                                    secondImage:
-                                        index == 1 && state.imageFlipped
-                                            ? true
-                                            : false,
-                                  );
-                                } else {
-                                  return Container();
-                                }
-                              }).toList(),
+                  IgnorePointer(
+                    ignoring: !state.canDraw,
+                    child: DrawingBoard(
+                      controller: drawingController,
+                      onInteractionUpdate: (p0) {},
+                      onPointerUp: (pue) {},
+                      background: state.imageCollectRequestStatus !=
+                              RequestStatus.inProgress
+                          ? SizedBox(
+                              width: constraints.maxWidth,
+                              height: constraints.maxHeight,
+                              child: Stack(
+                                children: state.modifiableImages
+                                    .mapIndexed((index, modifiableImage) {
+                                  if (modifiableImage != null) {
+                                    return ModifiableImageItem(
+                                      modifiableImage: modifiableImage,
+                                      opacity: 0.5,
+                                      onScaleUpdate: (details) => bloc.add(
+                                        DrawImageScaleUpdated(index, details),
+                                      ),
+                                      onScaleEnd: () =>
+                                          bloc.add(DrawGestureEnded(index)),
+                                      secondImage:
+                                          index == 1 && state.imageFlipped
+                                              ? true
+                                              : false,
+                                    );
+                                  } else {
+                                    return Container();
+                                  }
+                                }).toList(),
+                              ),
+                            )
+                          : Container(
+                              width: constraints.maxWidth,
+                              height: constraints.maxHeight,
+                              color: Colors.transparent,
                             ),
-                          )
-                        : Container(
-                            width: constraints.maxWidth,
-                            height: constraints.maxHeight,
-                            color: Colors.transparent,
-                          ),
+                    ),
                   ),
                   Visibility(
                     visible: state.drawingFlipped ? true : false,
