@@ -288,9 +288,9 @@ class DrawBloc extends Bloc<DrawEvent, DrawState> {
       strokeWidth: 8.0,
       size: const Size.square((300)),
       rotation: 0.0,
+      previousRotation: 0.0,
       scale: 1.0,
       gestureOffset: Offset.zero,
-      selectedIndex: -1,
       modifiableImages: [],
       drawingName: state.drawingName.copyWith(
         value: '',
