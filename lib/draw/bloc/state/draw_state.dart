@@ -21,6 +21,7 @@ class DrawState with _$DrawState {
     @Default(false) bool canDraw,
     @Default(false) bool isToggled,
     @Default(false) bool showBackground,
+    @Default(false) bool trashEnabled,
     @Default(Colors.black) Color color,
     @Default(Size.square(300)) Size size,
     @Default(0) double rotation,

@@ -93,6 +93,7 @@ class DrawBloc extends Bloc<DrawEvent, DrawState> {
     emit(state.copyWith(
       modifiableImages: modifiableImages,
       imageFlipped: !state.imageFlipped,
+      trashEnabled: true,
     ));
   }
 
@@ -190,8 +191,11 @@ class DrawBloc extends Bloc<DrawEvent, DrawState> {
   }
 
   void _lockPressed(DrawLockPressed event, Emitter<DrawState> emit) {
+    final newLocked = !state.locked;
+
     emit(state.copyWith(
-      locked: !state.locked,
+      locked: newLocked,
+      trashEnabled: false,
     ));
   }
 

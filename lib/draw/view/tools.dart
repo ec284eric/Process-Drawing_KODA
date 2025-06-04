@@ -360,18 +360,6 @@ class Tools extends StatelessWidget {
                                                 context.read<DrawBloc>();
                                             bloc.add(
                                                 const DrawToggleSwitchPressed());
-
-                                            final isNowOn = !state.isToggled;
-                                            ScaffoldMessenger.of(context)
-                                                .showSnackBar(
-                                              SnackBar(
-                                                content: Text(isNowOn
-                                                    ? 'Trace is ON'
-                                                    : 'Trace is OFF'),
-                                                duration:
-                                                    const Duration(seconds: 1),
-                                              ),
-                                            );
                                           }
                                         : null,
                                     icon: Icon(
@@ -406,10 +394,7 @@ class Tools extends StatelessWidget {
                                 SizedBox.square(
                                   dimension: 45,
                                   child: IconButton(
-                                    onPressed: (state.locked &&
-                                                state.modifiableImages.length ==
-                                                    2) ||
-                                            state.imageFlipped
+                                    onPressed: state.trashEnabled
                                         ? () {
                                             bloc.add(
                                                 const DrawSecondMontageDeleted());
@@ -419,11 +404,7 @@ class Tools extends StatelessWidget {
                                       'assets/icons/trash.png',
                                       width: 32,
                                       height: 32,
-                                      color: (state.locked &&
-                                                  state.modifiableImages
-                                                          .length ==
-                                                      2) ||
-                                              state.imageFlipped
+                                      color: state.trashEnabled
                                           ? Colors.white
                                           : Colors.grey,
                                     ),
