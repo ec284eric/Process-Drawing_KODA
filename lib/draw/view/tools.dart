@@ -70,6 +70,7 @@ class Tools extends StatelessWidget {
     }
 
     drawingController.clear();
+    transformationController.value = Matrix4.identity();
     bloc.add(const DrawRestartPressed());
   }
 
