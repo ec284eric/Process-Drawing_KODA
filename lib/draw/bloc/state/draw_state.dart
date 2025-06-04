@@ -19,6 +19,8 @@ class DrawState with _$DrawState {
     @Default(false) bool brushSelected,
     @Default(false) bool drawingFlipped,
     @Default(false) bool canDraw,
+    @Default(false) bool isToggled,
+    @Default(false) bool showBackground,
     @Default(Colors.black) Color color,
     @Default(Size.square(300)) Size size,
     @Default(0) double rotation,
