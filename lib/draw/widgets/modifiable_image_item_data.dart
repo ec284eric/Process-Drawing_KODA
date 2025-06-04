@@ -32,7 +32,6 @@ class ModifiableImageItemData extends StatelessWidget {
                 opacity: 1,
                 child: Image.memory(
                   modifiableImage.src ?? Uint8List(0),
-                  // fit: BoxFit.fill,
                   fit: BoxFit.contain,
                   width: MediaQuery.of(context).size.width,
                 ),

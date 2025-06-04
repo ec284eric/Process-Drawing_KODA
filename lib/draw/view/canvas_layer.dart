@@ -25,7 +25,6 @@ class CanvasLayer extends StatelessWidget {
         if (state.locked &&
             transformationController.value != Matrix4.identity()) {
           WidgetsBinding.instance.addPostFrameCallback((_) {
-            // transformationController.value = Matrix4.identity();
             transformationController.value = Matrix4.identity()
               ..rotateZ(state.previousRotation)
               ..translate(state.modifiableImages[0]?.offset.dx ?? 0.0,
