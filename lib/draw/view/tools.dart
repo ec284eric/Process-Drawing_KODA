@@ -91,18 +91,17 @@ class Tools extends StatelessWidget {
                   child: Card(
                     margin: const EdgeInsets.all(0),
                     child: Column(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      crossAxisAlignment: CrossAxisAlignment.start,
                       mainAxisSize: MainAxisSize.min,
+                      crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         SizedBox.square(
                           dimension: 45,
                           child: IconButton(
-                            onPressed: () => {
+                            onPressed: () {
                               showDialog(
                                 context: context,
                                 builder: (context) => videoPlayerDialog,
-                              )
+                              );
                             },
                             icon: Image.asset(
                               'assets/icons/videocam-01.png',
@@ -112,359 +111,424 @@ class Tools extends StatelessWidget {
                             ),
                           ),
                         ),
+                        SizedBox(
+                          height: 470,
+                          child: SingleChildScrollView(
+                            child: Column(
+                              mainAxisSize: MainAxisSize.min,
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                // Plus Icon
+                                SizedBox.square(
+                                  dimension: 45,
+                                  child: IconButton(
+                                    onPressed: () {
+                                      bloc.add(const DrawingIconPresed());
+                                    },
+                                    icon: Image.asset(
+                                      'assets/icons/plus-01.png',
+                                      width: 32,
+                                      height: 32,
+                                      color: state.modifiableImages.isEmpty
+                                          ? Colors.white
+                                          : Colors.grey,
+                                    ),
+                                  ),
+                                ),
+
+                                SizedBox.square(
+                                  dimension: 45,
+                                  child: CircleAvatar(
+                                    backgroundColor: state.hideMontage &&
+                                            state.modifiableImages.isNotEmpty &&
+                                            state.modifiableImages.length != 2
+                                        ? Colors.black54
+                                        : Colors.transparent,
+                                    child: IconButton(
+                                      onPressed: state.newDrawingSelected &&
+                                              !state.locked
+                                          ? () {
+                                              bloc.add(
+                                                  const HideMontagePressed());
+                                              if (Navigator.of(context)
+                                                  .canPop()) {
+                                                Navigator.of(context).pop();
+                                              }
+                                            }
+                                          : null,
+                                      icon: Image.asset(
+                                        'assets/icons/half-tone-01.png',
+                                        width: 32,
+                                        height: 32,
+                                        color: state.newDrawingSelected &&
+                                                !state.locked
+                                            ? (state.hideMontage &&
+                                                    (state.modifiableImages
+                                                            .isNotEmpty &&
+                                                        state.modifiableImages
+                                                                .length !=
+                                                            2)
+                                                ? const Color.fromARGB(
+                                                    255, 37, 150, 190)
+                                                : Colors.white)
+                                            : Colors.grey,
+                                      ),
+                                    ),
+                                  ),
+                                ),
+
+                                SizedBox.square(
+                                  dimension: 45,
+                                  child: CircleAvatar(
+                                    backgroundColor: state.imageFlipped
+                                        ? Colors.black54
+                                        : Colors.transparent,
+                                    child: IconButton(
+                                      onPressed: () => state.modifiableImages
+                                                  .isNotEmpty &&
+                                              !state.locked
+                                          ? bloc.add(
+                                              const ImageFlippedIconPressed())
+                                          : null,
+                                      icon: Image.asset(
+                                        'assets/icons/icon-02-01.png',
+                                        width: 32,
+                                        height: 32,
+                                        color:
+                                            state.modifiableImages.isNotEmpty &&
+                                                    !state.locked
+                                                ? (state.imageFlipped
+                                                    ? const Color.fromARGB(
+                                                        255, 37, 150, 190)
+                                                    : Colors.white)
+                                                : Colors.grey,
+                                      ),
+                                    ),
+                                  ),
+                                ),
+
+                                SizedBox.square(
+                                  dimension: 45,
+                                  child: IconButton(
+                                    onPressed: () {},
+                                    icon: Image.asset(
+                                      'assets/icons/layer-01.png',
+                                      width: 32,
+                                      height: 32,
+                                      color: Colors.grey,
+                                    ),
+                                  ),
+                                ),
+
+                                SizedBox.square(
+                                  dimension: 45,
+                                  child: CircleAvatar(
+                                    backgroundColor: state.locked &&
+                                            state.modifiableImages.length == 2
+                                        ? Colors.black54
+                                        : Colors.transparent,
+                                    child: IconButton(
+                                      onPressed: (state.modifiableImages
+                                                  .isNotEmpty &&
+                                              state.modifiableImages.length ==
+                                                  2)
+                                          ? () {
+                                              bloc.add(const DrawLockPressed());
+                                            }
+                                          : null,
+                                      icon: Image.asset(
+                                        'assets/icons/file-01.png',
+                                        width: 32,
+                                        height: 32,
+                                        color: (state.modifiableImages
+                                                    .isNotEmpty &&
+                                                state.modifiableImages.length ==
+                                                    2)
+                                            ? (state.locked
+                                                ? const Color.fromARGB(
+                                                    255, 37, 150, 190)
+                                                : Colors.white)
+                                            : Colors.grey,
+                                      ),
+                                    ),
+                                  ),
+                                ),
+                                // SizedBox.square(
+                                //   dimension: 45,
+                                //   child: CircleAvatar(
+                                //     backgroundColor: state.locked
+                                //         ? Colors.black54
+                                //         : Colors.transparent,
+                                //     child: IconButton(
+                                //       onPressed: () =>
+                                //           {bloc.add(const DrawLockPressed())},
+                                //       icon: Image.asset('assets/icons/file-01.png',
+                                //           width: 32,
+                                //           height: 32,
+                                //           color: (state.locked
+                                //               ? const Color.fromARGB(
+                                //                   255, 37, 150, 190)
+                                //               : Colors.white)),
+                                //     ),
+                                //   ),
+                                // ),
+                                SizedBox.square(
+                                  dimension: 45,
+                                  child: CircleAvatar(
+                                    backgroundColor: state.penSelector &&
+                                            state.modifiableImages.isNotEmpty
+                                        ? Colors.black54
+                                        : Colors.transparent,
+                                    child: IconButton(
+                                      onPressed: (state.locked &&
+                                              state.modifiableImages.isNotEmpty)
+                                          ? () {
+                                              bloc.add(
+                                                  const PenSelectorPressed());
+                                            }
+                                          : null,
+                                      icon: Image.asset(
+                                        'assets/icons/edit-01.png',
+                                        width: 32,
+                                        height: 32,
+                                        color: state.locked
+                                            ? (state.penSelector
+                                                ? const Color.fromARGB(
+                                                    255, 37, 150, 190)
+                                                : Colors.white)
+                                            : Colors.grey,
+                                      ),
+                                    ),
+                                  ),
+                                ),
+
+                                SizedBox.square(
+                                  dimension: 45,
+                                  child: IconButton(
+                                    onPressed: () => state.locked ? {} : null,
+                                    icon: Image.asset(
+                                      'assets/icons/eraser-01.png',
+                                      width: 32,
+                                      height: 32,
+                                      color: Colors.grey,
+                                    ),
+                                  ),
+                                ),
+                                // SizedBox.square(
+                                //   dimension: 45,
+                                //   child: IconButton(
+                                //     onPressed: () => state.locked
+                                //         ? {
+                                //             showDialog(
+                                //               context: context,
+                                //               builder: (context) => Dialog(
+                                //                 child: colorPicker,
+                                //               ),
+                                //             ),
+                                //           }
+                                //         : null,
+                                //     icon: Image.asset(
+                                //       'assets/icons/color-01.png',
+                                //       width: 32,
+                                //       height: 32,
+                                //       color:
+                                //           state.locked ? state.color : Colors.grey,
+                                //     ),
+                                //   ),
+                                // ),
+                                // SizedBox.square(
+                                //   dimension: 45,
+                                //   child: IconButton(
+                                //     onPressed: state.locked ? () {} : null,
+                                //     icon: Image.asset(
+                                //       'assets/icons/toggle-left.png',
+                                //       width: 32,
+                                //       height: 32,
+                                //       color: state.locked
+                                //           ? state.color
+                                //           : Colors.grey,
+                                //     ),
+                                //   ),
+                                // ),
+                                SizedBox.square(
+                                  dimension: 45,
+                                  child: IconButton(
+                                    onPressed: (state.pencilSelected ||
+                                            state.brushSelected)
+                                        ? () {
+                                            final bloc =
+                                                context.read<DrawBloc>();
+                                            bloc.add(
+                                                const DrawToggleSwitchPressed());
+
+                                            final isNowOn = !state.isToggled;
+                                            ScaffoldMessenger.of(context)
+                                                .showSnackBar(
+                                              SnackBar(
+                                                content: Text(isNowOn
+                                                    ? 'Trace is ON'
+                                                    : 'Trace is OFF'),
+                                                duration:
+                                                    const Duration(seconds: 1),
+                                              ),
+                                            );
+                                          }
+                                        : null,
+                                    icon: Icon(
+                                      state.isToggled
+                                          ? Icons.toggle_on
+                                          : Icons.toggle_off,
+                                      size: 30,
+                                      color: (state.pencilSelected ||
+                                              state.brushSelected)
+                                          ? (state.isToggled
+                                              ? Colors.white
+                                              : Colors.white)
+                                          : Colors.grey,
+                                    ),
+                                  ),
+                                ),
+
+                                SizedBox.square(
+                                  dimension: 45,
+                                  child: IconButton(
+                                    onPressed: state.locked ? () {} : null,
+                                    icon: Image.asset(
+                                      'assets/icons/link.png',
+                                      width: 23,
+                                      height: 23,
+                                      color: state.locked
+                                          ? Colors.white
+                                          : Colors.grey,
+                                    ),
+                                  ),
+                                ),
+                                SizedBox.square(
+                                  dimension: 45,
+                                  child: IconButton(
+                                    onPressed: (state.locked &&
+                                                state.modifiableImages.length ==
+                                                    2) ||
+                                            state.imageFlipped
+                                        ? () {
+                                            bloc.add(
+                                                const DrawSecondMontageDeleted());
+                                          }
+                                        : null,
+                                    icon: Image.asset(
+                                      'assets/icons/trash.png',
+                                      width: 32,
+                                      height: 32,
+                                      color: (state.locked &&
+                                                  state.modifiableImages
+                                                          .length ==
+                                                      2) ||
+                                              state.imageFlipped
+                                          ? Colors.white
+                                          : Colors.grey,
+                                    ),
+                                  ),
+                                ),
+
+                                SizedBox.square(
+                                  dimension: 45,
+                                  child: IconButton(
+                                    onPressed: state.canUndo
+                                        ? () => drawingController.undo()
+                                        : null,
+                                    icon: Image.asset(
+                                      'assets/icons/undo-01.png',
+                                      width: 32,
+                                      height: 32,
+                                      color: state.canUndo
+                                          ? Colors.white
+                                          : Colors.grey,
+                                    ),
+                                  ),
+                                ),
+
+                                SizedBox.square(
+                                  dimension: 45,
+                                  child: IconButton(
+                                    onPressed: state.canRedo
+                                        ? () => drawingController.redo()
+                                        : null,
+                                    icon: Image.asset(
+                                      'assets/icons/redo-01.png',
+                                      width: 32,
+                                      height: 32,
+                                      color: state.canRedo
+                                          ? Colors.white
+                                          : Colors.grey,
+                                    ),
+                                  ),
+                                ),
+
+                                SizedBox.square(
+                                  dimension: 45,
+                                  child: IconButton(
+                                    onPressed: (state
+                                                .modifiableImages.isNotEmpty &&
+                                            state.modifiableImages.length == 2)
+                                        ? () {
+                                            WidgetsBinding.instance
+                                                .addPostFrameCallback((_) {
+                                              transformationController.value =
+                                                  Matrix4.identity();
+                                            });
+                                          }
+                                        : null,
+                                    icon: Image.asset(
+                                      'assets/icons/resize-01.png',
+                                      width: 32,
+                                      height: 32,
+                                      color: (state.modifiableImages
+                                                  .isNotEmpty &&
+                                              state.modifiableImages.length ==
+                                                  2)
+                                          ? Colors.white
+                                          : Colors.grey,
+                                    ),
+                                  ),
+                                ),
+
+                                CircleAvatar(
+                                  backgroundColor: state.drawingFlipped
+                                      ? Colors.black54
+                                      : Colors.transparent,
+                                  child: IconButton(
+                                    onPressed:
+                                        state.locked ? onFlipPressed : null,
+                                    icon: Image.asset(
+                                      'assets/icons/copy-drawing-01.png',
+                                      width: 32,
+                                      height: 32,
+                                      color: state.locked
+                                          ? (state.drawingFlipped
+                                              ? const Color.fromARGB(
+                                                  255, 37, 150, 190)
+                                              : Colors.white)
+                                          : Colors.grey,
+                                    ),
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ),
+                        ),
                         SizedBox.square(
                           dimension: 45,
                           child: IconButton(
-                            onPressed: () => {
-                              bloc.add(const DrawingIconPresed()),
-                            },
-                            icon: Image.asset(
-                              'assets/icons/plus-01.png',
-                              width: 32,
-                              height: 32,
-                              color: state.modifiableImages.isEmpty
+                            onPressed: () => _restart(context),
+                            icon: Icon(
+                              Icons.refresh,
+                              size: 32,
+                              color: state.newDrawingSelected &&
+                                      state.modifiableImages.isNotEmpty
                                   ? Colors.white
                                   : Colors.grey,
                             ),
                           ),
-                        ),
-                        Column(
-                          mainAxisAlignment: MainAxisAlignment.start,
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          mainAxisSize: MainAxisSize.min,
-                          children: [
-                            SizedBox.square(
-                              dimension: 45,
-                              child: CircleAvatar(
-                                backgroundColor: state.hideMontage &&
-                                        state.modifiableImages.isNotEmpty &&
-                                        state.modifiableImages.length != 2
-                                    ? Colors.black54
-                                    : Colors.transparent,
-                                child: IconButton(
-                                  onPressed: state.newDrawingSelected &&
-                                          !state.locked
-                                      ? () {
-                                          bloc.add(const HideMontagePressed());
-                                          if (Navigator.of(context).canPop()) {
-                                            Navigator.of(context).pop();
-                                          }
-                                        }
-                                      : null,
-                                  icon: Image.asset(
-                                    'assets/icons/half-tone-01.png',
-                                    width: 32,
-                                    height: 32,
-                                    color: state.newDrawingSelected &&
-                                            !state.locked
-                                        ? (state.hideMontage &&
-                                                (state.modifiableImages
-                                                        .isNotEmpty &&
-                                                    state.modifiableImages
-                                                            .length !=
-                                                        2)
-                                            ? const Color.fromARGB(
-                                                255, 37, 150, 190)
-                                            : Colors.white)
-                                        : Colors.grey,
-                                  ),
-                                ),
-                              ),
-                            ),
-                            SizedBox.square(
-                              dimension: 45,
-                              child: CircleAvatar(
-                                backgroundColor: state.imageFlipped
-                                    ? Colors.black54
-                                    : Colors.transparent,
-                                child: IconButton(
-                                  onPressed: () =>
-                                      state.modifiableImages.isNotEmpty &&
-                                              !state.locked
-                                          ? {
-                                              bloc.add(
-                                                  const ImageFlippedIconPressed()),
-                                            }
-                                          : null,
-                                  icon: Image.asset(
-                                    'assets/icons/icon-02-01.png',
-                                    width: 32,
-                                    height: 32,
-                                    color: state.modifiableImages.isNotEmpty &&
-                                            !state.locked
-                                        ? (state.imageFlipped
-                                            ? const Color.fromARGB(
-                                                255, 37, 150, 190)
-                                            : Colors.white)
-                                        : Colors.grey,
-                                  ),
-                                ),
-                              ),
-                            ),
-                            SizedBox.square(
-                              dimension: 45,
-                              child: IconButton(
-                                onPressed: () => {},
-                                icon: Image.asset(
-                                  'assets/icons/layer-01.png',
-                                  width: 32,
-                                  height: 32,
-                                  color: Colors.grey,
-                                ),
-                              ),
-                            ),
-                            SizedBox.square(
-                              dimension: 45,
-                              child: CircleAvatar(
-                                backgroundColor: state.locked &&
-                                        state.modifiableImages.length == 2
-                                    ? Colors.black54
-                                    : Colors.transparent,
-                                child: IconButton(
-                                  onPressed: () => (state
-                                              .modifiableImages.isNotEmpty &&
-                                          state.modifiableImages.length == 2)
-                                      ? {
-                                          bloc.add(const DrawLockPressed()),
-                                        }
-                                      : null,
-                                  icon: Image.asset(
-                                    'assets/icons/file-01.png',
-                                    width: 32,
-                                    height: 32,
-                                    color: (state.modifiableImages.isNotEmpty &&
-                                            state.modifiableImages.length == 2)
-                                        ? (state.locked
-                                            ? const Color.fromARGB(
-                                                255, 37, 150, 190)
-                                            : Colors.white)
-                                        : Colors.grey,
-                                  ),
-                                ),
-                              ),
-                            ),
-                            // SizedBox.square(
-                            //   dimension: 45,
-                            //   child: CircleAvatar(
-                            //     backgroundColor: state.locked
-                            //         ? Colors.black54
-                            //         : Colors.transparent,
-                            //     child: IconButton(
-                            //       onPressed: () =>
-                            //           {bloc.add(const DrawLockPressed())},
-                            //       icon: Image.asset('assets/icons/file-01.png',
-                            //           width: 32,
-                            //           height: 32,
-                            //           color: (state.locked
-                            //               ? const Color.fromARGB(
-                            //                   255, 37, 150, 190)
-                            //               : Colors.white)),
-                            //     ),
-                            //   ),
-                            // ),
-                            SizedBox.square(
-                              dimension: 45,
-                              child: CircleAvatar(
-                                backgroundColor: state.penSelector &&
-                                        state.modifiableImages.isNotEmpty
-                                    ? Colors.black54
-                                    : Colors.transparent,
-                                child: IconButton(
-                                  onPressed: () => (state.locked &&
-                                          state.modifiableImages.isNotEmpty)
-                                      ? {bloc.add(const PenSelectorPressed())}
-                                      : null,
-                                  icon: Image.asset(
-                                    'assets/icons/edit-01.png',
-                                    width: 32,
-                                    height: 32,
-                                    color: state.locked
-                                        ? (state.penSelector
-                                            ? const Color.fromARGB(
-                                                255, 37, 150, 190)
-                                            : Colors.white)
-                                        : Colors.grey,
-                                  ),
-                                ),
-                              ),
-                            ),
-                            SizedBox.square(
-                              dimension: 45,
-                              child: IconButton(
-                                onPressed: () => state.locked ? {} : null,
-                                icon: Image.asset(
-                                  'assets/icons/eraser-01.png',
-                                  width: 32,
-                                  height: 32,
-                                  color: Colors.grey,
-                                ),
-                              ),
-                            ),
-                            // SizedBox.square(
-                            //   dimension: 45,
-                            //   child: IconButton(
-                            //     onPressed: () => state.locked
-                            //         ? {
-                            //             showDialog(
-                            //               context: context,
-                            //               builder: (context) => Dialog(
-                            //                 child: colorPicker,
-                            //               ),
-                            //             ),
-                            //           }
-                            //         : null,
-                            //     icon: Image.asset(
-                            //       'assets/icons/color-01.png',
-                            //       width: 32,
-                            //       height: 32,
-                            //       color:
-                            //           state.locked ? state.color : Colors.grey,
-                            //     ),
-                            //   ),
-                            // ),
-                            // SizedBox.square(
-                            //   dimension: 45,
-                            //   child: IconButton(
-                            //     onPressed: state.locked ? () {} : null,
-                            //     icon: Image.asset(
-                            //       'assets/icons/toggle-left.png',
-                            //       width: 32,
-                            //       height: 32,
-                            //       color:
-                            //           state.locked ? state.color : Colors.grey,
-                            //     ),
-                            //   ),
-                            // ),
-                            // SizedBox.square(
-                            //   dimension: 45,
-                            //   child: IconButton(
-                            //     onPressed: state.locked ? () {} : null,
-                            //     icon: Image.asset(
-                            //       'assets/icons/link.png',
-                            //       width: 32,
-                            //       height: 32,
-                            //       color:
-                            //           state.locked ? state.color : Colors.grey,
-                            //     ),
-                            //   ),
-                            // ),
-                            SizedBox.square(
-                              dimension: 45,
-                              child: IconButton(
-                                onPressed: (state.locked &&
-                                            state.modifiableImages.length ==
-                                                2) ||
-                                        state.imageFlipped
-                                    ? () {
-                                        bloc.add(
-                                            const DrawSecondMontageDeleted());
-                                      }
-                                    : null,
-                                icon: Image.asset(
-                                  'assets/icons/trash.png',
-                                  width: 32,
-                                  height: 32,
-                                  color: (state.locked &&
-                                              state.modifiableImages.length ==
-                                                  2) ||
-                                          state.imageFlipped
-                                      ? Colors.white
-                                      : Colors.grey,
-                                ),
-                              ),
-                            ),
-
-                            SizedBox.square(
-                              dimension: 45,
-                              child: IconButton(
-                                onPressed: state.canUndo
-                                    ? () => drawingController.undo()
-                                    : null,
-                                icon: Image.asset(
-                                  'assets/icons/undo-01.png',
-                                  width: 32,
-                                  height: 32,
-                                  color: state.canUndo
-                                      ? Colors.white
-                                      : Colors.grey,
-                                ),
-                              ),
-                            ),
-                            SizedBox.square(
-                              dimension: 45,
-                              child: IconButton(
-                                onPressed: state.canRedo
-                                    ? () => drawingController.redo()
-                                    : null,
-                                icon: Image.asset(
-                                  'assets/icons/redo-01.png',
-                                  width: 32,
-                                  height: 32,
-                                  color: state.canRedo
-                                      ? Colors.white
-                                      : Colors.grey,
-                                ),
-                              ),
-                            ),
-                            SizedBox.square(
-                              dimension: 45,
-                              child: IconButton(
-                                onPressed: (state.modifiableImages.isNotEmpty &&
-                                        state.modifiableImages.length == 2)
-                                    ? () => {
-                                          WidgetsBinding.instance
-                                              .addPostFrameCallback((_) {
-                                            transformationController.value =
-                                                Matrix4
-                                                    .identity(); // Reset zoom
-                                          })
-                                        }
-                                    : null,
-                                icon: Image.asset(
-                                  'assets/icons/resize-01.png',
-                                  width: 32,
-                                  height: 32,
-                                  color: (state.modifiableImages.isNotEmpty &&
-                                          state.modifiableImages.length == 2)
-                                      ? Colors.white
-                                      : Colors.grey,
-                                ),
-                              ),
-                            ),
-                            CircleAvatar(
-                              backgroundColor: state.drawingFlipped
-                                  ? Colors.black54
-                                  : Colors.transparent,
-                              child: IconButton(
-                                onPressed: state.locked ? onFlipPressed : null,
-                                icon: Image.asset(
-                                  'assets/icons/copy-drawing-01.png',
-                                  width: 32,
-                                  height: 32,
-                                  color: state.locked
-                                      ? (state.drawingFlipped
-                                          ? const Color.fromARGB(
-                                              255, 37, 150, 190)
-                                          : Colors.white)
-                                      : Colors.grey,
-                                ),
-                              ),
-                            ),
-                            SizedBox.square(
-                              dimension: 45,
-                              child: IconButton(
-                                onPressed: () => _restart(context),
-                                icon: Icon(
-                                  Icons.refresh,
-                                  size: 32,
-                                  color: state.newDrawingSelected &&
-                                          state.modifiableImages.isNotEmpty
-                                      ? Colors.white
-                                      : Colors.grey,
-                                ),
-                              ),
-                            ),
-                          ],
                         ),
                       ],
                     ),
