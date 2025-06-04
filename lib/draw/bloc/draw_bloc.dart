@@ -34,6 +34,7 @@ class DrawBloc extends Bloc<DrawEvent, DrawState> {
     on<DrawClearModifiableImages>(_clearModifiableImages);
     on<DrawRestoreModifiableImages>(_restoreModifiableImages);
     on<DrawSecondMontageDeleted>(_secondMontageDeleted);
+    on<DrawToggleSwitchPressed>(_toggleSwitchPressed);
   }
 
   void _penSelectorPressed(PenSelectorPressed event, Emitter<DrawState> emit) {
@@ -360,5 +361,14 @@ class DrawBloc extends Bloc<DrawEvent, DrawState> {
         hideMontage: false,
       ));
     }
+  }
+
+  void _toggleSwitchPressed(
+      DrawToggleSwitchPressed event, Emitter<DrawState> emit) {
+    final toggled = !state.isToggled;
+    emit(state.copyWith(
+      isToggled: toggled,
+      showBackground: !toggled,
+    ));
   }
 }

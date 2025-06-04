@@ -145,3 +145,7 @@ class DrawRestoreModifiableImages extends DrawEvent {
 class DrawSecondMontageDeleted extends DrawEvent {
   const DrawSecondMontageDeleted();
 }
+
+class DrawToggleSwitchPressed extends DrawEvent {
+  const DrawToggleSwitchPressed();
+}
