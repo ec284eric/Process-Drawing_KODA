@@ -352,27 +352,34 @@ class Tools extends StatelessWidget {
                                 // ),
                                 SizedBox.square(
                                   dimension: 45,
-                                  child: IconButton(
-                                    onPressed: (state.pencilSelected ||
+                                  child: CircleAvatar(
+                                    backgroundColor: (state.pencilSelected ||
                                             state.brushSelected)
-                                        ? () {
-                                            final bloc =
-                                                context.read<DrawBloc>();
-                                            bloc.add(
-                                                const DrawToggleSwitchPressed());
-                                          }
-                                        : null,
-                                    icon: Icon(
-                                      state.isToggled
-                                          ? Icons.toggle_on
-                                          : Icons.toggle_off,
-                                      size: 30,
-                                      color: (state.pencilSelected ||
+                                        ? Colors.black54
+                                        : Colors.transparent,
+                                    child: IconButton(
+                                      onPressed: (state.pencilSelected ||
                                               state.brushSelected)
-                                          ? (state.isToggled
-                                              ? Colors.white
-                                              : Colors.white)
-                                          : Colors.grey,
+                                          ? () {
+                                              final bloc =
+                                                  context.read<DrawBloc>();
+                                              bloc.add(
+                                                  const DrawToggleSwitchPressed());
+                                            }
+                                          : null,
+                                      icon: Icon(
+                                        state.isToggled
+                                            ? Icons.toggle_on
+                                            : Icons.toggle_off,
+                                        size: 30,
+                                        color: (state.pencilSelected ||
+                                                state.brushSelected)
+                                            ? (state.isToggled
+                                                ? const Color.fromARGB(
+                                                    255, 37, 150, 190)
+                                                : Colors.white)
+                                            : Colors.grey,
+                                      ),
                                     ),
                                   ),
                                 ),
@@ -472,24 +479,26 @@ class Tools extends StatelessWidget {
                                     ),
                                   ),
                                 ),
-
-                                CircleAvatar(
-                                  backgroundColor: state.drawingFlipped
-                                      ? Colors.black54
-                                      : Colors.transparent,
-                                  child: IconButton(
-                                    onPressed:
-                                        state.locked ? onFlipPressed : null,
-                                    icon: Image.asset(
-                                      'assets/icons/copy-drawing-01.png',
-                                      width: 32,
-                                      height: 32,
-                                      color: state.locked
-                                          ? (state.drawingFlipped
-                                              ? const Color.fromARGB(
-                                                  255, 37, 150, 190)
-                                              : Colors.white)
-                                          : Colors.grey,
+                                SizedBox.square(
+                                  dimension: 45,
+                                  child: CircleAvatar(
+                                    backgroundColor: state.drawingFlipped
+                                        ? Colors.black54
+                                        : Colors.transparent,
+                                    child: IconButton(
+                                      onPressed:
+                                          state.locked ? onFlipPressed : null,
+                                      icon: Image.asset(
+                                        'assets/icons/copy-drawing-01.png',
+                                        width: 32,
+                                        height: 32,
+                                        color: state.locked
+                                            ? (state.drawingFlipped
+                                                ? const Color.fromARGB(
+                                                    255, 37, 150, 190)
+                                                : Colors.white)
+                                            : Colors.grey,
+                                      ),
                                     ),
                                   ),
                                 ),
