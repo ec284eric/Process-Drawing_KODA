@@ -56,6 +56,8 @@ class _DrawPageState extends State<DrawPage> {
     _canvasTransformationController.addListener(() {
       _overlayTransformationController.value =
           _canvasTransformationController.value;
+
+      // _updateDynamicStrokeWidth();
     });
   }
 
@@ -65,6 +67,26 @@ class _DrawPageState extends State<DrawPage> {
     _canvasTransformationController.dispose();
     _overlayTransformationController.dispose();
     super.dispose();
+  }
+
+  double _getZoomScale() {
+    return _canvasTransformationController.value.getMaxScaleOnAxis();
+  }
+
+  void _updateDynamicStrokeWidth() {
+    final zoom = _getZoomScale();
+    final state = _bloc.state;
+    final baseStrokeWidth = state.strokeWidth;
+
+    double adjustedWidth = baseStrokeWidth;
+
+    if (state.pencilSelected) {
+      adjustedWidth = baseStrokeWidth / (zoom * 2);
+    } else if (state.brushSelected) {
+      adjustedWidth = baseStrokeWidth / (zoom * 3);
+    }
+
+    _drawingController.setStyle(strokeWidth: adjustedWidth);
   }
 
   Future<Uint8List?> _exportWithWhiteBackground(
@@ -215,10 +237,10 @@ class _DrawPageState extends State<DrawPage> {
         listeners: [
           BlocListener<DrawBloc, DrawState>(
             listenWhen: (previous, current) =>
-                previous.strokeWidth != current.strokeWidth,
-            listener: (context, state) => _drawingController.setStyle(
-              strokeWidth: state.strokeWidth,
-            ),
+                previous.strokeWidth != current.strokeWidth ||
+                previous.pencilSelected != current.pencilSelected ||
+                previous.brushSelected != current.brushSelected,
+            listener: (context, state) => _updateDynamicStrokeWidth(),
           ),
           BlocListener<DrawBloc, DrawState>(
             listenWhen: (previous, current) => previous.color != current.color,
