@@ -46,7 +46,8 @@ class CanvasLayer extends StatelessWidget {
                       onInteractionUpdate: (p0) {},
                       onPointerUp: (pue) {},
                       background: state.imageCollectRequestStatus !=
-                              RequestStatus.inProgress
+                                  RequestStatus.inProgress &&
+                              (state.showBackground || !state.isToggled)
                           ? SizedBox(
                               width: constraints.maxWidth,
                               height: constraints.maxHeight,
