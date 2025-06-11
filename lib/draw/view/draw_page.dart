@@ -169,9 +169,9 @@ class _DrawPageState extends State<DrawPage> {
       return;
     }
 
-    bloc.add(const DrawingFlippedPressed());
-
     bloc.add(DrawPaintedImageCollected(data.buffer.asUint8List()));
+
+    bloc.add(const DrawingFlippedPressed());
 
     bloc.add(const DrawImageProcessOpened(false));
 
