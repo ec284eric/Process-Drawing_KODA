@@ -59,10 +59,11 @@ class CanvasLayer extends StatelessWidget {
                                       modifiableImage: modifiableImage,
                                       opacity: 0.5,
                                       onScaleUpdate: (details) => bloc.add(
-                                        DrawImageScaleUpdated(index, details),
+                                        DrawImageScaleUpdated(
+                                            index: index, details: details),
                                       ),
-                                      onScaleEnd: () =>
-                                          bloc.add(DrawGestureEnded(index)),
+                                      onScaleEnd: () => bloc
+                                          .add(DrawGestureEnded(index: index)),
                                       secondImage:
                                           index == 1 && state.imageFlipped
                                               ? true
@@ -91,8 +92,9 @@ class CanvasLayer extends StatelessWidget {
                         child: ModifiableImageItemData(
                           modifiableImage: state.reflectedImage,
                           onScaleUpdate: state.locked
-                              ? (value) => bloc
-                                  .add(DrawReflectedImageScaleUpdated(value))
+                              ? (value) => bloc.add(
+                                  DrawReflectedImageScaleUpdated(
+                                      details: value))
                               : null,
                           secondImage: false,
                         ),

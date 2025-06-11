@@ -25,7 +25,8 @@ class SaveFileDialog extends StatelessWidget {
           return AlertDialog(
             title: const Text('Save Drawing'),
             content: TextFormField(
-              onChanged: (value) => bloc.add(DrawDrawingNameChanged(value)),
+              onChanged: (value) =>
+                  bloc.add(DrawDrawingNameChanged(value: value)),
               decoration: const InputDecoration(
                 labelText: 'Drawing Name',
               ),

@@ -25,9 +25,9 @@ class PenIconPressed extends DrawEvent {
 
 class BrushIconPressed extends DrawEvent {
   final double strokeWidth;
-  const BrushIconPressed(
-    this.strokeWidth,
-  );
+  const BrushIconPressed({
+    required this.strokeWidth,
+  });
 }
 
 class ImageFlippedIconPressed extends DrawEvent {
@@ -51,20 +51,27 @@ class DrawDrawingChanged extends DrawEvent {
 class DrawColorChanged extends DrawEvent {
   final Color color;
 
-  DrawColorChanged(this.color);
+  DrawColorChanged({
+    required this.color,
+  });
 }
 
 class DrawResizerScaleUpdated extends DrawEvent {
   final ScaleUpdateDetails details;
 
-  const DrawResizerScaleUpdated(this.details);
+  const DrawResizerScaleUpdated({
+    required this.details,
+  });
 }
 
 class DrawImageScaleUpdated extends DrawEvent {
   final int index;
   final ScaleUpdateDetails details;
 
-  const DrawImageScaleUpdated(this.index, this.details);
+  const DrawImageScaleUpdated({
+    required this.index,
+    required this.details,
+  });
 }
 
 class DrawLockPressed extends DrawEvent {
@@ -84,7 +91,9 @@ class DrawFirstImageSelected extends DrawEvent {
 class DrawSecondImageSelected extends DrawEvent {
   final String image;
 
-  const DrawSecondImageSelected(this.image);
+  const DrawSecondImageSelected({
+    required this.image,
+  });
 }
 
 class DrawSavePressed extends DrawEvent {
@@ -94,13 +103,17 @@ class DrawSavePressed extends DrawEvent {
 class DrawImageProcessed extends DrawEvent {
   final Uint8List imageBytes;
 
-  const DrawImageProcessed(this.imageBytes);
+  const DrawImageProcessed({
+    required this.imageBytes,
+  });
 }
 
 class DrawDrawingNameChanged extends DrawEvent {
   final String value;
 
-  const DrawDrawingNameChanged(this.value);
+  const DrawDrawingNameChanged({
+    required this.value,
+  });
 }
 
 class DrawRestartPressed extends DrawEvent {
@@ -114,23 +127,31 @@ class DrawingFlippedPressed extends DrawEvent {
 class DrawPaintedImageCollected extends DrawEvent {
   final Uint8List image;
 
-  const DrawPaintedImageCollected(this.image);
+  const DrawPaintedImageCollected({
+    required this.image,
+  });
 }
 
 class DrawReflectedImageScaleUpdated extends DrawEvent {
   final ScaleUpdateDetails details;
-  const DrawReflectedImageScaleUpdated(this.details);
+  const DrawReflectedImageScaleUpdated({
+    required this.details,
+  });
 }
 
 class DrawImageProcessOpened extends DrawEvent {
   final bool open;
 
-  const DrawImageProcessOpened(this.open);
+  const DrawImageProcessOpened({
+    required this.open,
+  });
 }
 
 class DrawGestureEnded extends DrawEvent {
   final int index;
-  const DrawGestureEnded(this.index);
+  const DrawGestureEnded({
+    required this.index,
+  });
 }
 
 class DrawClearModifiableImages extends DrawEvent {
@@ -139,7 +160,9 @@ class DrawClearModifiableImages extends DrawEvent {
 
 class DrawRestoreModifiableImages extends DrawEvent {
   final List<ModifiableImage?> images;
-  const DrawRestoreModifiableImages(this.images);
+  const DrawRestoreModifiableImages({
+    required this.images,
+  });
 }
 
 class DrawSecondMontageDeleted extends DrawEvent {

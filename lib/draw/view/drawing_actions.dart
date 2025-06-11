@@ -29,7 +29,7 @@ class DrawingActions extends StatelessWidget {
 
   void _secondImageSelected(BuildContext context, String value) {
     final bloc = context.read<DrawBloc>();
-    bloc.add(DrawSecondImageSelected(value));
+    bloc.add(DrawSecondImageSelected(image: value));
     context.pop();
   }
 

@@ -135,7 +135,7 @@ class _DrawPageState extends State<DrawPage> {
   Future<void> _onFlipPressed(BuildContext context) async {
     final bloc = context.read<DrawBloc>();
 
-    bloc.add(const DrawImageProcessOpened(true));
+    bloc.add(const DrawImageProcessOpened(open: true));
 
     showDialog(
       context: context,
@@ -169,11 +169,11 @@ class _DrawPageState extends State<DrawPage> {
       return;
     }
 
-    bloc.add(DrawPaintedImageCollected(data.buffer.asUint8List()));
+    bloc.add(DrawPaintedImageCollected(image: data.buffer.asUint8List()));
 
     bloc.add(const DrawingFlippedPressed());
 
-    bloc.add(const DrawImageProcessOpened(false));
+    bloc.add(const DrawImageProcessOpened(open: false));
 
     if (context.mounted) {
       Navigator.of(context).pop();
@@ -189,7 +189,7 @@ class _DrawPageState extends State<DrawPage> {
         break;
 
       case RequestStatus.inProgress:
-        bloc.add(const DrawImageProcessOpened(true));
+        bloc.add(const DrawImageProcessOpened(open: true));
 
         final originalImages = state.modifiableImages;
 
@@ -202,13 +202,13 @@ class _DrawPageState extends State<DrawPage> {
 
         final Uint8List? bytes = await _exportWithWhiteBackground(state);
 
-        bloc.add(DrawRestoreModifiableImages(originalImages));
+        bloc.add(DrawRestoreModifiableImages(images: originalImages));
 
         if (bytes != null) {
-          bloc.add(DrawImageProcessed(bytes));
+          bloc.add(DrawImageProcessed(imageBytes: bytes));
         }
 
-        bloc.add(const DrawImageProcessOpened(false));
+        bloc.add(const DrawImageProcessOpened(open: false));
         break;
 
       case RequestStatus.success:

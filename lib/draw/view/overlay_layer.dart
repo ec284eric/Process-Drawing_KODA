@@ -33,7 +33,8 @@ class OverlayLayer extends StatelessWidget {
                           modifiableImage: modifiableImage,
                           opacity: 1,
                           onScaleUpdate: (details) => bloc.add(
-                            DrawImageScaleUpdated(index, details),
+                            DrawImageScaleUpdated(
+                                index: index, details: details),
                           ),
                           secondImage: false,
                         );
@@ -42,7 +43,8 @@ class OverlayLayer extends StatelessWidget {
                           modifiableImage: modifiableImage,
                           opacity: 0.8,
                           onScaleUpdate: (details) => bloc.add(
-                            DrawImageScaleUpdated(index, details),
+                            DrawImageScaleUpdated(
+                                index: index, details: details),
                           ),
                           secondImage: state.imageFlipped ? true : false,
                         );
