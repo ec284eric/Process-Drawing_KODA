@@ -21,6 +21,9 @@ class AppLocalizationsEn extends AppLocalizations {
   String get confirmRestart => 'Confirm Restart';
 
   @override
+  String get drawingName => 'Drawing Name';
+
+  @override
   String get helloWorld => 'Hello World!';
 
   @override
@@ -36,6 +39,12 @@ class AppLocalizationsEn extends AppLocalizations {
   @override
   String get restartMessage =>
       'This will erase all your current changes and start a new drawing.\nThis action cannot be undone. Do you want to proceed?';
+
+  @override
+  String get save => 'Save';
+
+  @override
+  String get saveDrawing => 'Save Drawing';
 
   @override
   String get tapToPreview => 'Tap to preview';

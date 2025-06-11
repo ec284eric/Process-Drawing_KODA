@@ -118,6 +118,12 @@ abstract class AppLocalizations {
   /// **'Confirm Restart'**
   String get confirmRestart;
 
+  /// No description provided for @drawingName.
+  ///
+  /// In en, this message translates to:
+  /// **'Drawing Name'**
+  String get drawingName;
+
   /// No description provided for @helloWorld.
   ///
   /// In en, this message translates to:
@@ -147,6 +153,18 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'This will erase all your current changes and start a new drawing.\nThis action cannot be undone. Do you want to proceed?'**
   String get restartMessage;
+
+  /// No description provided for @save.
+  ///
+  /// In en, this message translates to:
+  /// **'Save'**
+  String get save;
+
+  /// No description provided for @saveDrawing.
+  ///
+  /// In en, this message translates to:
+  /// **'Save Drawing'**
+  String get saveDrawing;
 
   /// No description provided for @tapToPreview.
   ///

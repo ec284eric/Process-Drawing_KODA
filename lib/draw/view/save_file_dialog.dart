@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_drawing_board/flutter_drawing_board.dart';
 import 'package:go_router/go_router.dart';
+import 'package:drawing_app/l10n/app_localizations.dart';
 
 class SaveFileDialog extends StatelessWidget {
   final DrawingController drawingController;
@@ -23,13 +24,12 @@ class SaveFileDialog extends StatelessWidget {
       child: Builder(
         builder: (context) {
           return AlertDialog(
-            title: const Text('Save Drawing'),
+            title: Text(AppLocalizations.of(context)?.saveDrawing ?? ''),
             content: TextFormField(
               onChanged: (value) =>
                   bloc.add(DrawDrawingNameChanged(value: value)),
-              decoration: const InputDecoration(
-                labelText: 'Drawing Name',
-              ),
+              decoration: InputDecoration(
+                  labelText: AppLocalizations.of(context)?.drawingName ?? ''),
             ),
             actions: [
               TextButton(
@@ -40,14 +40,14 @@ class SaveFileDialog extends StatelessWidget {
                   ),
                 ),
                 onPressed: () => context.pop(),
-                child: const Text('Cancel'),
+                child: Text(AppLocalizations.of(context)?.cancel ?? ''),
               ),
               FilledButton(
                 onPressed: () {
                   bloc.add(const DrawSavePressed());
                   context.pop();
                 },
-                child: const Text('Save'),
+                child: Text(AppLocalizations.of(context)?.save ?? ''),
               ),
             ],
           );
