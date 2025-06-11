@@ -1,3 +1,4 @@
+import 'package:drawing_app/constants/assets.dart';
 import 'package:drawing_app/draw/draw.dart';
 import 'package:drawing_app/draw/view/montage_acetate.dart';
 import 'package:drawing_app/draw/view/pen_selector.dart';
@@ -105,7 +106,7 @@ class Tools extends StatelessWidget {
                               );
                             },
                             icon: Image.asset(
-                              'assets/icons/videocam-01.png',
+                              Assets.videoCamIcon,
                               width: 32,
                               height: 32,
                               color: Colors.white,
@@ -127,7 +128,7 @@ class Tools extends StatelessWidget {
                                       bloc.add(const DrawingIconPresed());
                                     },
                                     icon: Image.asset(
-                                      'assets/icons/plus-01.png',
+                                      Assets.plusIcon,
                                       width: 32,
                                       height: 32,
                                       color: state.modifiableImages.isEmpty
@@ -158,7 +159,7 @@ class Tools extends StatelessWidget {
                                             }
                                           : null,
                                       icon: Image.asset(
-                                        'assets/icons/half-tone-01.png',
+                                        Assets.halfToneIcon,
                                         width: 32,
                                         height: 32,
                                         color: state.newDrawingSelected &&
@@ -192,7 +193,7 @@ class Tools extends StatelessWidget {
                                               const ImageFlippedIconPressed())
                                           : null,
                                       icon: Image.asset(
-                                        'assets/icons/icon-02-01.png',
+                                        Assets.icon2Icon,
                                         width: 32,
                                         height: 32,
                                         color:
@@ -213,7 +214,7 @@ class Tools extends StatelessWidget {
                                   child: IconButton(
                                     onPressed: () {},
                                     icon: Image.asset(
-                                      'assets/icons/layer-01.png',
+                                      Assets.layerIcon,
                                       width: 32,
                                       height: 32,
                                       color: Colors.grey,
@@ -238,7 +239,7 @@ class Tools extends StatelessWidget {
                                             }
                                           : null,
                                       icon: Image.asset(
-                                        'assets/icons/file-01.png',
+                                        Assets.fileIcon,
                                         width: 32,
                                         height: 32,
                                         color: (state.modifiableImages
@@ -289,7 +290,7 @@ class Tools extends StatelessWidget {
                                             }
                                           : null,
                                       icon: Image.asset(
-                                        'assets/icons/edit-01.png',
+                                        Assets.editIcon,
                                         width: 32,
                                         height: 32,
                                         color: state.locked
@@ -308,7 +309,7 @@ class Tools extends StatelessWidget {
                                   child: IconButton(
                                     onPressed: () => state.locked ? {} : null,
                                     icon: Image.asset(
-                                      'assets/icons/eraser-01.png',
+                                      Assets.eraserIcon,
                                       width: 32,
                                       height: 32,
                                       color: Colors.grey,
@@ -390,7 +391,7 @@ class Tools extends StatelessWidget {
                                   child: IconButton(
                                     onPressed: state.locked ? () {} : null,
                                     icon: Image.asset(
-                                      'assets/icons/link.png',
+                                      Assets.linkIcon,
                                       width: 23,
                                       height: 23,
                                       color: state.locked
@@ -409,7 +410,7 @@ class Tools extends StatelessWidget {
                                           }
                                         : null,
                                     icon: Image.asset(
-                                      'assets/icons/trash.png',
+                                      Assets.trashIcon,
                                       width: 32,
                                       height: 32,
                                       color: state.trashEnabled
@@ -426,7 +427,7 @@ class Tools extends StatelessWidget {
                                         ? () => drawingController.undo()
                                         : null,
                                     icon: Image.asset(
-                                      'assets/icons/undo-01.png',
+                                      Assets.undoIcon,
                                       width: 32,
                                       height: 32,
                                       color: state.canUndo
@@ -443,7 +444,7 @@ class Tools extends StatelessWidget {
                                         ? () => drawingController.redo()
                                         : null,
                                     icon: Image.asset(
-                                      'assets/icons/redo-01.png',
+                                      Assets.redoIcon,
                                       width: 32,
                                       height: 32,
                                       color: state.canRedo
@@ -468,7 +469,7 @@ class Tools extends StatelessWidget {
                                           }
                                         : null,
                                     icon: Image.asset(
-                                      'assets/icons/resize-01.png',
+                                      Assets.resizeIcon,
                                       width: 32,
                                       height: 32,
                                       color: (state.modifiableImages
@@ -490,7 +491,7 @@ class Tools extends StatelessWidget {
                                       onPressed:
                                           state.locked ? onFlipPressed : null,
                                       icon: Image.asset(
-                                        'assets/icons/copy-drawing-01.png',
+                                        Assets.copyDrawingIcon,
                                         width: 32,
                                         height: 32,
                                         color: state.locked

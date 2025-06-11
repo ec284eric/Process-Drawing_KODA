@@ -1,3 +1,4 @@
+import 'package:drawing_app/constants/assets.dart';
 import 'package:el_tooltip/el_tooltip.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -25,7 +26,7 @@ class AppBarDrawing extends StatelessWidget {
             children: [
               IconButton(
                 icon: Image.asset(
-                  'assets/icons/logo-01.png',
+                  Assets.logoIcon,
                   width: 32,
                   height: 32,
                 ),
@@ -33,7 +34,7 @@ class AppBarDrawing extends StatelessWidget {
               ),
               IconButton(
                 icon: Image.asset(
-                  'assets/icons/folder-01.png',
+                  Assets.folderIcon,
                   width: 32,
                   height: 32,
                 ),
@@ -41,7 +42,7 @@ class AppBarDrawing extends StatelessWidget {
               ),
               IconButton(
                   icon: Image.asset(
-                    'assets/icons/download-01.png',
+                    Assets.downloadIcon,
                     width: 32,
                     height: 32,
                     color: isEnabled ? Colors.white : Colors.grey,
@@ -59,7 +60,7 @@ class AppBarDrawing extends StatelessWidget {
           actions: [
             IconButton(
               icon: Image.asset(
-                'assets/icons/m-icon-01.png',
+                Assets.mIcon,
                 width: 32,
                 height: 32,
               ),
@@ -86,7 +87,7 @@ class AppBarDrawing extends StatelessWidget {
               ),
               child: IconButton(
                 icon: Image.asset(
-                  'assets/icons/info-01.png',
+                  Assets.infoIcon,
                   width: 32,
                   height: 32,
                 ),

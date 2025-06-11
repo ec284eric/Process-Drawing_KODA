@@ -5,4 +5,25 @@ class Assets {
   static const acetateMontageImg4 = 'assets/images/image_04.jpg';
   static const acetateMontageImg5 = 'assets/images/image_05.jpg';
   static const acetateMontageImg6 = 'assets/images/image_06.jpg';
+  static const colorIcon = 'assets/icons/color-01.png';
+  static const copyDrawingIcon = 'assets/icons/copy-drawing-01.png';
+  static const downloadIcon = 'assets/icons/download-01.png';
+  static const editIcon = 'assets/icons/edit-01.png';
+  static const eraserIcon = 'assets/icons/eraser-01.png';
+  static const fileIcon = 'assets/icons/file-01.png';
+  static const folderIcon = 'assets/icons/folder-01.png';
+  static const halfToneIcon = 'assets/icons/half-tone-01.png';
+  static const icon2Icon = 'assets/icons/icon-02-01.png';
+  static const infoIcon = 'assets/icons/info-01.png';
+  static const layerIcon = 'assets/icons/layer-01.png';
+  static const linkIcon = 'assets/icons/link.png';
+  static const logoAnimationIcon = 'assets/icons/logo_animation.gif';
+  static const logoIcon = 'assets/icons/logo-01.png';
+  static const mIcon = 'assets/icons/m-icon-01.png';
+  static const plusIcon = 'assets/icons/plus-01.png';
+  static const redoIcon = 'assets/icons/redo-01.png';
+  static const resizeIcon = 'assets/icons/resize-01.png';
+  static const trashIcon = 'assets/icons/trash.png';
+  static const undoIcon = 'assets/icons/undo-01.png';
+  static const videoCamIcon = 'assets/icons/videocam-01.png';
 }
