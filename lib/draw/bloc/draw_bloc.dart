@@ -39,38 +39,32 @@ class DrawBloc extends Bloc<DrawEvent, DrawState> {
 
   void _penSelectorPressed(PenSelectorPressed event, Emitter<DrawState> emit) {
     final opening = !state.penSelector;
-    emit(
-      state.copyWith(
-        penSelector: opening,
-        canDraw: (state.pencilSelected || state.brushSelected) && opening,
-      ),
-    );
+    emit(state.copyWith(
+      penSelector: opening,
+      canDraw: (state.pencilSelected || state.brushSelected) && opening,
+    ));
   }
 
   void _penIconPressed(PenIconPressed event, Emitter<DrawState> emit) {
-    emit(
-      state.copyWith(
-        color: const Color.fromARGB(255, 58, 61, 59),
-        pencilSelected: true,
-        brushSelected: false,
-        penSelector: false,
-        canDraw: true,
-        strokeWidth: 1.5,
-      ),
-    );
+    emit(state.copyWith(
+      color: const Color.fromARGB(255, 58, 61, 59),
+      pencilSelected: true,
+      brushSelected: false,
+      penSelector: false,
+      canDraw: true,
+      strokeWidth: 1.5,
+    ));
   }
 
   void _brushIconPressed(BrushIconPressed event, Emitter<DrawState> emit) {
-    emit(
-      state.copyWith(
-        color: const Color(0xff000000),
-        brushSelected: true,
-        pencilSelected: false,
-        penSelector: false,
-        canDraw: true,
-        strokeWidth: 8.0,
-      ),
-    );
+    emit(state.copyWith(
+      color: const Color(0xff000000),
+      brushSelected: true,
+      pencilSelected: false,
+      penSelector: false,
+      canDraw: true,
+      strokeWidth: 8.0,
+    ));
   }
 
   void _imageFlippedIconPressed(
@@ -354,7 +348,9 @@ class DrawBloc extends Bloc<DrawEvent, DrawState> {
 
   void _restoreModifiableImages(
       DrawRestoreModifiableImages event, Emitter<DrawState> emit) {
-    emit(state.copyWith(modifiableImages: event.images));
+    emit(state.copyWith(
+      modifiableImages: event.images,
+    ));
   }
 
   void _secondMontageDeleted(
