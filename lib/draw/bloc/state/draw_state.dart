@@ -30,6 +30,7 @@ class DrawState with _$DrawState {
     @Default(0) double previousRotation,
     @Default(0.0) double? gestureRotationStart,
     @Default(8.0) double strokeWidth,
+    @Default(8.0) double baseStrokeWidth,
     @Default(Offset.zero) Offset gestureOffset,
     @Default([]) List<ModifiableImage?> modifiableImages,
     @Default(TextFieldInput()) TextFieldInput drawingName,
