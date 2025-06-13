@@ -1,3 +1,5 @@
+import 'dart:ui' as ui;
+
 import 'package:bloc/bloc.dart';
 import 'package:drawing_app/draw/draw.dart';
 import 'package:drawing_app/models/models.dart';
@@ -35,6 +37,9 @@ class DrawBloc extends Bloc<DrawEvent, DrawState> {
     on<DrawRestoreModifiableImages>(_restoreModifiableImages);
     on<DrawSecondMontageDeleted>(_secondMontageDeleted);
     on<DrawToggleSwitchPressed>(_toggleSwitchPressed);
+    on<DrawFlipPressed>(_onFlipPressed);
+    on<ExportDrawingWithWhiteBackground>(_exportWithWhiteBackground);
+    on<DrawZoomChanged>(_onZoomChanged);
   }
 
   void _penSelectorPressed(PenSelectorPressed event, Emitter<DrawState> emit) {
@@ -46,24 +51,31 @@ class DrawBloc extends Bloc<DrawEvent, DrawState> {
   }
 
   void _penIconPressed(PenIconPressed event, Emitter<DrawState> emit) {
+    const base = 0.8;
+
     emit(state.copyWith(
       color: const Color.fromARGB(255, 58, 61, 59),
       pencilSelected: true,
       brushSelected: false,
       penSelector: false,
       canDraw: true,
-      strokeWidth: 1.5,
+      strokeWidth: base,
+      baseStrokeWidth: base,
     ));
   }
 
   void _brushIconPressed(BrushIconPressed event, Emitter<DrawState> emit) {
+    const base = 4.0;
+    final zoom = state.scale;
+
     emit(state.copyWith(
       color: const Color(0xff000000),
       brushSelected: true,
       pencilSelected: false,
       penSelector: false,
       canDraw: true,
-      strokeWidth: 8.0,
+      strokeWidth: base,
+      baseStrokeWidth: base / (zoom * 0.7),
     ));
   }
 
@@ -373,6 +385,126 @@ class DrawBloc extends Bloc<DrawEvent, DrawState> {
     emit(state.copyWith(
       isToggled: toggled,
       showBackground: !toggled,
+    ));
+  }
+
+  Future<void> _exportWithWhiteBackground(
+    ExportDrawingWithWhiteBackground event,
+    Emitter<DrawState> emit,
+  ) async {
+    final controller = event.controller;
+    final state = this.state;
+
+    const int width = 2048;
+    const int height = 1536;
+
+    final recorder = ui.PictureRecorder();
+    final canvas = Canvas(recorder);
+
+    final backgroundPaint = Paint()..color = Colors.white;
+    canvas.drawRect(Rect.fromLTWH(0, 0, width.toDouble(), height.toDouble()),
+        backgroundPaint);
+
+    final byteData = await controller.getImageData();
+    if (byteData == null) {
+      event.onExported(null);
+      return;
+    }
+
+    final imageBytes = byteData.buffer.asUint8List();
+    final codec = await ui.instantiateImageCodec(imageBytes);
+    final frame = await codec.getNextFrame();
+    final drawingImage = frame.image;
+
+    final dx = (width - drawingImage.width) / 2;
+    final dy = (height - drawingImage.height) / 2;
+    final offset = Offset(dx, dy);
+
+    canvas.drawImage(drawingImage, offset, Paint());
+
+    if (state.drawingFlipped) {
+      canvas.save();
+      canvas.translate(width.toDouble(), 0);
+      canvas.scale(-1, 1);
+      canvas.drawImage(drawingImage, offset, Paint());
+      canvas.restore();
+    }
+
+    final composedImage = await recorder.endRecording().toImage(width, height);
+    final pngBytes =
+        await composedImage.toByteData(format: ui.ImageByteFormat.png);
+
+    event.onExported(pngBytes?.buffer.asUint8List());
+  }
+
+  Future<void> _onFlipPressed(
+    DrawFlipPressed event,
+    Emitter<DrawState> emit,
+  ) async {
+    final controller = event.controller;
+    final context = event.context;
+
+    add(const DrawImageProcessOpened(open: true));
+
+    showDialog(
+      context: context,
+      builder: (context) {
+        return const Center(
+          child: SizedBox(
+            width: 100,
+            height: 100,
+            child: CircularProgressIndicator(
+              backgroundColor: Colors.cyan,
+            ),
+          ),
+        );
+      },
+    );
+
+    await Future.delayed(const Duration(milliseconds: 5));
+
+    final byteData = await controller.getImageData();
+
+    if (byteData == null) {
+      if (context.mounted) {
+        Navigator.of(context).pop();
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(
+            content: Text('Image null'),
+            behavior: SnackBarBehavior.floating,
+          ),
+        );
+      }
+      add(const DrawImageProcessOpened(open: false));
+      return;
+    }
+
+    final imageBytes = byteData.buffer.asUint8List();
+
+    add(DrawPaintedImageCollected(image: imageBytes));
+    add(const DrawingFlippedPressed());
+    add(const DrawImageProcessOpened(open: false));
+
+    if (context.mounted) {
+      Navigator.of(context).pop();
+    }
+  }
+
+  void _onZoomChanged(DrawZoomChanged event, Emitter<DrawState> emit) {
+    final zoom = event.zoom;
+    final base = state.baseStrokeWidth;
+
+    double adjusted = base;
+
+    if (state.pencilSelected) {
+      adjusted = base;
+    } else if (state.brushSelected) {
+      adjusted = base / (zoom * 0.7);
+    }
+
+    emit(state.copyWith(
+      scale: zoom,
+      strokeWidth: adjusted,
     ));
   }
 }
