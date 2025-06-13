@@ -2,6 +2,7 @@ import 'dart:typed_data';
 
 import 'package:drawing_app/draw/draw.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_drawing_board/flutter_drawing_board.dart';
 
 sealed class DrawEvent {
   const DrawEvent();
@@ -16,17 +17,18 @@ class DrawingIconPresed extends DrawEvent {
 }
 
 class PenIconPressed extends DrawEvent {
-  final double strokeWidth;
+  final double baseStrokeWidth;
 
   const PenIconPressed({
-    required this.strokeWidth,
+    required this.baseStrokeWidth,
   });
 }
 
 class BrushIconPressed extends DrawEvent {
-  final double strokeWidth;
+  final double baseStrokeWidth;
+
   const BrushIconPressed({
-    required this.strokeWidth,
+    required this.baseStrokeWidth,
   });
 }
 
@@ -134,6 +136,7 @@ class DrawPaintedImageCollected extends DrawEvent {
 
 class DrawReflectedImageScaleUpdated extends DrawEvent {
   final ScaleUpdateDetails details;
+
   const DrawReflectedImageScaleUpdated({
     required this.details,
   });
@@ -149,6 +152,7 @@ class DrawImageProcessOpened extends DrawEvent {
 
 class DrawGestureEnded extends DrawEvent {
   final int index;
+
   const DrawGestureEnded({
     required this.index,
   });
@@ -160,6 +164,7 @@ class DrawClearModifiableImages extends DrawEvent {
 
 class DrawRestoreModifiableImages extends DrawEvent {
   final List<ModifiableImage?> images;
+
   const DrawRestoreModifiableImages({
     required this.images,
   });
@@ -171,4 +176,32 @@ class DrawSecondMontageDeleted extends DrawEvent {
 
 class DrawToggleSwitchPressed extends DrawEvent {
   const DrawToggleSwitchPressed();
+}
+
+class DrawFlipPressed extends DrawEvent {
+  final DrawingController controller;
+  final BuildContext context;
+
+  const DrawFlipPressed({
+    required this.controller,
+    required this.context,
+  });
+}
+
+class ExportDrawingWithWhiteBackground extends DrawEvent {
+  final DrawingController controller;
+  final void Function(Uint8List?) onExported;
+
+  const ExportDrawingWithWhiteBackground({
+    required this.controller,
+    required this.onExported,
+  });
+}
+
+class DrawZoomChanged extends DrawEvent {
+  final double zoom;
+
+  const DrawZoomChanged({
+    required this.zoom,
+  });
 }
