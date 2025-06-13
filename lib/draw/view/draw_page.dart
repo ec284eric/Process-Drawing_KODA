@@ -1,5 +1,4 @@
 import 'dart:typed_data';
-import 'dart:ui' as ui;
 
 import 'package:drawing_app/draw/view/appbar_drawing.dart';
 import 'package:drawing_app/models/result/result.dart';
@@ -57,7 +56,8 @@ class _DrawPageState extends State<DrawPage> {
       _overlayTransformationController.value =
           _canvasTransformationController.value;
 
-      // _updateDynamicStrokeWidth();
+      final zoom = _getZoomScale();
+      _bloc.add(DrawZoomChanged(zoom: zoom));
     });
   }
 
@@ -73,113 +73,6 @@ class _DrawPageState extends State<DrawPage> {
     return _canvasTransformationController.value.getMaxScaleOnAxis();
   }
 
-  void _updateDynamicStrokeWidth() {
-    final zoom = _getZoomScale();
-    final state = _bloc.state;
-    final baseStrokeWidth = state.strokeWidth;
-
-    double adjustedWidth = baseStrokeWidth;
-
-    if (state.pencilSelected) {
-      adjustedWidth = baseStrokeWidth / (zoom * 2);
-    } else if (state.brushSelected) {
-      adjustedWidth = baseStrokeWidth / (zoom * 3);
-    }
-
-    _drawingController.setStyle(strokeWidth: adjustedWidth);
-  }
-
-  Future<Uint8List?> _exportWithWhiteBackground(
-    DrawState state,
-  ) async {
-    final recorder = ui.PictureRecorder();
-    final canvas = Canvas(recorder);
-
-    const int width = 2048;
-    const int height = 1536;
-
-    final backgroundPaint = Paint()..color = Colors.white;
-    canvas.drawRect(Rect.fromLTWH(0, 0, width.toDouble(), height.toDouble()),
-        backgroundPaint);
-
-    final byteData = await _drawingController.getImageData();
-    if (byteData == null) return null;
-
-    final codec = await ui.instantiateImageCodec(byteData.buffer.asUint8List());
-    final frame = await codec.getNextFrame();
-    final drawingImage = frame.image;
-
-    final dx = (width - drawingImage.width) / 2;
-    final dy = (height - drawingImage.height) / 2;
-    final offset = Offset(dx, dy);
-
-    canvas.drawImage(drawingImage, offset, Paint());
-
-    if (state.drawingFlipped) {
-      canvas.save();
-      canvas.translate(width.toDouble(), 0);
-      canvas.scale(-1, 1);
-      canvas.drawImage(drawingImage, offset, Paint());
-      canvas.restore();
-    } else {
-      canvas.drawImage(drawingImage, offset, Paint());
-    }
-
-    final composedImage = await recorder.endRecording().toImage(width, height);
-    final pngBytes =
-        await composedImage.toByteData(format: ui.ImageByteFormat.png);
-
-    return pngBytes?.buffer.asUint8List();
-  }
-
-  Future<void> _onFlipPressed(BuildContext context) async {
-    final bloc = context.read<DrawBloc>();
-
-    bloc.add(const DrawImageProcessOpened(open: true));
-
-    showDialog(
-      context: context,
-      builder: (context) {
-        return const Center(
-          child: SizedBox(
-            width: 100,
-            height: 100,
-            child: CircularProgressIndicator(
-              backgroundColor: Colors.cyan,
-            ),
-          ),
-        );
-      },
-    );
-
-    await Future.delayed(const Duration(milliseconds: 5));
-
-    final Uint8List? data =
-        (await _drawingController.getImageData())?.buffer.asUint8List();
-
-    if (data == null) {
-      if (context.mounted) {
-        ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
-          content: Text('Image null'),
-          behavior: SnackBarBehavior.floating,
-        ));
-        Navigator.of(context).pop();
-      }
-
-      return;
-    }
-
-    bloc.add(DrawPaintedImageCollected(image: data.buffer.asUint8List()));
-
-    bloc.add(const DrawingFlippedPressed());
-
-    bloc.add(const DrawImageProcessOpened(open: false));
-
-    if (context.mounted) {
-      Navigator.of(context).pop();
-    }
-  }
-
   Future<void> _requestStatusListener(
       BuildContext context, DrawState state) async {
     final bloc = context.read<DrawBloc>();
@@ -192,7 +85,6 @@ class _DrawPageState extends State<DrawPage> {
         bloc.add(const DrawImageProcessOpened(open: true));
 
         final originalImages = state.modifiableImages;
-
         bloc.add(const DrawClearModifiableImages());
 
         await Future.doWhile(() async {
@@ -200,23 +92,28 @@ class _DrawPageState extends State<DrawPage> {
           return bloc.state.modifiableImages.isNotEmpty;
         });
 
-        final Uint8List? bytes = await _exportWithWhiteBackground(state);
+        bloc.add(ExportDrawingWithWhiteBackground(
+          controller: _drawingController,
+          onExported: (Uint8List? bytes) {
+            bloc.add(DrawRestoreModifiableImages(images: originalImages));
 
-        bloc.add(DrawRestoreModifiableImages(images: originalImages));
+            if (bytes != null) {
+              bloc.add(DrawImageProcessed(imageBytes: bytes));
+            }
 
-        if (bytes != null) {
-          bloc.add(DrawImageProcessed(imageBytes: bytes));
-        }
-
-        bloc.add(const DrawImageProcessOpened(open: false));
+            bloc.add(const DrawImageProcessOpened(open: false));
+          },
+        ));
         break;
 
       case RequestStatus.success:
         if (!mounted) return;
-        ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
-          content: Text('Drawing Saved'),
-          behavior: SnackBarBehavior.floating,
-        ));
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(
+            content: Text('Drawing Saved'),
+            behavior: SnackBarBehavior.floating,
+          ),
+        );
         break;
 
       case RequestStatus.failure:
@@ -237,10 +134,10 @@ class _DrawPageState extends State<DrawPage> {
         listeners: [
           BlocListener<DrawBloc, DrawState>(
             listenWhen: (previous, current) =>
-                previous.strokeWidth != current.strokeWidth ||
-                previous.pencilSelected != current.pencilSelected ||
-                previous.brushSelected != current.brushSelected,
-            listener: (context, state) => _updateDynamicStrokeWidth(),
+                previous.strokeWidth != current.strokeWidth,
+            listener: (context, state) {
+              _drawingController.setStyle(strokeWidth: state.strokeWidth);
+            },
           ),
           BlocListener<DrawBloc, DrawState>(
             listenWhen: (previous, current) => previous.color != current.color,
@@ -286,7 +183,14 @@ class _DrawPageState extends State<DrawPage> {
                         context: context,
                       ),
                       transformationController: _canvasTransformationController,
-                      onFlipPressed: () => _onFlipPressed(context),
+                      onFlipPressed: () {
+                        context.read<DrawBloc>().add(
+                              DrawFlipPressed(
+                                context: context,
+                                controller: _drawingController,
+                              ),
+                            );
+                      },
                     ),
                   ),
                   Builder(
