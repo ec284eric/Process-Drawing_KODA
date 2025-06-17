@@ -205,3 +205,7 @@ class DrawZoomChanged extends DrawEvent {
     required this.zoom,
   });
 }
+
+class DrawToggleLinked extends DrawEvent {
+  const DrawToggleLinked();
+}
