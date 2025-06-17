@@ -100,7 +100,7 @@ class DrawingActions extends StatelessWidget {
                                           borderRadius:
                                               BorderRadius.circular(8),
                                           child: Image.network(
-                                            modifiableImage!.src,
+                                            modifiableImage?.src ?? '',
                                             fit: BoxFit.cover,
                                             height: double.infinity,
                                           ),
@@ -153,7 +153,7 @@ class DrawingActions extends StatelessWidget {
                                             borderRadius:
                                                 BorderRadius.circular(8),
                                             child: Image.network(
-                                              modifiableImage!.src,
+                                              modifiableImage?.src ?? '',
                                               fit: BoxFit.cover,
                                               height: double.infinity,
                                             ),
