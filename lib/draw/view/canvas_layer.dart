@@ -1,5 +1,4 @@
 import 'package:drawing_app/draw/bloc/bloc.dart';
-
 import 'package:drawing_app/models/models.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -20,84 +19,93 @@ class CanvasLayer extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final bloc = context.read<DrawBloc>();
+
     return BlocBuilder<DrawBloc, DrawState>(
       builder: (context, state) {
-        if (state.locked &&
-            transformationController.value != Matrix4.identity()) {
+        if (transformationController.value != Matrix4.identity()) {
           WidgetsBinding.instance.addPostFrameCallback((_) {
             transformationController.value = Matrix4.identity()
               ..rotateZ(state.previousRotation)
-              ..translate(state.modifiableImages[0]?.offset.dx ?? 0.0,
-                  state.modifiableImages[0]?.offset.dy ?? 0.0);
+              ..translate(
+                state.modifiableImages[0]?.offset.dx ?? 0.0,
+                state.modifiableImages[0]?.offset.dy ?? 0.0,
+              );
           });
         }
 
         return LayoutBuilder(
           builder: (context, constraints) {
             return IgnorePointer(
-              ignoring: !state.locked,
+              ignoring: !state.locked || !state.canDraw,
               child: Stack(
                 children: [
-                  IgnorePointer(
-                    ignoring: !state.canDraw,
-                    child: DrawingBoard(
-                      controller: drawingController,
-                      onInteractionUpdate: (p0) {},
-                      onPointerUp: (pue) {},
-                      background: state.locked &&
-                              state.imageCollectRequestStatus !=
-                                  RequestStatus.inProgress &&
-                              (state.showBackground || !state.isToggled)
-                          ? SizedBox(
-                              width: constraints.maxWidth,
-                              height: constraints.maxHeight,
-                              child: Stack(
-                                children: state.modifiableImages
-                                    .mapIndexed((index, modifiableImage) {
-                                  if (modifiableImage != null) {
-                                    return ModifiableImageItem(
-                                      modifiableImage: modifiableImage,
-                                      opacity: 0.5,
-                                      onScaleUpdate: (details) => bloc.add(
-                                        DrawImageScaleUpdated(
-                                            index: index, details: details),
-                                      ),
-                                      onScaleEnd: () => bloc
-                                          .add(DrawGestureEnded(index: index)),
-                                      secondImage:
-                                          index == 1 && state.imageFlipped
-                                              ? true
-                                              : false,
-                                    );
-                                  } else {
-                                    return Container();
-                                  }
-                                }).toList(),
-                              ),
-                            )
-                          : Container(
-                              width: constraints.maxWidth,
-                              height: constraints.maxHeight,
-                              color: Colors.transparent,
+                  DrawingBoard(
+                    controller: drawingController,
+                    onInteractionUpdate: (p0) {},
+                    onPointerUp: (pue) {},
+                    background: SizedBox(
+                      width: constraints.maxWidth,
+                      height: constraints.maxHeight,
+                      child: Stack(
+                        children: [
+                          Visibility(
+                            visible: state.locked &&
+                                state.imageCollectRequestStatus !=
+                                    RequestStatus.inProgress &&
+                                (state.showBackground || !state.isToggled),
+                            maintainState: true,
+                            maintainAnimation: true,
+                            maintainSize: true,
+                            child: Stack(
+                              children: [
+                                ...state.modifiableImages.mapIndexed(
+                                  (index, modifiableImage) {
+                                    if (modifiableImage != null) {
+                                      return IgnorePointer(
+                                        ignoring: state.canDraw,
+                                        child: ModifiableImageItem(
+                                          modifiableImage: modifiableImage,
+                                          opacity: 0.5,
+                                          onScaleUpdate: (details) => bloc.add(
+                                            DrawImageScaleUpdated(
+                                              index: index,
+                                              details: details,
+                                            ),
+                                          ),
+                                          onScaleEnd: () => bloc.add(
+                                            DrawGestureEnded(index: index),
+                                          ),
+                                          secondImage:
+                                              index == 1 && state.imageFlipped,
+                                        ),
+                                      );
+                                    } else {
+                                      return Container();
+                                    }
+                                  },
+                                ),
+                              ],
                             ),
-                    ),
-                  ),
-                  Visibility(
-                    visible: state.drawingFlipped ? true : false,
-                    child: Opacity(
-                      opacity: state.drawingFlipped ? 1 : 0,
-                      child: SizedBox(
-                        width: constraints.maxWidth,
-                        height: constraints.maxHeight,
-                        child: ModifiableImageItemData(
-                          modifiableImage: state.reflectedImage,
-                          onScaleUpdate: state.locked
-                              ? (value) => bloc.add(
-                                  DrawReflectedImageScaleUpdated(
-                                      details: value))
-                              : null,
-                          secondImage: false,
-                        ),
+                          ),
+                          Visibility(
+                            visible: state.drawingFlipped,
+                            child: SizedBox(
+                              width: constraints.maxWidth,
+                              height: constraints.maxHeight,
+                              child: ModifiableImageItem(
+                                modifiableImage: state.reflectedImage,
+                                onScaleUpdate: state.locked
+                                    ? (value) => bloc.add(
+                                          DrawReflectedImageScaleUpdated(
+                                            details: value,
+                                          ),
+                                        )
+                                    : null,
+                                secondImage: true,
+                              ),
+                            ),
+                          ),
+                        ],
                       ),
                     ),
                   ),
