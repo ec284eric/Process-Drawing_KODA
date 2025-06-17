@@ -17,7 +17,7 @@ class OverlayLayer extends StatelessWidget {
     return BlocBuilder<DrawBloc, DrawState>(
       builder: (context, state) {
         return Visibility(
-          visible: !state.locked ? true : false,
+          visible: !state.locked,
           child: LayoutBuilder(
             builder: (context, constraint) {
               return SizedBox(
@@ -46,7 +46,7 @@ class OverlayLayer extends StatelessWidget {
                             DrawImageScaleUpdated(
                                 index: index, details: details),
                           ),
-                          secondImage: state.imageFlipped ? true : false,
+                          secondImage: state.imageFlipped,
                         );
                       } else {
                         return Container();
