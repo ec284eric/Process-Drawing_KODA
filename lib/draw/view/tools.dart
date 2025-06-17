@@ -123,32 +123,48 @@ class Tools extends StatelessWidget {
                                 // Plus Icon
                                 SizedBox.square(
                                   dimension: 45,
-                                  child: IconButton(
-                                    onPressed: () {
-                                      bloc.add(const DrawingIconPresed());
-                                    },
-                                    icon: Image.asset(
-                                      Assets.plusIcon,
-                                      width: 32,
-                                      height: 32,
-                                      color: state.modifiableImages.isEmpty
-                                          ? Colors.white
-                                          : Colors.grey,
+                                  child: CircleAvatar(
+                                    backgroundColor:
+                                        state.modifiableImages.isEmpty &&
+                                                state.newDrawingSelected
+                                            ? Colors.black54
+                                            : Colors.transparent,
+                                    child: IconButton(
+                                      onPressed: state.modifiableImages.isEmpty
+                                          ? () {
+                                              bloc.add(
+                                                  const DrawingIconPresed());
+                                            }
+                                          : null,
+                                      icon: Image.asset(
+                                        Assets.plusIcon,
+                                        width: 32,
+                                        height: 32,
+                                        color: state.modifiableImages.isEmpty
+                                            ? (state.newDrawingSelected
+                                                ? const Color.fromARGB(
+                                                    255, 37, 150, 190)
+                                                : Colors.white)
+                                            : Colors.grey,
+                                      ),
                                     ),
                                   ),
                                 ),
-
                                 SizedBox.square(
                                   dimension: 45,
                                   child: CircleAvatar(
                                     backgroundColor: state.hideMontage &&
                                             state.modifiableImages.isNotEmpty &&
-                                            state.modifiableImages.length != 2
+                                            state.modifiableImages.length !=
+                                                2 &&
+                                            !state.locked &&
+                                            !state.imageFlipped
                                         ? Colors.black54
                                         : Colors.transparent,
                                     child: IconButton(
                                       onPressed: state.newDrawingSelected &&
-                                              !state.locked
+                                              !state.locked &&
+                                              !state.imageFlipped
                                           ? () {
                                               bloc.add(
                                                   const HideMontagePressed());
@@ -158,23 +174,22 @@ class Tools extends StatelessWidget {
                                               }
                                             }
                                           : null,
-                                      icon: Image.asset(
-                                        Assets.halfToneIcon,
-                                        width: 32,
-                                        height: 32,
-                                        color: state.newDrawingSelected &&
-                                                !state.locked
-                                            ? (state.hideMontage &&
-                                                    (state.modifiableImages
-                                                            .isNotEmpty &&
-                                                        state.modifiableImages
-                                                                .length !=
-                                                            2)
-                                                ? const Color.fromARGB(
-                                                    255, 37, 150, 190)
-                                                : Colors.white)
-                                            : Colors.grey,
-                                      ),
+                                      icon: Image.asset(Assets.halfToneIcon,
+                                          width: 32,
+                                          height: 32,
+                                          color: state.newDrawingSelected &&
+                                                  !state.locked &&
+                                                  !state.imageFlipped
+                                              ? (state.hideMontage &&
+                                                      (state.modifiableImages
+                                                              .isNotEmpty &&
+                                                          state.modifiableImages
+                                                                  .length !=
+                                                              2)
+                                                  ? const Color.fromARGB(
+                                                      255, 37, 150, 190)
+                                                  : Colors.white)
+                                              : Colors.grey),
                                     ),
                                   ),
                                 ),
@@ -182,7 +197,9 @@ class Tools extends StatelessWidget {
                                 SizedBox.square(
                                   dimension: 45,
                                   child: CircleAvatar(
-                                    backgroundColor: state.imageFlipped
+                                    backgroundColor: state.imageFlipped &&
+                                            !state.drawingFlipped &&
+                                            !state.locked
                                         ? Colors.black54
                                         : Colors.transparent,
                                     child: IconButton(
@@ -226,14 +243,17 @@ class Tools extends StatelessWidget {
                                   dimension: 45,
                                   child: CircleAvatar(
                                     backgroundColor: state.locked &&
-                                            state.modifiableImages.length == 2
+                                            state.modifiableImages.length ==
+                                                2 &&
+                                            !state.drawingFlipped
                                         ? Colors.black54
                                         : Colors.transparent,
                                     child: IconButton(
                                       onPressed: (state.modifiableImages
                                                   .isNotEmpty &&
                                               state.modifiableImages.length ==
-                                                  2)
+                                                  2 &&
+                                              !state.drawingFlipped)
                                           ? () {
                                               bloc.add(const DrawLockPressed());
                                             }
@@ -245,7 +265,8 @@ class Tools extends StatelessWidget {
                                         color: (state.modifiableImages
                                                     .isNotEmpty &&
                                                 state.modifiableImages.length ==
-                                                    2)
+                                                    2 &&
+                                                !state.drawingFlipped)
                                             ? (state.locked
                                                 ? const Color.fromARGB(
                                                     255, 37, 150, 190)
@@ -283,7 +304,9 @@ class Tools extends StatelessWidget {
                                         : Colors.transparent,
                                     child: IconButton(
                                       onPressed: (state.locked &&
-                                              state.modifiableImages.isNotEmpty)
+                                              state.modifiableImages
+                                                  .isNotEmpty &&
+                                              !state.drawingFlipped)
                                           ? () {
                                               bloc.add(
                                                   const PenSelectorPressed());
@@ -293,7 +316,10 @@ class Tools extends StatelessWidget {
                                         Assets.editIcon,
                                         width: 32,
                                         height: 32,
-                                        color: state.locked
+                                        color: (state.locked &&
+                                                state.modifiableImages
+                                                    .isNotEmpty &&
+                                                !state.drawingFlipped)
                                             ? (state.penSelector
                                                 ? const Color.fromARGB(
                                                     255, 37, 150, 190)
@@ -355,8 +381,7 @@ class Tools extends StatelessWidget {
                                 SizedBox.square(
                                   dimension: 45,
                                   child: CircleAvatar(
-                                    backgroundColor: (state.pencilSelected ||
-                                            state.brushSelected)
+                                    backgroundColor: state.isToggled
                                         ? Colors.black54
                                         : Colors.transparent,
                                     child: IconButton(
@@ -388,15 +413,29 @@ class Tools extends StatelessWidget {
 
                                 SizedBox.square(
                                   dimension: 45,
-                                  child: IconButton(
-                                    onPressed: state.locked ? () {} : null,
-                                    icon: Image.asset(
-                                      Assets.linkIcon,
-                                      width: 23,
-                                      height: 23,
-                                      color: state.locked
-                                          ? Colors.white
-                                          : Colors.grey,
+                                  child: CircleAvatar(
+                                    backgroundColor: state.isLinked
+                                        ? Colors.black54
+                                        : Colors.transparent,
+                                    child: IconButton(
+                                      onPressed: state.locked
+                                          ? () {
+                                              bloc.add(
+                                                  const DrawToggleLinked());
+                                            }
+                                          : null,
+                                      icon: Image.asset(
+                                        Assets.linkIcon,
+                                        width: 23,
+                                        height: 23,
+                                        color: (state.drawingFlipped ||
+                                                state.isLinked)
+                                            ? (state.isLinked
+                                                ? const Color.fromARGB(
+                                                    255, 37, 150, 190)
+                                                : Colors.white)
+                                            : Colors.grey,
+                                      ),
                                     ),
                                   ),
                                 ),
@@ -511,7 +550,10 @@ class Tools extends StatelessWidget {
                         SizedBox.square(
                           dimension: 45,
                           child: IconButton(
-                            onPressed: () => _restart(context),
+                            onPressed: state.newDrawingSelected &&
+                                    state.modifiableImages.isNotEmpty
+                                ? () => _restart(context)
+                                : null,
                             icon: Icon(
                               Icons.refresh,
                               size: 32,
