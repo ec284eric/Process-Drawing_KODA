@@ -37,9 +37,9 @@ class DrawBloc extends Bloc<DrawEvent, DrawState> {
     on<DrawRestoreModifiableImages>(_restoreModifiableImages);
     on<DrawSecondMontageDeleted>(_secondMontageDeleted);
     on<DrawToggleSwitchPressed>(_toggleSwitchPressed);
-    on<DrawFlipPressed>(_onFlipPressed);
     on<ExportDrawingWithWhiteBackground>(_exportWithWhiteBackground);
     on<DrawZoomChanged>(_onZoomChanged);
+    on<DrawToggleLinked>(_toggleLinked);
   }
 
   void _penSelectorPressed(PenSelectorPressed event, Emitter<DrawState> emit) {
@@ -179,6 +179,7 @@ class DrawBloc extends Bloc<DrawEvent, DrawState> {
     emit(state.copyWith(
       modifiableImages: modifiableImages,
       previousRotation: newRotation,
+      previousScale: newScale ?? currentImage.scale,
     ));
   }
 
@@ -250,6 +251,7 @@ class DrawBloc extends Bloc<DrawEvent, DrawState> {
   void _savePressed(DrawSavePressed event, Emitter<DrawState> emit) async {
     emit(state.copyWith(
       requestStatus: RequestStatus.inProgress,
+      hideMontage: !state.hideMontage,
     ));
   }
 
@@ -304,42 +306,8 @@ class DrawBloc extends Bloc<DrawEvent, DrawState> {
         errorType: ErrorType.none,
       ),
       requestStatus: RequestStatus.waiting,
-      reflectedImage: const ModifiableImageData(),
+      reflectedImage: const ModifiableImage(),
       imageCollectRequestStatus: RequestStatus.waiting,
-    ));
-  }
-
-  void _paintedImageCollected(
-      DrawPaintedImageCollected event, Emitter<DrawState> emit) {
-    emit(state.copyWith.reflectedImage(
-      src: event.image,
-    ));
-  }
-
-  void _drawingFlipped(DrawingFlippedPressed event, Emitter<DrawState> emit) {
-    emit(
-      state.copyWith(
-        drawingFlipped: !state.drawingFlipped,
-      ),
-    );
-  }
-
-  void _reflectedImageScaleUpdated(
-      DrawReflectedImageScaleUpdated event, Emitter<DrawState> emit) {
-    var modifiableImage = state.reflectedImage;
-    var rotation = state.rotation + event.details.rotation;
-
-    if ((rotation - state.rotation).abs() > 0) {
-      modifiableImage = modifiableImage.copyWith(
-        rotation: event.details.rotation,
-      );
-    }
-
-    modifiableImage = modifiableImage.copyWith(
-      offset: (state.reflectedImage.offset) + event.details.focalPointDelta,
-    );
-    emit(state.copyWith(
-      reflectedImage: modifiableImage,
     ));
   }
 
@@ -348,6 +316,42 @@ class DrawBloc extends Bloc<DrawEvent, DrawState> {
     emit(state.copyWith(
       imageCollectRequestStatus:
           event.open ? RequestStatus.inProgress : RequestStatus.success,
+    ));
+  }
+
+  void _paintedImageCollected(
+      DrawPaintedImageCollected event, Emitter<DrawState> emit) {
+    emit(state.copyWith.reflectedImage(
+      imageBytes: event.image,
+    ));
+  }
+
+  void _drawingFlipped(DrawingFlippedPressed event, Emitter<DrawState> emit) {
+    emit(state.copyWith(
+      drawingFlipped: !state.drawingFlipped,
+      canDraw: state.drawingFlipped ? true : false,
+    ));
+  }
+
+  void _reflectedImageScaleUpdated(
+      DrawReflectedImageScaleUpdated event, Emitter<DrawState> emit) {
+    var modifiableImage = state.reflectedImage;
+
+    double? newScale;
+    if (event.details.scale != 1.0) {
+      final currentScale = modifiableImage.scale;
+      const zoomSensitivity = 0.08;
+      final deltaScale = (event.details.scale - 1) * zoomSensitivity;
+      newScale = (currentScale + deltaScale).clamp(0.3, 6.0);
+    }
+
+    modifiableImage = modifiableImage.copyWith(
+      scale: newScale ?? modifiableImage.scale,
+      offset: modifiableImage.offset + event.details.focalPointDelta,
+    );
+
+    emit(state.copyWith(
+      reflectedImage: modifiableImage,
     ));
   }
 
@@ -425,6 +429,7 @@ class DrawBloc extends Bloc<DrawEvent, DrawState> {
     if (state.drawingFlipped) {
       canvas.save();
       canvas.translate(width.toDouble(), 0);
+
       canvas.scale(-1, 1);
       canvas.drawImage(drawingImage, offset, Paint());
       canvas.restore();
@@ -435,59 +440,6 @@ class DrawBloc extends Bloc<DrawEvent, DrawState> {
         await composedImage.toByteData(format: ui.ImageByteFormat.png);
 
     event.onExported(pngBytes?.buffer.asUint8List());
-  }
-
-  Future<void> _onFlipPressed(
-    DrawFlipPressed event,
-    Emitter<DrawState> emit,
-  ) async {
-    final controller = event.controller;
-    final context = event.context;
-
-    add(const DrawImageProcessOpened(open: true));
-
-    showDialog(
-      context: context,
-      builder: (context) {
-        return const Center(
-          child: SizedBox(
-            width: 100,
-            height: 100,
-            child: CircularProgressIndicator(
-              backgroundColor: Colors.cyan,
-            ),
-          ),
-        );
-      },
-    );
-
-    await Future.delayed(const Duration(milliseconds: 5));
-
-    final byteData = await controller.getImageData();
-
-    if (byteData == null) {
-      if (context.mounted) {
-        Navigator.of(context).pop();
-        ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(
-            content: Text('Image null'),
-            behavior: SnackBarBehavior.floating,
-          ),
-        );
-      }
-      add(const DrawImageProcessOpened(open: false));
-      return;
-    }
-
-    final imageBytes = byteData.buffer.asUint8List();
-
-    add(DrawPaintedImageCollected(image: imageBytes));
-    add(const DrawingFlippedPressed());
-    add(const DrawImageProcessOpened(open: false));
-
-    if (context.mounted) {
-      Navigator.of(context).pop();
-    }
   }
 
   void _onZoomChanged(DrawZoomChanged event, Emitter<DrawState> emit) {
@@ -505,6 +457,12 @@ class DrawBloc extends Bloc<DrawEvent, DrawState> {
     emit(state.copyWith(
       scale: zoom,
       strokeWidth: adjusted,
+    ));
+  }
+
+  void _toggleLinked(DrawToggleLinked event, Emitter<DrawState> emit) {
+    emit(state.copyWith(
+      isLinked: !state.isLinked,
     ));
   }
 }
