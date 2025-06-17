@@ -17,29 +17,34 @@ void main() async {
   runApp(const DrawingApp());
 }
 
-class DrawingApp extends StatelessWidget {
+class DrawingApp extends StatefulWidget {
   const DrawingApp({super.key});
 
   @override
-  Widget build(BuildContext context) {
-    final GoRouter router = GoRouter(
-      initialLocation: SplashScreenPage.route,
-      routes: <RouteBase>[
-        GoRoute(
-          path: DrawPage.route,
-          builder: (BuildContext context, GoRouterState state) {
-            return const DrawPage();
-          },
-        ),
-        GoRoute(
-          path: SplashScreenPage.route,
-          builder: (BuildContext context, GoRouterState state) {
-            return const SplashScreenPage();
-          },
-        ),
-      ],
-    );
+  State<DrawingApp> createState() => _DrawingAppState();
+}
 
+class _DrawingAppState extends State<DrawingApp> {
+  final GoRouter router = GoRouter(
+    initialLocation: SplashScreenPage.route,
+    routes: <RouteBase>[
+      GoRoute(
+        path: DrawPage.route,
+        builder: (BuildContext context, GoRouterState state) {
+          return const DrawPage();
+        },
+      ),
+      GoRoute(
+        path: SplashScreenPage.route,
+        builder: (BuildContext context, GoRouterState state) {
+          return const SplashScreenPage();
+        },
+      ),
+    ],
+  );
+
+  @override
+  Widget build(BuildContext context) {
     return MaterialApp.router(
       debugShowCheckedModeBanner: false,
       routerConfig: router,
