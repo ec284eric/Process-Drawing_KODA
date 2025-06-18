@@ -90,48 +90,48 @@ class CanvasLayer extends StatelessWidget {
                               ],
                             ),
                           ),
-                          // Visibility(
-                          //   visible: state.drawingFlipped,
-                          //   child: SizedBox(
-                          //     width: constraints.maxWidth,
-                          //     height: constraints.maxHeight,
-                          //     child: ModifiableImageItem(
-                          //       modifiableImage: state.reflectedImage,
-                          //       onScaleUpdate: state.locked
-                          //           ? (value) => bloc.add(
-                          //                 DrawReflectedImageScaleUpdated(
-                          //                   details: value,
-                          //                 ),
-                          //               )
-                          //           : null,
-                          //       secondImage: true,
-                          //     ),
-                          //   ),
-                          // ),
+                          Visibility(
+                            visible: state.drawingFlipped,
+                            child: SizedBox(
+                              width: constraints.maxWidth,
+                              height: constraints.maxHeight,
+                              child: ModifiableImageItem(
+                                modifiableImage: state.reflectedImage,
+                                onScaleUpdate: state.locked
+                                    ? (value) => bloc.add(
+                                          DrawReflectedImageScaleUpdated(
+                                            details: value,
+                                          ),
+                                        )
+                                    : null,
+                                secondImage: true,
+                              ),
+                            ),
+                          ),
                         ],
                       ),
                     ),
                   ),
                 ),
-                Visibility(
-                  visible: state.drawingFlipped,
-                  child: SizedBox(
-                    width: constraints.maxWidth,
-                    height: constraints.maxHeight,
-                    child: ModifiableImageItem(
-                      modifiableImage: state.reflectedImage
-                          .copyWith(scale: 0.23453973308252418),
-                      onScaleUpdate: state.locked
-                          ? (value) => bloc.add(
-                                DrawReflectedImageScaleUpdated(
-                                  details: value,
-                                ),
-                              )
-                          : null,
-                      secondImage: true,
-                    ),
-                  ),
-                ),
+                // Visibility(
+                //   visible: state.drawingFlipped,
+                //   child: SizedBox(
+                //     width: constraints.maxWidth,
+                //     height: constraints.maxHeight,
+                //     child: ModifiableImageItem(
+                //       modifiableImage: state.reflectedImage
+                //           .copyWith(scale: 0.23453973308252418),
+                //       onScaleUpdate: state.locked
+                //           ? (value) => bloc.add(
+                //                 DrawReflectedImageScaleUpdated(
+                //                   details: value,
+                //                 ),
+                //               )
+                //           : null,
+                //       secondImage: true,
+                //     ),
+                //   ),
+                // ),
               ],
             );
           },
