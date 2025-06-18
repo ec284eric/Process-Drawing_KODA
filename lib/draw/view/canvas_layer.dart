@@ -35,13 +35,16 @@ class CanvasLayer extends StatelessWidget {
 
         return LayoutBuilder(
           builder: (context, constraints) {
-            return IgnorePointer(
-              ignoring: !state.locked || !state.canDraw,
-              child: Stack(
-                children: [
-                  DrawingBoard(
+            return Stack(
+              children: [
+                IgnorePointer(
+                  ignoring: !state.locked || !state.canDraw,
+                  child: DrawingBoard(
                     controller: drawingController,
                     onInteractionUpdate: (p0) {},
+                    onInteractionEnd: (p0) {
+                      print('interaction: $p0');
+                    },
                     onPointerUp: (pue) {},
                     background: SizedBox(
                       width: constraints.maxWidth,
@@ -87,30 +90,49 @@ class CanvasLayer extends StatelessWidget {
                               ],
                             ),
                           ),
-                          Visibility(
-                            visible: state.drawingFlipped,
-                            child: SizedBox(
-                              width: constraints.maxWidth,
-                              height: constraints.maxHeight,
-                              child: ModifiableImageItem(
-                                modifiableImage: state.reflectedImage,
-                                onScaleUpdate: state.locked
-                                    ? (value) => bloc.add(
-                                          DrawReflectedImageScaleUpdated(
-                                            details: value,
-                                          ),
-                                        )
-                                    : null,
-                                secondImage: true,
-                              ),
-                            ),
-                          ),
+                          // Visibility(
+                          //   visible: state.drawingFlipped,
+                          //   child: SizedBox(
+                          //     width: constraints.maxWidth,
+                          //     height: constraints.maxHeight,
+                          //     child: ModifiableImageItem(
+                          //       modifiableImage: state.reflectedImage,
+                          //       onScaleUpdate: state.locked
+                          //           ? (value) => bloc.add(
+                          //                 DrawReflectedImageScaleUpdated(
+                          //                   details: value,
+                          //                 ),
+                          //               )
+                          //           : null,
+                          //       secondImage: true,
+                          //     ),
+                          //   ),
+                          // ),
                         ],
                       ),
                     ),
                   ),
-                ],
-              ),
+                ),
+                Visibility(
+                  visible: state.drawingFlipped,
+                  child: SizedBox(
+                    width: constraints.maxWidth,
+                    height: constraints.maxHeight,
+                    child: ModifiableImageItem(
+                      modifiableImage: state.reflectedImage
+                          .copyWith(scale: 0.23453973308252418),
+                      onScaleUpdate: state.locked
+                          ? (value) => bloc.add(
+                                DrawReflectedImageScaleUpdated(
+                                  details: value,
+                                ),
+                              )
+                          : null,
+                      secondImage: true,
+                    ),
+                  ),
+                ),
+              ],
             );
           },
         );
