@@ -246,20 +246,20 @@ class _DrawPageState extends State<DrawPage> {
                       // },
                     ),
                   ),
-                  Builder(
-                    builder: (context) {
-                      final image = this.image;
-                      if (image != null) {
-                        return Container(
-                          height: MediaQuery.of(context).size.height,
-                          width: MediaQuery.of(context).size.width,
-                          color: Colors.red,
-                          child: Image.memory(image),
-                        );
-                      }
-                      return Container();
-                    },
-                  ),
+                  // Builder(
+                  //   builder: (context) {
+                  //     final image = this.image;
+                  //     if (image != null) {
+                  //       return Container(
+                  //         height: MediaQuery.of(context).size.height,
+                  //         width: MediaQuery.of(context).size.width,
+                  //         color: Colors.red,
+                  //         child: Image.memory(image),
+                  //       );
+                  //     }
+                  //     return Container();
+                  //   },
+                  // ),
                 ],
               ),
             );
