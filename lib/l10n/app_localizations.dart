@@ -94,6 +94,12 @@ abstract class AppLocalizations {
   /// A list of this localizations delegate's supported locales.
   static const List<Locale> supportedLocales = <Locale>[Locale('en')];
 
+  /// No description provided for @allRightsReserved.
+  ///
+  /// In en, this message translates to:
+  /// **'All rights reserved.'**
+  String get allRightsReserved;
+
   /// No description provided for @areYouSure.
   ///
   /// In en, this message translates to:
@@ -112,11 +118,23 @@ abstract class AppLocalizations {
   /// **'Choose Image'**
   String get chooseImage;
 
+  /// No description provided for @climateChange.
+  ///
+  /// In en, this message translates to:
+  /// **'Climate Change – Climate scientists throughout the world, among others'**
+  String get climateChange;
+
   /// No description provided for @confirmRestart.
   ///
   /// In en, this message translates to:
   /// **'Confirm Restart'**
   String get confirmRestart;
+
+  /// No description provided for @democracy.
+  ///
+  /// In en, this message translates to:
+  /// **'Democracy – Citizens and communities of Madison, WI'**
+  String get democracy;
 
   /// No description provided for @drawingName.
   ///
@@ -124,11 +142,41 @@ abstract class AppLocalizations {
   /// **'Drawing Name'**
   String get drawingName;
 
+  /// No description provided for @energy.
+  ///
+  /// In en, this message translates to:
+  /// **'Energy – Coal Miners of Quecreek in Somerset, Pennsylvania'**
+  String get energy;
+
+  /// No description provided for @ericChanisAnAmerican.
+  ///
+  /// In en, this message translates to:
+  /// **'Eric Chan is an American contemporary visual artist known for his multi-disciplinary practice. He often creates artworks through participatory means with the public, and his projects investigate subjects, events and people that shape society.'**
+  String get ericChanisAnAmerican;
+
+  /// No description provided for @ericChanReceived.
+  ///
+  /// In en, this message translates to:
+  /// **'Eric Chan received his BA from UC Berkeley and his MFA from Columbia University. His artworks and projects have been presented and participated in publicly in museums and cultural institutions. His artworks are in the permanent collections of museums internationally.'**
+  String get ericChanReceived;
+
+  /// No description provided for @firstNations.
+  ///
+  /// In en, this message translates to:
+  /// **'The Ho-Chunk Nation'**
+  String get firstNations;
+
   /// No description provided for @helloWorld.
   ///
   /// In en, this message translates to:
   /// **'Hello World!'**
   String get helloWorld;
+
+  /// No description provided for @humanTrafficking.
+  ///
+  /// In en, this message translates to:
+  /// **'Human Trafficking – Stateless Children in Chiang Mai, Thailand'**
+  String get humanTrafficking;
 
   /// No description provided for @montageAcetates.
   ///
@@ -142,6 +190,30 @@ abstract class AppLocalizations {
   /// **'This will override your current changes and starts a new one.'**
   String get overrideChanges;
 
+  /// No description provided for @processDrawing.
+  ///
+  /// In en, this message translates to:
+  /// **'Process Drawing'**
+  String get processDrawing;
+
+  /// No description provided for @processDrawingWasConceived.
+  ///
+  /// In en, this message translates to:
+  /// **'Process Drawing was conceived by Eric Chan and has been created for you.'**
+  String get processDrawingWasConceived;
+
+  /// No description provided for @processDrawingAndMontage.
+  ///
+  /// In en, this message translates to:
+  /// **'\"Process Drawing\" and \"Montage Acetates\" are copyright © Eric A. Chan.'**
+  String get processDrawingAndMontage;
+
+  /// No description provided for @refugees.
+  ///
+  /// In en, this message translates to:
+  /// **'Refugees – Asylum seekers from Venezuela'**
+  String get refugees;
+
   /// No description provided for @restart.
   ///
   /// In en, this message translates to:
@@ -153,6 +225,12 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'This will erase all your current changes and start a new drawing.\nThis action cannot be undone. Do you want to proceed?'**
   String get restartMessage;
+
+  /// No description provided for @revolution.
+  ///
+  /// In en, this message translates to:
+  /// **'Revolution – students and citizens in Cairo during the Arab Spring'**
+  String get revolution;
 
   /// No description provided for @save.
   ///
@@ -171,6 +249,24 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Tap to preview'**
   String get tapToPreview;
+
+  /// No description provided for @urbanPlanning.
+  ///
+  /// In en, this message translates to:
+  /// **'Urban Planning – Meatpackers in the Meatpacking District of Manhattan, New York City'**
+  String get urbanPlanning;
+
+  /// No description provided for @war.
+  ///
+  /// In en, this message translates to:
+  /// **'War – Citizens of Ukraine during the Russian invasion & American soldiers and military personnel in the Irag War'**
+  String get war;
+
+  /// No description provided for @workingGlobally.
+  ///
+  /// In en, this message translates to:
+  /// **'Working globally, the communities and themes of Eric Chan\'s artworks and projects include:'**
+  String get workingGlobally;
 }
 
 class _AppLocalizationsDelegate

@@ -2,6 +2,7 @@ import 'package:drawing_app/constants/assets.dart';
 import 'package:el_tooltip/el_tooltip.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:drawing_app/l10n/app_localizations.dart';
 
 import '../bloc/bloc.dart';
 
@@ -64,25 +65,107 @@ class AppBarDrawing extends StatelessWidget {
                 width: 32,
                 height: 32,
               ),
-              onPressed: () {
-                // Action when search icon is pressed
-                print('Search pressed');
-              },
+              onPressed: () {},
             ),
             ElTooltip(
-              // triggerMode: TooltipTriggerMode.tap,
-              // verticalOffset: 48,
-              // height: 24,
-              // message:
-              //     "Process and Wellness Drawing was conceived by Eric A. Chan and has been created for you.\n\n“Process Drawing”, “Wellness Drawing”, “Process and Wellness Drawing”, and “MontageAcetates” are copyright © Eric A. Chan. All rights reserved.",
               showModal: false,
               distance: 10,
               position: ElTooltipPosition.bottomEnd,
               color: const Color.fromARGB(255, 136, 132, 132),
-              content: const Text(
-                'Process and Wellness Drawing was conceived by Eric A. Chan and has been created for you. “Process Drawing”, “Wellness Drawing”, “Process and Wellness Drawing”, and “MontageAcetates” are copyright © Eric A. Chan. All rights reserved.',
-                style: TextStyle(
-                  color: Colors.white,
+              content: SizedBox(
+                width: 500,
+                height: 400,
+                child: Scrollbar(
+                  radius: const Radius.circular(
+                    4,
+                  ),
+                  thumbVisibility: true,
+                  thickness: 4,
+                  child: SingleChildScrollView(
+                    padding: const EdgeInsets.all(
+                      12,
+                    ),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                          AppLocalizations.of(context)?.processDrawing ?? '',
+                          style: const TextStyle(
+                            color: Colors.white,
+                            fontWeight: FontWeight.bold,
+                            fontSize: 16,
+                          ),
+                        ),
+                        const SizedBox(
+                          height: 8,
+                        ),
+                        Text(
+                          AppLocalizations.of(context)
+                                  ?.processDrawingWasConceived ??
+                              '',
+                          style: const TextStyle(
+                            color: Colors.white,
+                            fontSize: 14,
+                            height: 1.4,
+                          ),
+                        ),
+                        const SizedBox(
+                          height: 8,
+                        ),
+                        Text(
+                          '${AppLocalizations.of(context)?.processDrawingAndMontage ?? ''}\n${AppLocalizations.of(context)?.allRightsReserved ?? ''}',
+                          style: const TextStyle(
+                            color: Colors.white,
+                            fontSize: 14,
+                            height: 1.4,
+                          ),
+                        ),
+                        const SizedBox(
+                          height: 12,
+                        ),
+                        Text(
+                          AppLocalizations.of(context)?.ericChanisAnAmerican ??
+                              '',
+                          style: const TextStyle(
+                            color: Colors.white,
+                            fontSize: 14,
+                            height: 1.4,
+                          ),
+                        ),
+                        const SizedBox(
+                          height: 12,
+                        ),
+                        Text(
+                          '${AppLocalizations.of(context)?.workingGlobally ?? ''}\n\n'
+                          '${AppLocalizations.of(context)?.war ?? ''}\n\n'
+                          '${AppLocalizations.of(context)?.revolution ?? ''}\n\n'
+                          '${AppLocalizations.of(context)?.humanTrafficking ?? ''}\n\n'
+                          '${AppLocalizations.of(context)?.energy ?? ''}\n\n'
+                          '${AppLocalizations.of(context)?.urbanPlanning ?? ''}\n\n'
+                          '${AppLocalizations.of(context)?.democracy ?? ''}\n\n'
+                          '${AppLocalizations.of(context)?.refugees ?? ''}\n\n'
+                          '${AppLocalizations.of(context)?.firstNations ?? ''}\n\n'
+                          '${AppLocalizations.of(context)?.climateChange ?? ''}',
+                          style: const TextStyle(
+                            color: Colors.white,
+                            fontSize: 14,
+                            height: 1.4,
+                          ),
+                        ),
+                        const SizedBox(
+                          height: 12,
+                        ),
+                        Text(
+                          AppLocalizations.of(context)?.ericChanReceived ?? '',
+                          style: const TextStyle(
+                            color: Colors.white,
+                            fontSize: 14,
+                            height: 1.4,
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
                 ),
               ),
               child: IconButton(
