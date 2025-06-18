@@ -190,23 +190,23 @@ abstract class AppLocalizations {
   /// **'This will override your current changes and starts a new one.'**
   String get overrideChanges;
 
-  /// No description provided for @processDrawing.
+  /// No description provided for @wellnessDrawing.
   ///
   /// In en, this message translates to:
-  /// **'Process Drawing'**
-  String get processDrawing;
+  /// **'Wellness Drawing'**
+  String get wellnessDrawing;
 
-  /// No description provided for @processDrawingWasConceived.
+  /// No description provided for @wellnessDrawingWasConceived.
   ///
   /// In en, this message translates to:
-  /// **'Process Drawing was conceived by Eric Chan and has been created for you.'**
-  String get processDrawingWasConceived;
+  /// **'Wellness Drawing was conceived by Eric Chan and has been created for you.'**
+  String get wellnessDrawingWasConceived;
 
-  /// No description provided for @processDrawingAndMontage.
+  /// No description provided for @wellnessDrawingAndMontage.
   ///
   /// In en, this message translates to:
-  /// **'\"Process Drawing\" and \"Montage Acetates\" are copyright © Eric A. Chan.'**
-  String get processDrawingAndMontage;
+  /// **'\"Welness Drawing\" and \"Montage Acetates\" are copyright © Eric A. Chan.'**
+  String get wellnessDrawingAndMontage;
 
   /// No description provided for @refugees.
   ///

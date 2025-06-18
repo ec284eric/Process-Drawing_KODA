@@ -63,15 +63,15 @@ class AppLocalizationsEn extends AppLocalizations {
       'This will override your current changes and starts a new one.';
 
   @override
-  String get processDrawing => 'Process Drawing';
+  String get wellnessDrawing => 'Wellness Drawing';
 
   @override
-  String get processDrawingWasConceived =>
-      'Process Drawing was conceived by Eric Chan and has been created for you.';
+  String get wellnessDrawingWasConceived =>
+      'Wellness Drawing was conceived by Eric Chan and has been created for you.';
 
   @override
-  String get processDrawingAndMontage =>
-      '\"Process Drawing\" and \"Montage Acetates\" are copyright © Eric A. Chan.';
+  String get wellnessDrawingAndMontage =>
+      '\"Welness Drawing\" and \"Montage Acetates\" are copyright © Eric A. Chan.';
 
   @override
   String get refugees => 'Refugees – Asylum seekers from Venezuela';
