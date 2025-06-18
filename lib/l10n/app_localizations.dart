@@ -163,7 +163,7 @@ abstract class AppLocalizations {
   /// No description provided for @firstNations.
   ///
   /// In en, this message translates to:
-  /// **'The Ho-Chunk Nation'**
+  /// **'First Nations – The Ho-Chunk Nation'**
   String get firstNations;
 
   /// No description provided for @helloWorld.

@@ -46,7 +46,7 @@ class AppLocalizationsEn extends AppLocalizations {
       'Eric Chan received his BA from UC Berkeley and his MFA from Columbia University. His artworks and projects have been presented and participated in publicly in museums and cultural institutions. His artworks are in the permanent collections of museums internationally.';
 
   @override
-  String get firstNations => 'The Ho-Chunk Nation';
+  String get firstNations => 'First Nations – The Ho-Chunk Nation';
 
   @override
   String get helloWorld => 'Hello World!';
