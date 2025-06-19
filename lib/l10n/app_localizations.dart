@@ -190,24 +190,6 @@ abstract class AppLocalizations {
   /// **'This will override your current changes and starts a new one.'**
   String get overrideChanges;
 
-  /// No description provided for @wellnessDrawing.
-  ///
-  /// In en, this message translates to:
-  /// **'Wellness Drawing'**
-  String get wellnessDrawing;
-
-  /// No description provided for @wellnessDrawingWasConceived.
-  ///
-  /// In en, this message translates to:
-  /// **'Wellness Drawing was conceived by Eric Chan and has been created for you.'**
-  String get wellnessDrawingWasConceived;
-
-  /// No description provided for @wellnessDrawingAndMontage.
-  ///
-  /// In en, this message translates to:
-  /// **'\"Welness Drawing\" and \"Montage Acetates\" are copyright © Eric A. Chan.'**
-  String get wellnessDrawingAndMontage;
-
   /// No description provided for @refugees.
   ///
   /// In en, this message translates to:
@@ -255,6 +237,24 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Urban Planning – Meatpackers in the Meatpacking District of Manhattan, New York City'**
   String get urbanPlanning;
+
+  /// No description provided for @wellnessDrawing.
+  ///
+  /// In en, this message translates to:
+  /// **'Wellness Drawing'**
+  String get wellnessDrawing;
+
+  /// No description provided for @wellnessDrawingWasConceived.
+  ///
+  /// In en, this message translates to:
+  /// **'Wellness Drawing was conceived by Eric Chan and has been created for you.'**
+  String get wellnessDrawingWasConceived;
+
+  /// No description provided for @wellnessDrawingAndMontage.
+  ///
+  /// In en, this message translates to:
+  /// **'\"Welness Drawing\" and \"Montage Acetates\" are copyright © Eric A. Chan.'**
+  String get wellnessDrawingAndMontage;
 
   /// No description provided for @war.
   ///

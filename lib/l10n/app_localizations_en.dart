@@ -63,17 +63,6 @@ class AppLocalizationsEn extends AppLocalizations {
       'This will override your current changes and starts a new one.';
 
   @override
-  String get wellnessDrawing => 'Wellness Drawing';
-
-  @override
-  String get wellnessDrawingWasConceived =>
-      'Wellness Drawing was conceived by Eric Chan and has been created for you.';
-
-  @override
-  String get wellnessDrawingAndMontage =>
-      '\"Welness Drawing\" and \"Montage Acetates\" are copyright © Eric A. Chan.';
-
-  @override
   String get refugees => 'Refugees – Asylum seekers from Venezuela';
 
   @override
@@ -99,6 +88,17 @@ class AppLocalizationsEn extends AppLocalizations {
   @override
   String get urbanPlanning =>
       'Urban Planning – Meatpackers in the Meatpacking District of Manhattan, New York City';
+
+  @override
+  String get wellnessDrawing => 'Wellness Drawing';
+
+  @override
+  String get wellnessDrawingWasConceived =>
+      'Wellness Drawing was conceived by Eric Chan and has been created for you.';
+
+  @override
+  String get wellnessDrawingAndMontage =>
+      '\"Welness Drawing\" and \"Montage Acetates\" are copyright © Eric A. Chan.';
 
   @override
   String get war =>
