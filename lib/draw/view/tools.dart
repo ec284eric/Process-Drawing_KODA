@@ -72,7 +72,7 @@ class Tools extends StatelessWidget {
 
     drawingController.clear();
     transformationController.value = Matrix4.identity();
-    bloc.add(const DrawRestartPressed());
+    bloc.add(const DrawRestartButtonPressed());
   }
 
   @override
@@ -132,8 +132,7 @@ class Tools extends StatelessWidget {
                                     child: IconButton(
                                       onPressed: state.modifiableImages.isEmpty
                                           ? () {
-                                              bloc.add(
-                                                  const DrawingIconPresed());
+                                              bloc.add(const DrawIconPresed());
                                             }
                                           : null,
                                       icon: Image.asset(
@@ -167,7 +166,7 @@ class Tools extends StatelessWidget {
                                               !state.imageFlipped
                                           ? () {
                                               bloc.add(
-                                                  const HideMontagePressed());
+                                                  const DrawHideMontageIconButtonPressed());
                                               if (Navigator.of(context)
                                                   .canPop()) {
                                                 Navigator.of(context).pop();
@@ -207,7 +206,7 @@ class Tools extends StatelessWidget {
                                                   .isNotEmpty &&
                                               !state.locked
                                           ? bloc.add(
-                                              const ImageFlippedIconPressed())
+                                              const DrawImageFlippedIconButtonPressed())
                                           : null,
                                       icon: Image.asset(
                                         Assets.icon2Icon,
@@ -309,7 +308,7 @@ class Tools extends StatelessWidget {
                                               !state.drawingFlipped)
                                           ? () {
                                               bloc.add(
-                                                  const PenSelectorPressed());
+                                                  const DrawPenSelectorButtonPressed());
                                             }
                                           : null,
                                       icon: Image.asset(
@@ -421,7 +420,7 @@ class Tools extends StatelessWidget {
                                       onPressed: state.locked
                                           ? () {
                                               bloc.add(
-                                                  const DrawToggleLinked());
+                                                  const DrawLinkIconButtonPressed());
                                             }
                                           : null,
                                       icon: Image.asset(

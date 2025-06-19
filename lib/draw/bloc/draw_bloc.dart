@@ -21,36 +21,39 @@ class DrawBloc extends Bloc<DrawEvent, DrawState> {
     on<DrawSavePressed>(_savePressed);
     on<DrawDrawingNameChanged>(_drawingNameChanged);
     on<DrawImageProcessed>(_imageProcessed);
-    on<HideMontagePressed>(_hideMontagePressed);
-    on<DrawingIconPresed>(_drawingIconPresed);
-    on<ImageFlippedIconPressed>(_imageFlippedIconPressed);
-    on<PenSelectorPressed>(_penSelectorPressed);
-    on<PenIconPressed>(_penIconPressed);
-    on<BrushIconPressed>(_brushIconPressed);
-    on<DrawRestartPressed>(_restartPressed);
-    on<DrawingFlippedPressed>(_drawingFlipped);
+    on<DrawHideMontageIconButtonPressed>(_hideMontageIconButtonPressed);
+    on<DrawIconPresed>(_drawingIconPresed);
+    on<DrawImageFlippedIconButtonPressed>(_imageFlippedIconPressed);
+    on<DrawPenSelectorButtonPressed>(_penSelectorIconButtonPressed);
+    on<DrawPencilIconButtonPressed>(_penIconPressed);
+    on<DrawBrushIconButtonPressed>(_brushIconPressed);
+    on<DrawRestartButtonPressed>(_restartPressed);
+    on<DrawFlippedButtonPressed>(_drawingFlipped);
     on<DrawReflectedImageScaleUpdated>(_reflectedImageScaleUpdated);
     on<DrawPaintedImageCollected>(_paintedImageCollected);
     on<DrawImageProcessOpened>(_imageProcessOpened);
     on<DrawGestureEnded>(_onGestureEnded);
-    on<DrawClearModifiableImages>(_clearModifiableImages);
-    on<DrawRestoreModifiableImages>(_restoreModifiableImages);
+    on<DrawModifiableImagesCleared>(_clearModifiableImages);
+    on<DrawModifiableImagesRestored>(_restoreModifiableImages);
     on<DrawSecondMontageDeleted>(_secondMontageDeleted);
     on<DrawToggleSwitchPressed>(_toggleSwitchPressed);
-    on<ExportDrawingWithWhiteBackground>(_exportWithWhiteBackground);
-    on<DrawZoomChanged>(_onZoomChanged);
-    on<DrawToggleLinked>(_toggleLinked);
+    on<DrawWhiteBackgroundSaved>(_whiteBackgroundSaved);
+    on<DrawZoomChanged>(_drawingZoomChanged);
+    on<DrawLinkIconButtonPressed>(_linkPressed);
   }
 
-  void _penSelectorPressed(PenSelectorPressed event, Emitter<DrawState> emit) {
+  void _penSelectorIconButtonPressed(
+      DrawPenSelectorButtonPressed event, Emitter<DrawState> emit) {
     final opening = !state.penSelector;
+
     emit(state.copyWith(
       penSelector: opening,
       canDraw: (state.pencilSelected || state.brushSelected) && opening,
     ));
   }
 
-  void _penIconPressed(PenIconPressed event, Emitter<DrawState> emit) {
+  void _penIconPressed(
+      DrawPencilIconButtonPressed event, Emitter<DrawState> emit) {
     const base = 0.8;
 
     emit(state.copyWith(
@@ -64,7 +67,8 @@ class DrawBloc extends Bloc<DrawEvent, DrawState> {
     ));
   }
 
-  void _brushIconPressed(BrushIconPressed event, Emitter<DrawState> emit) {
+  void _brushIconPressed(
+      DrawBrushIconButtonPressed event, Emitter<DrawState> emit) {
     const base = 4.0;
     final zoom = state.scale;
 
@@ -80,7 +84,7 @@ class DrawBloc extends Bloc<DrawEvent, DrawState> {
   }
 
   void _imageFlippedIconPressed(
-      ImageFlippedIconPressed event, Emitter<DrawState> emit) {
+      DrawImageFlippedIconButtonPressed event, Emitter<DrawState> emit) {
     final modifiableImages =
         List<ModifiableImage?>.from(state.modifiableImages);
 
@@ -103,13 +107,14 @@ class DrawBloc extends Bloc<DrawEvent, DrawState> {
     ));
   }
 
-  void _drawingIconPresed(DrawingIconPresed event, Emitter<DrawState> emit) {
+  void _drawingIconPresed(DrawIconPresed event, Emitter<DrawState> emit) {
     emit(state.copyWith(
       newDrawingSelected: !state.newDrawingSelected,
     ));
   }
 
-  void _hideMontagePressed(HideMontagePressed event, Emitter<DrawState> emit) {
+  void _hideMontageIconButtonPressed(
+      DrawHideMontageIconButtonPressed event, Emitter<DrawState> emit) {
     emit(state.copyWith(
       hideMontage: !state.hideMontage,
     ));
@@ -276,7 +281,8 @@ class DrawBloc extends Bloc<DrawEvent, DrawState> {
     ));
   }
 
-  void _restartPressed(DrawRestartPressed event, Emitter<DrawState> emit) {
+  void _restartPressed(
+      DrawRestartButtonPressed event, Emitter<DrawState> emit) {
     emit(state.copyWith(
       canUndo: false,
       canRedo: false,
@@ -326,7 +332,8 @@ class DrawBloc extends Bloc<DrawEvent, DrawState> {
     ));
   }
 
-  void _drawingFlipped(DrawingFlippedPressed event, Emitter<DrawState> emit) {
+  void _drawingFlipped(
+      DrawFlippedButtonPressed event, Emitter<DrawState> emit) {
     emit(state.copyWith(
       drawingFlipped: !state.drawingFlipped,
       canDraw: state.drawingFlipped ? true : false,
@@ -356,14 +363,14 @@ class DrawBloc extends Bloc<DrawEvent, DrawState> {
   }
 
   void _clearModifiableImages(
-      DrawClearModifiableImages event, Emitter<DrawState> emit) {
+      DrawModifiableImagesCleared event, Emitter<DrawState> emit) {
     emit(state.copyWith(
       modifiableImages: [],
     ));
   }
 
   void _restoreModifiableImages(
-      DrawRestoreModifiableImages event, Emitter<DrawState> emit) {
+      DrawModifiableImagesRestored event, Emitter<DrawState> emit) {
     emit(state.copyWith(
       modifiableImages: event.images,
     ));
@@ -392,8 +399,8 @@ class DrawBloc extends Bloc<DrawEvent, DrawState> {
     ));
   }
 
-  Future<void> _exportWithWhiteBackground(
-    ExportDrawingWithWhiteBackground event,
+  Future<void> _whiteBackgroundSaved(
+    DrawWhiteBackgroundSaved event,
     Emitter<DrawState> emit,
   ) async {
     final controller = event.controller;
@@ -442,7 +449,7 @@ class DrawBloc extends Bloc<DrawEvent, DrawState> {
     event.onExported(pngBytes?.buffer.asUint8List());
   }
 
-  void _onZoomChanged(DrawZoomChanged event, Emitter<DrawState> emit) {
+  void _drawingZoomChanged(DrawZoomChanged event, Emitter<DrawState> emit) {
     final zoom = event.zoom;
     final base = state.baseStrokeWidth;
 
@@ -460,7 +467,7 @@ class DrawBloc extends Bloc<DrawEvent, DrawState> {
     ));
   }
 
-  void _toggleLinked(DrawToggleLinked event, Emitter<DrawState> emit) {
+  void _linkPressed(DrawLinkIconButtonPressed event, Emitter<DrawState> emit) {
     emit(state.copyWith(
       isLinked: !state.isLinked,
     ));

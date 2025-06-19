@@ -52,7 +52,7 @@ class DrawingActions extends StatelessWidget {
                   const VerticalDivider(),
                   IconButton(
                     onPressed: () {
-                      bloc.add(const HideMontagePressed());
+                      bloc.add(const DrawHideMontageIconButtonPressed());
                       context.pop();
                     },
                     icon: Icon(

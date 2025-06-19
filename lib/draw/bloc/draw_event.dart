@@ -8,36 +8,36 @@ sealed class DrawEvent {
   const DrawEvent();
 }
 
-class PenSelectorPressed extends DrawEvent {
-  const PenSelectorPressed();
+class DrawPenSelectorButtonPressed extends DrawEvent {
+  const DrawPenSelectorButtonPressed();
 }
 
-class DrawingIconPresed extends DrawEvent {
-  const DrawingIconPresed();
+class DrawIconPresed extends DrawEvent {
+  const DrawIconPresed();
 }
 
-class PenIconPressed extends DrawEvent {
+class DrawPencilIconButtonPressed extends DrawEvent {
   final double baseStrokeWidth;
 
-  const PenIconPressed({
+  const DrawPencilIconButtonPressed({
     required this.baseStrokeWidth,
   });
 }
 
-class BrushIconPressed extends DrawEvent {
+class DrawBrushIconButtonPressed extends DrawEvent {
   final double baseStrokeWidth;
 
-  const BrushIconPressed({
+  const DrawBrushIconButtonPressed({
     required this.baseStrokeWidth,
   });
 }
 
-class ImageFlippedIconPressed extends DrawEvent {
-  const ImageFlippedIconPressed();
+class DrawImageFlippedIconButtonPressed extends DrawEvent {
+  const DrawImageFlippedIconButtonPressed();
 }
 
-class HideMontagePressed extends DrawEvent {
-  const HideMontagePressed();
+class DrawHideMontageIconButtonPressed extends DrawEvent {
+  const DrawHideMontageIconButtonPressed();
 }
 
 class DrawDrawingChanged extends DrawEvent {
@@ -118,12 +118,12 @@ class DrawDrawingNameChanged extends DrawEvent {
   });
 }
 
-class DrawRestartPressed extends DrawEvent {
-  const DrawRestartPressed();
+class DrawRestartButtonPressed extends DrawEvent {
+  const DrawRestartButtonPressed();
 }
 
-class DrawingFlippedPressed extends DrawEvent {
-  const DrawingFlippedPressed();
+class DrawFlippedButtonPressed extends DrawEvent {
+  const DrawFlippedButtonPressed();
 }
 
 class DrawPaintedImageCollected extends DrawEvent {
@@ -158,14 +158,14 @@ class DrawGestureEnded extends DrawEvent {
   });
 }
 
-class DrawClearModifiableImages extends DrawEvent {
-  const DrawClearModifiableImages();
+class DrawModifiableImagesCleared extends DrawEvent {
+  const DrawModifiableImagesCleared();
 }
 
-class DrawRestoreModifiableImages extends DrawEvent {
+class DrawModifiableImagesRestored extends DrawEvent {
   final List<ModifiableImage?> images;
 
-  const DrawRestoreModifiableImages({
+  const DrawModifiableImagesRestored({
     required this.images,
   });
 }
@@ -188,11 +188,11 @@ class DrawFlipPressed extends DrawEvent {
   });
 }
 
-class ExportDrawingWithWhiteBackground extends DrawEvent {
+class DrawWhiteBackgroundSaved extends DrawEvent {
   final DrawingController controller;
   final void Function(Uint8List?) onExported;
 
-  const ExportDrawingWithWhiteBackground({
+  const DrawWhiteBackgroundSaved({
     required this.controller,
     required this.onExported,
   });
@@ -206,6 +206,6 @@ class DrawZoomChanged extends DrawEvent {
   });
 }
 
-class DrawToggleLinked extends DrawEvent {
-  const DrawToggleLinked();
+class DrawLinkIconButtonPressed extends DrawEvent {
+  const DrawLinkIconButtonPressed();
 }

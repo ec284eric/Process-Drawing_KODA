@@ -115,7 +115,7 @@ class _DrawPageState extends State<DrawPage> {
     bloc.add(DrawPaintedImageCollected(image: imageBytes));
     bloc.add(const DrawImageProcessOpened(open: false));
 
-    bloc.add(const DrawingFlippedPressed());
+    bloc.add(const DrawFlippedButtonPressed());
 
     if (context.mounted) {
       Navigator.of(context).pop();
@@ -134,17 +134,17 @@ class _DrawPageState extends State<DrawPage> {
         bloc.add(const DrawImageProcessOpened(open: true));
 
         final originalImages = state.modifiableImages;
-        bloc.add(const DrawClearModifiableImages());
+        bloc.add(const DrawModifiableImagesCleared());
 
         await Future.doWhile(() async {
           await Future.delayed(const Duration(milliseconds: 10));
           return bloc.state.modifiableImages.isNotEmpty;
         });
 
-        bloc.add(ExportDrawingWithWhiteBackground(
+        bloc.add(DrawWhiteBackgroundSaved(
           controller: _drawingController,
           onExported: (Uint8List? bytes) {
-            bloc.add(DrawRestoreModifiableImages(images: originalImages));
+            bloc.add(DrawModifiableImagesRestored(images: originalImages));
 
             if (bytes != null) {
               bloc.add(DrawImageProcessed(imageBytes: bytes));

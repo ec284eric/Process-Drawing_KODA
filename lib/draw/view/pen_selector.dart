@@ -35,7 +35,7 @@ class _PenSelectorState extends State<PenSelector> {
                             children: [
                               OutlinedButton(
                                 onPressed: () {
-                                  bloc.add(const BrushIconPressed(
+                                  bloc.add(const DrawBrushIconButtonPressed(
                                     baseStrokeWidth: 8.0,
                                   ));
                                 },
@@ -62,7 +62,7 @@ class _PenSelectorState extends State<PenSelector> {
                               ),
                               OutlinedButton(
                                 onPressed: () {
-                                  bloc.add(const PenIconPressed(
+                                  bloc.add(const DrawPencilIconButtonPressed(
                                     baseStrokeWidth: 1.5,
                                   ));
                                 },

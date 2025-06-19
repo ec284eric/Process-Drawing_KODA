@@ -97,7 +97,7 @@ class _MontageAcetateState extends State<MontageAcetate> {
                                             onPressed: () {
                                               setState(() {
                                                 context.read<DrawBloc>().add(
-                                                    const HideMontagePressed());
+                                                    const DrawHideMontageIconButtonPressed());
                                               });
                                             },
                                             iconSize: 20,
