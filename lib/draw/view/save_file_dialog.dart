@@ -44,6 +44,14 @@ class SaveFileDialog extends StatelessWidget {
               ),
               FilledButton(
                 onPressed: () {
+                  showDialog(
+                    context: context,
+                    barrierDismissible: false,
+                    builder: (_) => const Center(
+                      child: CircularProgressIndicator(),
+                    ),
+                  );
+
                   bloc.add(const DrawSavePressed());
                   context.pop();
                 },
