@@ -30,7 +30,6 @@ class DrawBloc extends Bloc<DrawEvent, DrawState> {
     on<DrawRestartButtonPressed>(_restartPressed);
     on<DrawFlippedButtonPressed>(_drawingFlipped);
     on<DrawReflectedImageScaleUpdated>(_reflectedImageScaleUpdated);
-    on<DrawPaintedImageCollected>(_paintedImageCollected);
     on<DrawImageProcessOpened>(_imageProcessOpened);
     on<DrawGestureEnded>(_onGestureEnded);
     on<DrawModifiableImagesCleared>(_clearModifiableImages);
@@ -325,18 +324,31 @@ class DrawBloc extends Bloc<DrawEvent, DrawState> {
     ));
   }
 
-  void _paintedImageCollected(
-      DrawPaintedImageCollected event, Emitter<DrawState> emit) {
-    emit(state.copyWith.reflectedImage(
-      imageBytes: event.image,
-    ));
-  }
-
-  void _drawingFlipped(
-      DrawFlippedButtonPressed event, Emitter<DrawState> emit) {
+  Future<void> _drawingFlipped(
+      DrawFlippedButtonPressed event, Emitter<DrawState> emit) async {
     emit(state.copyWith(
+      imageCollectRequestStatus: RequestStatus.inProgress,
+    ));
+
+    await Future.delayed(const Duration(milliseconds: 10));
+
+    final byteData =
+        (await event.controller.getImageData())?.buffer.asUint8List();
+
+    if (byteData == null) {
+      emit(state.copyWith(
+        imageCollectRequestStatus: RequestStatus.failure,
+      ));
+      return;
+    }
+
+    final imageBytes = byteData.buffer.asUint8List();
+
+    emit(state.copyWith(
+      reflectedImage: state.reflectedImage.copyWith(imageBytes: imageBytes),
       drawingFlipped: !state.drawingFlipped,
-      canDraw: state.drawingFlipped ? true : false,
+      canDraw: !state.drawingFlipped,
+      imageCollectRequestStatus: RequestStatus.success,
     ));
   }
 

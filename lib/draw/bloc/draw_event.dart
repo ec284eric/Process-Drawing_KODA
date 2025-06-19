@@ -123,7 +123,11 @@ class DrawRestartButtonPressed extends DrawEvent {
 }
 
 class DrawFlippedButtonPressed extends DrawEvent {
-  const DrawFlippedButtonPressed();
+  final DrawingController controller;
+
+  const DrawFlippedButtonPressed({
+    required this.controller,
+  });
 }
 
 class DrawPaintedImageCollected extends DrawEvent {
