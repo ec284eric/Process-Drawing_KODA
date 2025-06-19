@@ -93,33 +93,9 @@ class _DrawPageState extends State<DrawPage> {
       },
     );
 
-    await Future.delayed(const Duration(milliseconds: 10));
-
-    final byteData =
-        (await _drawingController.getImageData())?.buffer.asUint8List();
-
-    if (byteData == null) {
-      if (context.mounted) {
-        ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
-          content: Text('Image null'),
-          behavior: SnackBarBehavior.floating,
-        ));
-        Navigator.of(context).pop();
-      }
-
-      return;
-    }
-
-    final imageBytes = byteData.buffer.asUint8List();
-
-    bloc.add(DrawPaintedImageCollected(image: imageBytes));
-    bloc.add(const DrawImageProcessOpened(open: false));
-
-    bloc.add(const DrawFlippedButtonPressed());
-
-    if (context.mounted) {
-      Navigator.of(context).pop();
-    }
+    context
+        .read<DrawBloc>()
+        .add(DrawFlippedButtonPressed(controller: _drawingController));
   }
 
   Future<void> _requestStatusListener(
@@ -198,6 +174,26 @@ class _DrawPageState extends State<DrawPage> {
             listenWhen: (previous, current) =>
                 previous.requestStatus != current.requestStatus,
             listener: _requestStatusListener,
+          ),
+          BlocListener<DrawBloc, DrawState>(
+            listenWhen: (previous, current) =>
+                previous.imageCollectRequestStatus !=
+                current.imageCollectRequestStatus,
+            listener: (context, state) {
+              if (state.imageCollectRequestStatus == RequestStatus.success) {
+                Navigator.of(context, rootNavigator: true)
+                    .pop(); // Close dialog
+              } else if (state.imageCollectRequestStatus ==
+                  RequestStatus.failure) {
+                Navigator.of(context, rootNavigator: true).pop();
+                ScaffoldMessenger.of(context).showSnackBar(
+                  const SnackBar(
+                    content: Text('Image is null.'),
+                    behavior: SnackBarBehavior.floating,
+                  ),
+                );
+              }
+            },
           ),
         ],
         child: Builder(
