@@ -25,7 +25,7 @@ class DrawBloc extends Bloc<DrawEvent, DrawState> {
     on<DrawIconPresed>(_drawingIconPresed);
     on<DrawImageFlippedIconButtonPressed>(_imageFlippedIconPressed);
     on<DrawPenSelectorButtonPressed>(_penSelectorIconButtonPressed);
-    on<DrawPencilIconButtonPressed>(_penIconPressed);
+    on<DrawPencilIconButtonPressed>(_pencilIconPressed);
     on<DrawBrushIconButtonPressed>(_brushIconPressed);
     on<DrawRestartButtonPressed>(_restartPressed);
     on<DrawFlippedButtonPressed>(_drawingFlipped);
@@ -51,9 +51,9 @@ class DrawBloc extends Bloc<DrawEvent, DrawState> {
     ));
   }
 
-  void _penIconPressed(
+  void _pencilIconPressed(
       DrawPencilIconButtonPressed event, Emitter<DrawState> emit) {
-    const base = 0.8;
+    const base = 1.8;
 
     emit(state.copyWith(
       color: const Color.fromARGB(255, 58, 61, 59),
@@ -141,8 +141,6 @@ class DrawBloc extends Bloc<DrawEvent, DrawState> {
 
   void _imageScaleUpdated(
       DrawImageScaleUpdated event, Emitter<DrawState> emit) {
-    if (state.locked) return;
-
     final modifiableImages = [...state.modifiableImages];
     final currentImage = modifiableImages[event.index];
     if (currentImage == null) return;
@@ -159,7 +157,7 @@ class DrawBloc extends Bloc<DrawEvent, DrawState> {
       ));
       return;
     } else {
-      final rotationDelta = (currentGestureRotation - gestureStart) * 0.2;
+      final rotationDelta = (currentGestureRotation - gestureStart) * 0.02;
       newRotation =
           (state.previousRotation + rotationDelta).clamp(-180.0, 180.0);
     }
@@ -167,9 +165,9 @@ class DrawBloc extends Bloc<DrawEvent, DrawState> {
     double? newScale;
     if (event.details.scale != 1.0 && event.index == 0) {
       final currentScale = currentImage.scale;
-      const zoomSensitivity = 0.08;
+      const zoomSensitivity = 0.05;
       final deltaScale = (event.details.scale - 1) * zoomSensitivity;
-      newScale = (currentScale + deltaScale).clamp(0.3, 6.0);
+      newScale = (currentScale + deltaScale).clamp(0.25, 3.0);
     }
 
     final newOffset = currentImage.offset + event.details.focalPointDelta;
@@ -188,8 +186,6 @@ class DrawBloc extends Bloc<DrawEvent, DrawState> {
   }
 
   void _onGestureEnded(DrawGestureEnded event, Emitter<DrawState> emit) {
-    if (state.locked) return;
-
     final currentImageRotation =
         state.modifiableImages[event.index]?.rotation ?? 0.0;
 
@@ -295,15 +291,19 @@ class DrawBloc extends Bloc<DrawEvent, DrawState> {
       drawingFlipped: false,
       canDraw: false,
       isToggled: false,
+      isLinked: false,
       showBackground: false,
       trashEnabled: false,
       color: Colors.black,
       strokeWidth: 8.0,
+      baseStrokeWidth: 8.0,
       size: const Size.square((300)),
       rotation: 0.0,
       previousRotation: 0.0,
       scale: 1.0,
+      previousScale: 1.0,
       gestureOffset: Offset.zero,
+      gestureRotationStart: null,
       modifiableImages: [],
       drawingName: state.drawingName.copyWith(
         value: '',
@@ -311,7 +311,12 @@ class DrawBloc extends Bloc<DrawEvent, DrawState> {
         errorType: ErrorType.none,
       ),
       requestStatus: RequestStatus.waiting,
-      reflectedImage: const ModifiableImage(),
+      // reflectedImage: const ModifiableImage(),
+      reflectedImage: const ModifiableImage(
+        scale: 1.0,
+        offset: Offset.zero,
+        rotation: 0.0,
+      ),
       imageCollectRequestStatus: RequestStatus.waiting,
     ));
   }
@@ -323,6 +328,41 @@ class DrawBloc extends Bloc<DrawEvent, DrawState> {
           event.open ? RequestStatus.inProgress : RequestStatus.success,
     ));
   }
+
+  // Future<void> _drawingFlipped(
+  //     DrawFlippedButtonPressed event, Emitter<DrawState> emit) async {
+  //   emit(state.copyWith(
+  //     imageCollectRequestStatus: RequestStatus.inProgress,
+  //   ));
+
+  //   // await Future.delayed(const Duration(milliseconds: 10));
+  //   // final modifiableImages = [...state.modifiableImages];
+  //   // emit(state.copyWith(
+  //   //   modifiableImages: [],
+  //   // ));
+  //   // await Future.delayed(const Duration(milliseconds: 10));
+  //   final byteData =
+  //       (await event.controller.getSurfaceImageData())?.buffer.asUint8List();
+
+  //   if (byteData == null) {
+  //     emit(state.copyWith(
+  //       imageCollectRequestStatus: RequestStatus.failure,
+  //     ));
+  //     return;
+  //   }
+
+  //   final imageBytes = byteData.buffer.asUint8List();
+
+  //   emit(state.copyWith(
+  //     reflectedImage: state.reflectedImage.copyWith(
+  //       imageBytes: imageBytes,
+  //     ),
+  //     drawingFlipped: !state.drawingFlipped,
+  //     canDraw: !state.drawingFlipped,
+  //     imageCollectRequestStatus: RequestStatus.success,
+  //     // modifiableImages: modifiableImages,
+  //   ));
+  // }
 
   Future<void> _drawingFlipped(
       DrawFlippedButtonPressed event, Emitter<DrawState> emit) async {
@@ -462,7 +502,7 @@ class DrawBloc extends Bloc<DrawEvent, DrawState> {
   }
 
   void _drawingZoomChanged(DrawZoomChanged event, Emitter<DrawState> emit) {
-    final zoom = event.zoom;
+    final zoom = event.zoom.clamp(0.1, 10.0);
     final base = state.baseStrokeWidth;
 
     double adjusted = base;
@@ -470,7 +510,9 @@ class DrawBloc extends Bloc<DrawEvent, DrawState> {
     if (state.pencilSelected) {
       adjusted = base;
     } else if (state.brushSelected) {
-      adjusted = base / (zoom * 0.7);
+      final zoomFactor = (zoom * 0.7).clamp(0.1, double.infinity);
+      adjusted = base / zoomFactor;
+      adjusted = adjusted.clamp(0.5, 50.0);
     }
 
     emit(state.copyWith(
