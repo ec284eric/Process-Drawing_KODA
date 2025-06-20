@@ -69,14 +69,28 @@ class _DrawPageState extends State<DrawPage> {
     super.dispose();
   }
 
+  // double _getZoomScale() {
+  //   print('zooming');
+  //   return _canvasTransformationController.value.getMaxScaleOnAxis();
+  // }
+
   double _getZoomScale() {
-    return _canvasTransformationController.value.getMaxScaleOnAxis();
+    print('zooming');
+    final scale = _canvasTransformationController.value.getMaxScaleOnAxis();
+
+    if (scale.isNaN || scale.isInfinite || scale <= 0) {
+      return 1.0;
+    }
+
+    final clampedScale = scale.clamp(0.1, 10.0);
+
+    return clampedScale;
   }
 
   Future<void> _onFlipPressed(BuildContext context) async {
     final bloc = context.read<DrawBloc>();
 
-    bloc.add(const DrawImageProcessOpened(open: true));
+    // bloc.add(const DrawImageProcessOpened(open: true));
 
     showDialog(
       context: context,
@@ -93,9 +107,7 @@ class _DrawPageState extends State<DrawPage> {
       },
     );
 
-    context
-        .read<DrawBloc>()
-        .add(DrawFlippedButtonPressed(controller: _drawingController));
+    bloc.add(DrawFlippedButtonPressed(controller: _drawingController));
   }
 
   Future<void> _requestStatusListener(
