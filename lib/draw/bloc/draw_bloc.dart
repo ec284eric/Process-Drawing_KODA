@@ -373,7 +373,7 @@ class DrawBloc extends Bloc<DrawEvent, DrawState> {
     await Future.delayed(const Duration(milliseconds: 10));
 
     final byteData =
-        (await event.controller.getImageData())?.buffer.asUint8List();
+        (await event.controller.getSurfaceImageData())?.buffer.asUint8List();
 
     if (byteData == null) {
       emit(state.copyWith(
@@ -382,10 +382,12 @@ class DrawBloc extends Bloc<DrawEvent, DrawState> {
       return;
     }
 
-    final imageBytes = byteData.buffer.asUint8List();
+    // final imageBytes = byteData.buffer.asUint8List();
 
     emit(state.copyWith(
-      reflectedImage: state.reflectedImage.copyWith(imageBytes: imageBytes),
+      reflectedImage: state.reflectedImage.copyWith(
+        imageBytes: byteData,
+      ),
       drawingFlipped: !state.drawingFlipped,
       canDraw: !state.drawingFlipped,
       imageCollectRequestStatus: RequestStatus.success,
