@@ -21,7 +21,7 @@
 // }
 
 // class _CanvasLayerState extends State<CanvasLayer> {
-//   var scale = 1.0;
+//   double? scale;
 //   var offset = Offset.zero;
 
 //   @override
@@ -30,28 +30,29 @@
 
 //     return BlocBuilder<DrawBloc, DrawState>(
 //       builder: (context, state) {
-//         // if (transformationController.value != Matrix4.identity()) {
-//         //   WidgetsBinding.instance.addPostFrameCallback((_) {
-//         //     transformationController.value = Matrix4.identity()
-//         //       ..rotateZ(state.previousRotation)
-//         //       ..translate(
-//         //         state.modifiableImages[0]?.offset.dx ?? 0.0,
-//         //         state.modifiableImages[0]?.offset.dy ?? 0.0,
-//         //       );
-//         //   });
-//         // }
+//         if (widget.transformationController.value != Matrix4.identity()) {
+//           WidgetsBinding.instance.addPostFrameCallback((_) {
+//             widget.transformationController.value = Matrix4.identity()
+//               ..rotateZ(state.previousRotation)
+//               ..translate(
+//                 state.modifiableImages[0]?.offset.dx ?? 0.0,
+//                 state.modifiableImages[0]?.offset.dy ?? 0.0,
+//               );
+//           });
+//         }
 
 //         return LayoutBuilder(
 //           builder: (context, constraints) {
-//             print('the constraints:$constraints');
+//             print('the constraints:${state.reflectedImage.scale}');
 //             return Stack(
 //               children: [
 //                 IgnorePointer(
 //                   ignoring: !state.locked || !state.canDraw,
 //                   child: DrawingBoard(
+//                     // key: ValueKey(state.canUndo),
 //                     controller: widget.drawingController,
-//                     boardPanEnabled: false,
-//                     boardScaleEnabled: false,
+//                     // boardPanEnabled: false,
+//                     // boardScaleEnabled: false,
 //                     onInteractionUpdate: (p0) {
 //                       setState(() {
 //                         offset = p0.focalPointDelta;
@@ -119,16 +120,16 @@
 //                   visible: state.drawingFlipped,
 //                   child: Container(
 //                     color: Colors.yellow.withAlpha(40),
-//                     width:
-//                         widget.drawingController.drawConfig.value.size?.width ??
-//                             constraints.maxWidth,
-//                     height: widget
-//                             .drawingController.drawConfig.value.size?.height ??
-//                         constraints.maxHeight,
+//                     // width:
+//                     //     widget.drawingController.drawConfig.value.size?.width ??
+//                     //         constraints.maxWidth,
+//                     // height: widget
+//                     //         .drawingController.drawConfig.value.size?.height ??
+//                     //     constraints.maxHeight,
 //                     child: ModifiableImageItem(
 //                       modifiableImage: state.reflectedImage.copyWith(
-//                         scale: scale,
-//                         offset: offset,
+//                         scale: scale ?? state.reflectedImage.scale,
+//                         // offset: offset,
 //                       ),
 //                       onScaleUpdate: state.locked
 //                           ? (value) => bloc.add(
