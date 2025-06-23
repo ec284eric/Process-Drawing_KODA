@@ -6,7 +6,7 @@ class Assets {
   static const acetateMontageImg5 = 'assets/images/image_05.jpg';
   static const acetateMontageImg6 = 'assets/images/image_06.jpg';
   static const appIcon = 'assets/icons/appicon_process.png';
-  static const appIconWellness = 'assets/icons/appicon_wellness.png';
+  static const appIconWellness = 'assets/icons/wellness.png';
   static const colorIcon = 'assets/icons/color-01.png';
   static const copyDrawingIcon = 'assets/icons/copy-drawing-01.png';
   static const downloadIcon = 'assets/icons/download-01.png';
