@@ -24,22 +24,42 @@
 //   double? scale;
 //   var offset = Offset.zero;
 
+//   DrawState? _previousState;
+
 //   @override
 //   Widget build(BuildContext context) {
 //     final bloc = context.read<DrawBloc>();
 
 //     return BlocBuilder<DrawBloc, DrawState>(
 //       builder: (context, state) {
-//         if (widget.transformationController.value != Matrix4.identity()) {
+//         // if (widget.transformationController.value != Matrix4.identity()) {
+//         //   WidgetsBinding.instance.addPostFrameCallback((_) {
+//         //     widget.transformationController.value = Matrix4.identity()
+//         //       ..rotateZ(state.previousRotation)
+//         //       ..translate(
+//         //         state.modifiableImages[0]?.offset.dx ?? 0.0,
+//         //         state.modifiableImages[0]?.offset.dy ?? 0.0,
+//         //       );
+//         //   });
+//         // }
+
+//         // Detect restart by comparing to previous state
+//         if (_previousState != null &&
+//             _previousState!.modifiableImages.isNotEmpty &&
+//             state.modifiableImages.isEmpty) {
+//           // Trigger scale and offset reset
 //           WidgetsBinding.instance.addPostFrameCallback((_) {
-//             widget.transformationController.value = Matrix4.identity()
-//               ..rotateZ(state.previousRotation)
-//               ..translate(
-//                 state.modifiableImages[0]?.offset.dx ?? 0.0,
-//                 state.modifiableImages[0]?.offset.dy ?? 0.0,
-//               );
+//             setState(() {
+//               scale = null;
+//               offset = Offset.zero;
+//             });
+
+//             // Also reset TransformationController just in case
+//             widget.transformationController.value = Matrix4.identity();
 //           });
 //         }
+
+//         _previousState = state;
 
 //         return LayoutBuilder(
 //           builder: (context, constraints) {
@@ -50,6 +70,7 @@
 //                   ignoring: !state.locked || !state.canDraw,
 //                   child: DrawingBoard(
 //                     // key: ValueKey(state.canUndo),
+//                     key: ValueKey(state.modifiableImages.length),
 //                     controller: widget.drawingController,
 //                     // boardPanEnabled: false,
 //                     // boardScaleEnabled: false,
@@ -159,7 +180,7 @@ import 'package:flutter_drawing_board/flutter_drawing_board.dart';
 import 'package:collection/collection.dart';
 import 'package:drawing_app/draw/widgets/widgets.dart';
 
-class CanvasLayer extends StatelessWidget {
+class CanvasLayer extends StatefulWidget {
   final DrawingController drawingController;
   final TransformationController transformationController;
 
@@ -170,11 +191,41 @@ class CanvasLayer extends StatelessWidget {
   });
 
   @override
+  State<CanvasLayer> createState() => _CanvasLayerState();
+}
+
+class _CanvasLayerState extends State<CanvasLayer> {
+  double? scale;
+  var offset = Offset.zero;
+  DrawState? _previousState;
+  bool _hasReset = false;
+
+  @override
   Widget build(BuildContext context) {
     final bloc = context.read<DrawBloc>();
 
     return BlocBuilder<DrawBloc, DrawState>(
       builder: (context, state) {
+        if (!_hasReset &&
+            _previousState?.modifiableImages.isNotEmpty == true &&
+            state.modifiableImages.isEmpty) {
+          _hasReset = true;
+
+          WidgetsBinding.instance.addPostFrameCallback((_) {
+            setState(() {
+              scale = null;
+              offset = Offset.zero;
+            });
+            widget.transformationController.value = Matrix4.identity();
+          });
+        }
+
+        if (state.modifiableImages.isNotEmpty) {
+          _hasReset = false;
+        }
+
+        _previousState = state;
+
         return LayoutBuilder(
           builder: (context, constraints) {
             return Stack(
@@ -182,7 +233,8 @@ class CanvasLayer extends StatelessWidget {
                 IgnorePointer(
                   ignoring: !state.locked || !state.canDraw,
                   child: DrawingBoard(
-                    controller: drawingController,
+                    key: ValueKey(state.modifiableImages.length),
+                    controller: widget.drawingController,
                     onInteractionUpdate: (p0) {},
                     onInteractionEnd: (p0) {
                       print('interaction: $p0');
