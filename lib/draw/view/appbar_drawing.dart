@@ -89,7 +89,7 @@ class AppBarDrawing extends StatelessWidget {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Text(
-                          AppLocalizations.of(context)?.wellnessDrawing ?? '',
+                          AppLocalizations.of(context)?.processDrawing ?? '',
                           style: const TextStyle(
                             color: Colors.white,
                             fontWeight: FontWeight.bold,
@@ -101,7 +101,7 @@ class AppBarDrawing extends StatelessWidget {
                         ),
                         Text(
                           AppLocalizations.of(context)
-                                  ?.wellnessDrawingWasConceived ??
+                                  ?.processDrawingWasConceived ??
                               '',
                           style: const TextStyle(
                             color: Colors.white,
@@ -113,7 +113,7 @@ class AppBarDrawing extends StatelessWidget {
                           height: 8,
                         ),
                         Text(
-                          '${AppLocalizations.of(context)?.wellnessDrawingAndMontage ?? ''}\n${AppLocalizations.of(context)?.allRightsReserved ?? ''}',
+                          '${AppLocalizations.of(context)?.processDrawingAndMontage ?? ''}\n${AppLocalizations.of(context)?.allRightsReserved ?? ''}',
                           style: const TextStyle(
                             color: Colors.white,
                             fontSize: 14,
