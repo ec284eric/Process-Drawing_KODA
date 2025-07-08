@@ -240,92 +240,79 @@ class _CanvasLayerState extends State<CanvasLayer> {
                       print('interaction: $p0');
                     },
                     onPointerUp: (pue) {},
-                    background: SizedBox(
-                      width: constraints.maxWidth,
-                      height: constraints.maxHeight,
-                      child: Stack(
-                        children: [
-                          Visibility(
-                            visible: state.locked &&
-                                state.imageCollectRequestStatus !=
-                                    RequestStatus.inProgress &&
-                                (state.showBackground || !state.isToggled),
-                            maintainState: true,
-                            maintainAnimation: true,
-                            maintainSize: true,
-                            child: Stack(
-                              children: [
-                                ...state.modifiableImages.mapIndexed(
-                                  (index, modifiableImage) {
-                                    if (modifiableImage != null) {
-                                      return IgnorePointer(
-                                        ignoring: state.canDraw,
-                                        child: ModifiableImageItem(
-                                          modifiableImage: modifiableImage,
-                                          opacity: 0.5,
-                                          onScaleUpdate: (details) => bloc.add(
-                                            DrawImageScaleUpdated(
-                                              index: index,
-                                              details: details,
+                    background: Container(
+                      color: Colors.white,
+                      child: SizedBox(
+                        width: constraints.maxWidth,
+                        height: constraints.maxHeight,
+                        child: Stack(
+                          alignment: Alignment.center,
+                          children: [
+                            Visibility(
+                              visible: (state.locked ||
+                                      state.modifiableImages.isNotEmpty) &&
+                                  state.imageCollectRequestStatus !=
+                                      RequestStatus.inProgress &&
+                                  (state.showBackground || !state.isToggled),
+                              maintainState: true,
+                              maintainAnimation: true,
+                              maintainSize: true,
+                              child: Stack(
+                                children: [
+                                  ...state.modifiableImages.mapIndexed(
+                                    (index, modifiableImage) {
+                                      if (modifiableImage != null) {
+                                        return IgnorePointer(
+                                          ignoring: state.canDraw,
+                                          child: ModifiableImageItem(
+                                            modifiableImage: modifiableImage,
+                                            opacity: state.locked ? 0.5 : 0.9,
+                                            onScaleUpdate: (details) =>
+                                                bloc.add(
+                                              DrawImageScaleUpdated(
+                                                index: index,
+                                                details: details,
+                                              ),
                                             ),
+                                            onScaleEnd: () => bloc.add(
+                                              DrawGestureEnded(index: index),
+                                            ),
+                                            secondImage: index == 1 &&
+                                                state.imageFlipped,
                                           ),
-                                          onScaleEnd: () => bloc.add(
-                                            DrawGestureEnded(index: index),
-                                          ),
-                                          secondImage:
-                                              index == 1 && state.imageFlipped,
-                                        ),
-                                      );
-                                    } else {
-                                      return Container();
-                                    }
-                                  },
-                                ),
-                              ],
-                            ),
-                          ),
-                          Visibility(
-                            visible: state.drawingFlipped,
-                            child: SizedBox(
-                              width: constraints.maxWidth,
-                              height: constraints.maxHeight,
-                              child: ModifiableImageItem(
-                                modifiableImage: state.reflectedImage,
-                                onScaleUpdate: state.locked
-                                    ? (value) => bloc.add(
-                                          DrawReflectedImageScaleUpdated(
-                                            details: value,
-                                          ),
-                                        )
-                                    : null,
-                                secondImage: true,
+                                        );
+                                      } else {
+                                        return Container();
+                                      }
+                                    },
+                                  ),
+                                ],
                               ),
                             ),
-                          ),
-                        ],
+                            Visibility(
+                              visible: state.drawingFlipped,
+                              child: SizedBox(
+                                width: constraints.maxWidth,
+                                height: constraints.maxHeight,
+                                child: ModifiableImageItem(
+                                  modifiableImage: state.reflectedImage,
+                                  onScaleUpdate: state.locked
+                                      ? (value) => bloc.add(
+                                            DrawReflectedImageScaleUpdated(
+                                              details: value,
+                                            ),
+                                          )
+                                      : null,
+                                  secondImage: true,
+                                ),
+                              ),
+                            ),
+                          ],
+                        ),
                       ),
                     ),
                   ),
                 ),
-                // Visibility(
-                //   visible: state.drawingFlipped,
-                //   child: SizedBox(
-                //     width: constraints.maxWidth,
-                //     height: constraints.maxHeight,
-                //     child: ModifiableImageItem(
-                //       modifiableImage: state.reflectedImage
-                //           .copyWith(scale: 0.23453973308252418),
-                //       onScaleUpdate: state.locked
-                //           ? (value) => bloc.add(
-                //                 DrawReflectedImageScaleUpdated(
-                //                   details: value,
-                //                 ),
-                //               )
-                //           : null,
-                //       secondImage: true,
-                //     ),
-                //   ),
-                // ),
               ],
             );
           },
