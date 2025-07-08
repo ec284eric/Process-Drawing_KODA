@@ -211,6 +211,7 @@ class _DrawPageState extends State<DrawPage> {
         child: Builder(
           builder: (context) {
             return Scaffold(
+              backgroundColor: Colors.white,
               resizeToAvoidBottomInset: false,
               appBar: PreferredSize(
                   preferredSize: const Size.fromHeight(kToolbarHeight),
