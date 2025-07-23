@@ -12,7 +12,19 @@ class AppLocalizationsEn extends AppLocalizations {
   String get allRightsReserved => 'All rights reserved.';
 
   @override
+  String get americanSoldiers => '(American soldiers in Iraq), ';
+
+  @override
+  String get amongOthers => 'among others.';
+
+  @override
+  String get andWar => 'and War ';
+
+  @override
   String get areYouSure => 'Are you sure?';
+
+  @override
+  String get asylum => '(Asylum seekers from Venezuela), ';
 
   @override
   String get cancel => 'Cancel';
@@ -21,21 +33,22 @@ class AppLocalizationsEn extends AppLocalizations {
   String get chooseImage => 'Choose Image';
 
   @override
-  String get climateChange =>
-      'Climate Change – Climate scientists throughout the world, among others';
+  String get citizens => '(Citizens and communities of Madison, WI), ';
+
+  @override
+  String get climateChange => 'Climate Change ';
+
+  @override
+  String get climatScientist => '(Climate scientists worldwide), ';
 
   @override
   String get confirmRestart => 'Confirm Restart';
 
   @override
-  String get democracy => 'Democracy – Citizens and communities of Madison, WI';
+  String get democracy => 'Democracy ';
 
   @override
   String get drawingName => 'Drawing Name';
-
-  @override
-  String get energy =>
-      'Energy – Coal Miners of Quecreek in Somerset, Pennsylvania';
 
   @override
   String get ericChanisAnAmerican =>
@@ -46,14 +59,16 @@ class AppLocalizationsEn extends AppLocalizations {
       'Eric Chan received his BA from UC Berkeley and his MFA from Columbia University. His artworks and projects have been presented and participated in publicly in museums and cultural institutions. His artworks are in the permanent collections of museums internationally.';
 
   @override
-  String get firstNations => 'First Nations – The Ho-Chunk Nation';
+  String get firstNations => 'First Nations ';
 
   @override
   String get helloWorld => 'Hello World!';
 
   @override
-  String get humanTrafficking =>
-      'Human Trafficking – Stateless Children in Chiang Mai, Thailand';
+  String get hoChunk => '(Ho-Chunk Nation), ';
+
+  @override
+  String get humanTrafficking => 'Human Trafficking ';
 
   @override
   String get montageAcetates => 'Montage Acetates';
@@ -63,7 +78,7 @@ class AppLocalizationsEn extends AppLocalizations {
       'This will override your current changes and starts a new one.';
 
   @override
-  String get refugees => 'Refugees – Asylum seekers from Venezuela';
+  String get refugees => 'Refugees ';
 
   @override
   String get restart => 'Restart';
@@ -73,8 +88,7 @@ class AppLocalizationsEn extends AppLocalizations {
       'This will erase all your current changes and start a new drawing.\nThis action cannot be undone. Do you want to proceed?';
 
   @override
-  String get revolution =>
-      'Revolution – students and citizens in Cairo during the Arab Spring';
+  String get revolution => 'Revolution ';
 
   @override
   String get save => 'Save';
@@ -83,11 +97,18 @@ class AppLocalizationsEn extends AppLocalizations {
   String get saveDrawing => 'Save Drawing';
 
   @override
+  String get statelessChildren =>
+      '(Stateless Children in Chiang Mai, Thailand), ';
+
+  @override
+  String get studentsAndCitizen =>
+      '(students and citizens in Cairo during the Arab Spring), ';
+
+  @override
   String get tapToPreview => 'Tap to preview';
 
   @override
-  String get urbanPlanning =>
-      'Urban Planning – Meatpackers in the Meatpacking District of Manhattan, New York City';
+  String get ukraine => '(Ukraine-Russia), ';
 
   @override
   String get processDrawing => 'Process Drawing';
@@ -101,10 +122,9 @@ class AppLocalizationsEn extends AppLocalizations {
       '\"Process Drawing\" and \"Montage Acetates\" are copyright © Eric A. Chan.';
 
   @override
-  String get war =>
-      'War – Citizens of Ukraine during the Russian invasion & American soldiers and military personnel in the Irag War';
+  String get war => 'War ';
 
   @override
   String get workingGlobally =>
-      'Working globally, the communities and themes of Eric Chan\'s artworks and projects include:';
+      'Working globally, the communities and themes of Eric Chan\'s artworks and projects include ';
 }

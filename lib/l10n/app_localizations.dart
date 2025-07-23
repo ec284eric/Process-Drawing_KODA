@@ -100,11 +100,35 @@ abstract class AppLocalizations {
   /// **'All rights reserved.'**
   String get allRightsReserved;
 
+  /// No description provided for @americanSoldiers.
+  ///
+  /// In en, this message translates to:
+  /// **'(American soldiers in Iraq), '**
+  String get americanSoldiers;
+
+  /// No description provided for @amongOthers.
+  ///
+  /// In en, this message translates to:
+  /// **'among others.'**
+  String get amongOthers;
+
+  /// No description provided for @andWar.
+  ///
+  /// In en, this message translates to:
+  /// **'and War '**
+  String get andWar;
+
   /// No description provided for @areYouSure.
   ///
   /// In en, this message translates to:
   /// **'Are you sure?'**
   String get areYouSure;
+
+  /// No description provided for @asylum.
+  ///
+  /// In en, this message translates to:
+  /// **'(Asylum seekers from Venezuela), '**
+  String get asylum;
 
   /// No description provided for @cancel.
   ///
@@ -118,11 +142,23 @@ abstract class AppLocalizations {
   /// **'Choose Image'**
   String get chooseImage;
 
+  /// No description provided for @citizens.
+  ///
+  /// In en, this message translates to:
+  /// **'(Citizens and communities of Madison, WI), '**
+  String get citizens;
+
   /// No description provided for @climateChange.
   ///
   /// In en, this message translates to:
-  /// **'Climate Change – Climate scientists throughout the world, among others'**
+  /// **'Climate Change '**
   String get climateChange;
+
+  /// No description provided for @climatScientist.
+  ///
+  /// In en, this message translates to:
+  /// **'(Climate scientists worldwide), '**
+  String get climatScientist;
 
   /// No description provided for @confirmRestart.
   ///
@@ -133,7 +169,7 @@ abstract class AppLocalizations {
   /// No description provided for @democracy.
   ///
   /// In en, this message translates to:
-  /// **'Democracy – Citizens and communities of Madison, WI'**
+  /// **'Democracy '**
   String get democracy;
 
   /// No description provided for @drawingName.
@@ -141,12 +177,6 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Drawing Name'**
   String get drawingName;
-
-  /// No description provided for @energy.
-  ///
-  /// In en, this message translates to:
-  /// **'Energy – Coal Miners of Quecreek in Somerset, Pennsylvania'**
-  String get energy;
 
   /// No description provided for @ericChanisAnAmerican.
   ///
@@ -163,7 +193,7 @@ abstract class AppLocalizations {
   /// No description provided for @firstNations.
   ///
   /// In en, this message translates to:
-  /// **'First Nations – The Ho-Chunk Nation'**
+  /// **'First Nations '**
   String get firstNations;
 
   /// No description provided for @helloWorld.
@@ -172,10 +202,16 @@ abstract class AppLocalizations {
   /// **'Hello World!'**
   String get helloWorld;
 
+  /// No description provided for @hoChunk.
+  ///
+  /// In en, this message translates to:
+  /// **'(Ho-Chunk Nation), '**
+  String get hoChunk;
+
   /// No description provided for @humanTrafficking.
   ///
   /// In en, this message translates to:
-  /// **'Human Trafficking – Stateless Children in Chiang Mai, Thailand'**
+  /// **'Human Trafficking '**
   String get humanTrafficking;
 
   /// No description provided for @montageAcetates.
@@ -193,7 +229,7 @@ abstract class AppLocalizations {
   /// No description provided for @refugees.
   ///
   /// In en, this message translates to:
-  /// **'Refugees – Asylum seekers from Venezuela'**
+  /// **'Refugees '**
   String get refugees;
 
   /// No description provided for @restart.
@@ -211,7 +247,7 @@ abstract class AppLocalizations {
   /// No description provided for @revolution.
   ///
   /// In en, this message translates to:
-  /// **'Revolution – students and citizens in Cairo during the Arab Spring'**
+  /// **'Revolution '**
   String get revolution;
 
   /// No description provided for @save.
@@ -226,17 +262,29 @@ abstract class AppLocalizations {
   /// **'Save Drawing'**
   String get saveDrawing;
 
+  /// No description provided for @statelessChildren.
+  ///
+  /// In en, this message translates to:
+  /// **'(Stateless Children in Chiang Mai, Thailand), '**
+  String get statelessChildren;
+
+  /// No description provided for @studentsAndCitizen.
+  ///
+  /// In en, this message translates to:
+  /// **'(students and citizens in Cairo during the Arab Spring), '**
+  String get studentsAndCitizen;
+
   /// No description provided for @tapToPreview.
   ///
   /// In en, this message translates to:
   /// **'Tap to preview'**
   String get tapToPreview;
 
-  /// No description provided for @urbanPlanning.
+  /// No description provided for @ukraine.
   ///
   /// In en, this message translates to:
-  /// **'Urban Planning – Meatpackers in the Meatpacking District of Manhattan, New York City'**
-  String get urbanPlanning;
+  /// **'(Ukraine-Russia), '**
+  String get ukraine;
 
   /// No description provided for @processDrawing.
   ///
@@ -259,13 +307,13 @@ abstract class AppLocalizations {
   /// No description provided for @war.
   ///
   /// In en, this message translates to:
-  /// **'War – Citizens of Ukraine during the Russian invasion & American soldiers and military personnel in the Irag War'**
+  /// **'War '**
   String get war;
 
   /// No description provided for @workingGlobally.
   ///
   /// In en, this message translates to:
-  /// **'Working globally, the communities and themes of Eric Chan\'s artworks and projects include:'**
+  /// **'Working globally, the communities and themes of Eric Chan\'s artworks and projects include '**
   String get workingGlobally;
 }
 
