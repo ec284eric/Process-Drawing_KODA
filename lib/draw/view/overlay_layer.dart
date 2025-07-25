@@ -23,36 +23,31 @@ class OverlayLayer extends StatelessWidget {
               return SizedBox(
                 height: constraint.maxHeight,
                 width: constraint.maxWidth,
-                child: InteractiveViewer(
-                  transformationController: transformationController,
-                  child: Stack(
-                    children: state.modifiableImages
-                        .mapIndexed((index, modifiableImage) {
-                      if (index == 0 && modifiableImage != null) {
-                        return ModifiableImageItem(
-                          modifiableImage: modifiableImage,
-                          opacity: 1,
-                          onScaleUpdate: (details) => bloc.add(
-                            DrawImageScaleUpdated(
-                                index: index, details: details),
-                          ),
-                          secondImage: false,
-                        );
-                      } else if (index == 1 && modifiableImage != null) {
-                        return ModifiableImageItem(
-                          modifiableImage: modifiableImage,
-                          opacity: 0.8,
-                          onScaleUpdate: (details) => bloc.add(
-                            DrawImageScaleUpdated(
-                                index: index, details: details),
-                          ),
-                          secondImage: state.imageFlipped,
-                        );
-                      } else {
-                        return Container();
-                      }
-                    }).toList(),
-                  ),
+                child: Stack(
+                  children: state.modifiableImages
+                      .mapIndexed((index, modifiableImage) {
+                    if (index == 0 && modifiableImage != null) {
+                      return ModifiableImageItem(
+                        modifiableImage: modifiableImage,
+                        opacity: 1,
+                        onScaleUpdate: (details) => bloc.add(
+                          DrawImageScaleUpdated(index: index, details: details),
+                        ),
+                        secondImage: false,
+                      );
+                    } else if (index == 1 && modifiableImage != null) {
+                      return ModifiableImageItem(
+                        modifiableImage: modifiableImage,
+                        opacity: 0.8,
+                        onScaleUpdate: (details) => bloc.add(
+                          DrawImageScaleUpdated(index: index, details: details),
+                        ),
+                        secondImage: state.imageFlipped,
+                      );
+                    } else {
+                      return Container();
+                    }
+                  }).toList(),
                 ),
               );
             },
