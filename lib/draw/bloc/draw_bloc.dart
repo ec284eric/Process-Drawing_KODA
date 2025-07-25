@@ -53,7 +53,7 @@ class DrawBloc extends Bloc<DrawEvent, DrawState> {
 
   void _pencilIconPressed(
       DrawPencilIconButtonPressed event, Emitter<DrawState> emit) {
-    const base = 2.9;
+    const base = 2.7;
 
     emit(state.copyWith(
       color: const Color.fromARGB(255, 58, 61, 59),
@@ -140,7 +140,9 @@ class DrawBloc extends Bloc<DrawEvent, DrawState> {
   }
 
   void _imageScaleUpdated(
-      DrawImageScaleUpdated event, Emitter<DrawState> emit) {
+    DrawImageScaleUpdated event,
+    Emitter<DrawState> emit,
+  ) {
     final modifiableImages = [...state.modifiableImages];
     final currentImage = modifiableImages[event.index];
     if (currentImage == null) return;
@@ -149,7 +151,9 @@ class DrawBloc extends Bloc<DrawEvent, DrawState> {
     final currentGestureRotation = event.details.rotation;
     final currentImageRotation = currentImage.rotation;
 
-    double? newRotation;
+    const rotationThreshold = 0.1;
+    double? newRotation = currentImageRotation;
+
     if (gestureStart == null) {
       emit(state.copyWith(
         gestureRotationStart: currentGestureRotation,
@@ -157,9 +161,13 @@ class DrawBloc extends Bloc<DrawEvent, DrawState> {
       ));
       return;
     } else {
-      final rotationDelta = (currentGestureRotation - gestureStart) * 0.02;
-      newRotation =
-          (state.previousRotation + rotationDelta).clamp(-180.0, 180.0);
+      final rotationDelta = currentGestureRotation - gestureStart;
+
+      if (rotationDelta.abs() >= rotationThreshold) {
+        final scaledRotationDelta = rotationDelta * 0.01;
+        newRotation =
+            (state.previousRotation + scaledRotationDelta).clamp(-180.0, 180.0);
+      }
     }
 
     double? newScale;
