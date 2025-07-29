@@ -22,41 +22,35 @@ class ModifiableImageItem extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Transform.translate(
-      offset: modifiableImage.offset,
-      child: Transform.scale(
-        scale: modifiableImage.scale,
-        child: GestureDetector(
-          onScaleUpdate: onScaleUpdate,
-          child: Transform.rotate(
-            angle: modifiableImage.rotation,
-            child: Opacity(
-                opacity: opacity,
-                child: secondImage == true
-                    ? Transform(
-                        alignment: Alignment.center,
-                        transform: Matrix4.identity()..scale(-1.0, 1.0),
-                        child: Opacity(
-                          opacity: opacity,
-                          child: modifiableImage.src != null
-                              ? Image.asset(
-                                  modifiableImage.src ?? '',
-                                  fit: BoxFit.contain,
-                                  width: MediaQuery.of(context).size.width,
-                                )
-                              : Image.memory(
-                                  modifiableImage.imageBytes ?? Uint8List(0),
-                                  fit: BoxFit.contain,
-                                  width: MediaQuery.of(context).size.width,
-                                ),
-                        ))
-                    : Image.asset(
-                        modifiableImage.src ?? '',
-                        fit: BoxFit.contain,
-                        width: MediaQuery.of(context).size.width,
-                      )),
-          ),
-        ),
+    return GestureDetector(
+      onScaleUpdate: onScaleUpdate,
+      child: Transform.rotate(
+        angle: modifiableImage.rotation,
+        child: Opacity(
+            opacity: opacity,
+            child: secondImage == true
+                ? Transform(
+                    alignment: Alignment.center,
+                    transform: Matrix4.identity()..scale(-1.0, 1.0),
+                    child: Opacity(
+                      opacity: opacity,
+                      child: modifiableImage.src != null
+                          ? Image.asset(
+                              modifiableImage.src ?? '',
+                              fit: BoxFit.contain,
+                              width: MediaQuery.of(context).size.width,
+                            )
+                          : Image.memory(
+                              modifiableImage.imageBytes ?? Uint8List(0),
+                              fit: BoxFit.contain,
+                              width: MediaQuery.of(context).size.width,
+                            ),
+                    ))
+                : Image.asset(
+                    modifiableImage.src ?? '',
+                    fit: BoxFit.contain,
+                    width: MediaQuery.of(context).size.width,
+                  )),
       ),
     );
   }
