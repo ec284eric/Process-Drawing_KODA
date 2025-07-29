@@ -71,7 +71,10 @@ class _CanvasLayerState extends State<CanvasLayer> {
                   print('interaction: $p0');
                 },
                 onPointerUp: (pue) {},
-                background: SizedBox(
+                background: Container(
+                  color: state.canDraw || state.locked
+                      ? Colors.grey[300]
+                      : Colors.transparent,
                   width: constraints.maxWidth,
                   height: constraints.maxHeight,
                   child: Stack(
