@@ -69,10 +69,12 @@ class DrawResizerScaleUpdated extends DrawEvent {
 class DrawImageScaleUpdated extends DrawEvent {
   final int index;
   final ScaleUpdateDetails details;
+  final Size canvasSize;
 
   const DrawImageScaleUpdated({
     required this.index,
     required this.details,
+    required this.canvasSize,
   });
 }
 

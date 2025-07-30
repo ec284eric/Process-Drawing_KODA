@@ -102,6 +102,10 @@ class _CanvasLayerState extends State<CanvasLayer> {
                                         DrawImageScaleUpdated(
                                           index: index,
                                           details: details,
+                                          canvasSize: Size(
+                                            constraints.maxWidth,
+                                            constraints.maxHeight,
+                                          ),
                                         ),
                                       ),
                                       onScaleEnd: () => bloc.add(
