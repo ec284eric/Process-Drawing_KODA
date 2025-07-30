@@ -175,10 +175,45 @@ class DrawBloc extends Bloc<DrawEvent, DrawState> {
       final currentScale = currentImage.scale;
       const zoomSensitivity = 0.05;
       final deltaScale = (event.details.scale - 1) * zoomSensitivity;
-      newScale = (currentScale + deltaScale).clamp(0.25, 3.0);
+      final proposedScale = currentScale + deltaScale;
+
+      if (proposedScale > 1.0) {
+        newScale = 1.0;
+      } else {
+        newScale = proposedScale.clamp(0.25, 1.0);
+      }
     }
 
-    final newOffset = currentImage.offset + event.details.focalPointDelta;
+    final delta = event.details.focalPointDelta;
+    Offset newOffset = currentImage.offset + delta;
+
+    final canvasSize = event.canvasSize;
+    final effectiveScale = newScale ?? currentImage.scale;
+    final imageWidth =
+        (currentImage.originalSize?.width ?? 300) * effectiveScale;
+    final imageHeight =
+        (currentImage.originalSize?.height ?? 300) * effectiveScale;
+
+    final halfImageWidth = imageWidth / 2;
+    final halfImageHeight = imageHeight / 2;
+    final halfCanvasWidth = canvasSize.width / 2;
+    final halfCanvasHeight = canvasSize.height / 2;
+
+    const edgePaddingDX = 220.0;
+
+    const edgeMinPaddingDY = 183.0;
+    const edgeMaxPaddingDY = 189.0;
+
+    final minDx = -halfCanvasWidth + halfImageWidth + edgePaddingDX;
+    final maxDx = halfCanvasWidth - halfImageWidth - edgePaddingDX;
+
+    final minDy = -halfCanvasHeight + halfImageHeight + edgeMinPaddingDY;
+    final maxDy = halfCanvasHeight - halfImageHeight - edgeMaxPaddingDY;
+
+    newOffset = Offset(
+      newOffset.dx.clamp(minDx, maxDx),
+      newOffset.dy.clamp(minDy, maxDy),
+    );
 
     modifiableImages[event.index] = currentImage.copyWith(
       rotation: newRotation,
