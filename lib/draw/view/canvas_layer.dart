@@ -27,6 +27,7 @@ class _CanvasLayerState extends State<CanvasLayer> {
   bool _hasReset = false;
   Offset _initialFocalPoint = Offset.zero;
   Matrix4 _initialMatrix = Matrix4.identity();
+  bool _isDrawing = false;
 
   @override
   Widget build(BuildContext context) {
@@ -56,94 +57,131 @@ class _CanvasLayerState extends State<CanvasLayer> {
 
         return LayoutBuilder(
           builder: (context, constraints) {
-            final drawingBoard = IgnorePointer(
-              ignoring: !state.locked || !state.canDraw,
-              child: DrawingBoard(
-                key: ValueKey(state.modifiableImages.length),
-                controller: widget.drawingController,
-                onInteractionUpdate: (p0) {
-                  setState(() {
-                    offset = p0.focalPointDelta;
-                    scale = p0.scale == 1.0 ? scale : p0.scale;
-                  });
-                },
-                onInteractionEnd: (p0) {
-                  print('interaction: $p0');
-                },
-                onPointerUp: (pue) {},
-                background: Container(
-                  color: state.canDraw || state.locked
-                      ? Colors.grey[300]
-                      : Colors.transparent,
-                  width: constraints.maxWidth,
-                  height: constraints.maxHeight,
-                  child: Stack(
-                    alignment: Alignment.center,
-                    children: [
-                      Visibility(
-                        visible: state.locked &&
-                            state.imageCollectRequestStatus !=
-                                RequestStatus.inProgress &&
-                            (state.showBackground || !state.isToggled),
-                        maintainState: true,
-                        maintainAnimation: true,
-                        maintainSize: true,
-                        child: Stack(
-                          children: [
-                            ...state.modifiableImages.mapIndexed(
-                              (index, modifiableImage) {
-                                if (modifiableImage != null) {
-                                  return IgnorePointer(
-                                    ignoring: state.canDraw,
-                                    child: ModifiableImageItem(
-                                      modifiableImage: modifiableImage,
-                                      opacity: state.locked ? 0.5 : 0.9,
-                                      onScaleUpdate: (details) => bloc.add(
-                                        DrawImageScaleUpdated(
-                                          index: index,
-                                          details: details,
-                                          canvasSize: Size(
-                                            constraints.maxWidth,
-                                            constraints.maxHeight,
+            final drawingBoard = Container(
+              decoration: _isDrawing
+                  ? BoxDecoration(
+                      border: Border.all(
+                        color: Colors.transparent,
+                        width: 4,
+                      ),
+                    )
+                  : null,
+              child: IgnorePointer(
+                ignoring: !state.locked || !state.canDraw,
+                child: Listener(
+                  onPointerDown: (event) {
+                    print('Drawing started');
+                    setState(() {
+                      _isDrawing = true;
+                    });
+                  },
+                  onPointerUp: (event) {
+                    print('Drawing ended');
+                    setState(() {
+                      _isDrawing = false;
+                    });
+                  },
+                  onPointerCancel: (event) {
+                    print('Drawing cancelled');
+                    setState(() {
+                      _isDrawing = false;
+                    });
+                  },
+                  child: DrawingBoard(
+                    key: ValueKey(state.modifiableImages.length),
+                    controller: widget.drawingController,
+                    onInteractionUpdate: (p0) {
+                      setState(() {
+                        offset = p0.focalPointDelta;
+                        scale = p0.scale == 1.0 ? scale : p0.scale;
+                      });
+                    },
+                    onInteractionEnd: (p0) {
+                      print('interaction: $p0');
+                      setState(() {
+                        _isDrawing = false;
+                      });
+                    },
+                    onPointerUp: (pue) {},
+                    background: Container(
+                      color: state.canDraw || state.locked
+                          ? Colors.grey[300]
+                          : Colors.transparent,
+                      width: constraints.maxWidth,
+                      height: constraints.maxHeight,
+                      child: Stack(
+                        alignment: Alignment.center,
+                        children: [
+                          Visibility(
+                            visible: state.locked &&
+                                state.imageCollectRequestStatus !=
+                                    RequestStatus.inProgress &&
+                                (state.showBackground || !state.isToggled),
+                            maintainState: true,
+                            maintainAnimation: true,
+                            maintainSize: true,
+                            child: Stack(
+                              children: [
+                                ...state.modifiableImages.mapIndexed(
+                                  (index, modifiableImage) {
+                                    if (modifiableImage != null) {
+                                      return IgnorePointer(
+                                        ignoring: state.canDraw,
+                                        child: ModifiableImageItem(
+                                          modifiableImage: modifiableImage,
+                                          opacity: state.locked ? 0.5 : 0.9,
+                                          onScaleUpdate: (details) => bloc.add(
+                                            DrawImageScaleUpdated(
+                                              index: index,
+                                              details: details,
+                                              canvasSize: Size(
+                                                constraints.maxWidth,
+                                                constraints.maxHeight,
+                                              ),
+                                            ),
                                           ),
+                                          onScaleEnd: () => bloc.add(
+                                            DrawGestureEnded(
+                                              index: index,
+                                            ),
+                                          ),
+                                          secondImage:
+                                              index == 1 && state.imageFlipped,
                                         ),
-                                      ),
-                                      onScaleEnd: () => bloc.add(
-                                        DrawGestureEnded(
-                                          index: index,
-                                        ),
-                                      ),
-                                      secondImage:
-                                          index == 1 && state.imageFlipped,
-                                    ),
-                                  );
-                                } else {
-                                  return Container();
-                                }
-                              },
+                                      );
+                                    } else {
+                                      return Container();
+                                    }
+                                  },
+                                ),
+                              ],
                             ),
-                          ],
-                        ),
-                      ),
-                      Visibility(
-                        visible: state.drawingFlipped,
-                        child: SizedBox(
-                          width: constraints.maxWidth,
-                          height: constraints.maxHeight,
-                          child: ModifiableImageItem(
-                            modifiableImage: state.reflectedImage,
-                            onScaleUpdate: state.locked
-                                ? (value) => bloc.add(
-                                      DrawReflectedImageScaleUpdated(
-                                        details: value,
-                                      ),
-                                    )
-                                : null,
-                            secondImage: true,
                           ),
-                        ),
+                          Visibility(
+                            visible: state.drawingFlipped,
+                            child: SizedBox(
+                              width: constraints.maxWidth,
+                              height: constraints.maxHeight,
+                              child: Transform(
+                                alignment: Alignment.center,
+                                transform: Matrix4.identity()..scale(1.2),
+                                child: ModifiableImageItem(
+                                  modifiableImage: state.reflectedImage,
+                                  onScaleUpdate: state.locked
+                                      ? (value) => bloc.add(
+                                            DrawReflectedImageScaleUpdated(
+                                              details: value,
+                                            ),
+                                          )
+                                      : null,
+                                  secondImage: true,
+                                ),
+                              ),
+                            ),
+                          ),
+                        ],
                       ),
-                    ],
+                    ),
                   ),
                 ),
               ),
