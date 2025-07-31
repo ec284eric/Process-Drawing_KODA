@@ -78,7 +78,7 @@ class DrawBloc extends Bloc<DrawEvent, DrawState> {
       penSelector: false,
       canDraw: true,
       strokeWidth: base,
-      baseStrokeWidth: base / (zoom * 0.9),
+      baseStrokeWidth: base / (zoom * 1.1),
     ));
   }
 
