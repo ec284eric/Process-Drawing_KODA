@@ -69,7 +69,7 @@ class DrawBloc extends Bloc<DrawEvent, DrawState> {
   void _brushIconPressed(
       DrawBrushIconButtonPressed event, Emitter<DrawState> emit) {
     const base = 4.0;
-    final zoom = state.scale;
+    // final zoom = state.scale;
 
     emit(state.copyWith(
       color: const Color(0xff000000),
@@ -78,7 +78,8 @@ class DrawBloc extends Bloc<DrawEvent, DrawState> {
       penSelector: false,
       canDraw: true,
       strokeWidth: base,
-      baseStrokeWidth: base / (zoom * 1.1),
+      // baseStrokeWidth: base / (zoom * 1.1),
+      baseStrokeWidth: base,
     ));
   }
 
@@ -171,11 +172,15 @@ class DrawBloc extends Bloc<DrawEvent, DrawState> {
     }
 
     double? newScale;
+
     if (event.details.scale != 1.0 && event.index == 0) {
       final currentScale = currentImage.scale;
       const zoomSensitivity = 0.05;
       final deltaScale = (event.details.scale - 1) * zoomSensitivity;
+
       final proposedScale = currentScale + deltaScale;
+
+      print("Current scale: $currentScale");
 
       if (proposedScale > 1.0) {
         newScale = 1.0;
@@ -548,21 +553,10 @@ class DrawBloc extends Bloc<DrawEvent, DrawState> {
 
   void _drawingZoomChanged(DrawZoomChanged event, Emitter<DrawState> emit) {
     final zoom = event.zoom.clamp(0.1, 10.0);
-    final base = state.baseStrokeWidth;
-
-    double adjusted = base;
-
-    if (state.pencilSelected) {
-      adjusted = base;
-    } else if (state.brushSelected) {
-      final zoomFactor = (zoom * 0.7).clamp(0.1, double.infinity);
-      adjusted = base / zoomFactor;
-      adjusted = adjusted.clamp(0.5, 50.0);
-    }
 
     emit(state.copyWith(
       scale: zoom,
-      strokeWidth: adjusted,
+      strokeWidth: state.baseStrokeWidth,
     ));
   }
 
