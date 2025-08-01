@@ -164,7 +164,7 @@ class _CanvasLayerState extends State<CanvasLayer> {
                               height: constraints.maxHeight,
                               child: Transform(
                                 alignment: Alignment.center,
-                                transform: Matrix4.identity()..scale(1.2),
+                                transform: Matrix4.identity()..scale(1.0, 1.0),
                                 child: ModifiableImageItem(
                                   modifiableImage: state.reflectedImage,
                                   onScaleUpdate: state.locked
@@ -192,17 +192,21 @@ class _CanvasLayerState extends State<CanvasLayer> {
                 children: [
                   GestureDetector(
                     onScaleStart: (details) {
+                      if (details.pointerCount < 2) {
+                        return;
+                      }
                       _initialFocalPoint = details.focalPoint;
                       _initialMatrix =
                           widget.transformationController.value.clone();
                     },
                     onScaleUpdate: (details) {
+                      if (details.pointerCount < 2) return;
+
                       const double rotationSensitivity = 0.3;
                       const double scaleSensitivity = 0.3;
 
                       final Offset focalPointDelta =
                           details.focalPoint - _initialFocalPoint;
-
                       final double adjustedScale =
                           1.0 + ((details.scale - 1.0) * scaleSensitivity);
 
