@@ -27,7 +27,6 @@ class _CanvasLayerState extends State<CanvasLayer> {
   bool _hasReset = false;
   Offset _initialFocalPoint = Offset.zero;
   Matrix4 _initialMatrix = Matrix4.identity();
-  bool _isDrawing = false;
 
   @override
   Widget build(BuildContext context) {
@@ -58,7 +57,7 @@ class _CanvasLayerState extends State<CanvasLayer> {
         return LayoutBuilder(
           builder: (context, constraints) {
             final drawingBoard = Container(
-              decoration: _isDrawing
+              decoration: state.isDrawing
                   ? BoxDecoration(
                       border: Border.all(
                         color: Colors.transparent,
@@ -71,21 +70,15 @@ class _CanvasLayerState extends State<CanvasLayer> {
                 child: Listener(
                   onPointerDown: (event) {
                     print('Drawing started');
-                    setState(() {
-                      _isDrawing = true;
-                    });
+                    bloc.add(const DrawStarted());
                   },
                   onPointerUp: (event) {
                     print('Drawing ended');
-                    setState(() {
-                      _isDrawing = false;
-                    });
+                    bloc.add(const DrawEnded());
                   },
                   onPointerCancel: (event) {
                     print('Drawing cancelled');
-                    setState(() {
-                      _isDrawing = false;
-                    });
+                    bloc.add(const DrawCancelled());
                   },
                   child: DrawingBoard(
                     key: ValueKey(state.modifiableImages.length),
@@ -98,14 +91,12 @@ class _CanvasLayerState extends State<CanvasLayer> {
                     },
                     onInteractionEnd: (p0) {
                       print('interaction: $p0');
-                      setState(() {
-                        _isDrawing = false;
-                      });
+                      bloc.add(const DrawEnded());
                     },
                     onPointerUp: (pue) {},
                     background: Container(
                       color: state.canDraw || state.locked
-                          ? Colors.grey[300]
+                          ? Colors.transparent
                           : Colors.transparent,
                       width: constraints.maxWidth,
                       height: constraints.maxHeight,

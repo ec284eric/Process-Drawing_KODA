@@ -39,6 +39,9 @@ class DrawBloc extends Bloc<DrawEvent, DrawState> {
     on<DrawWhiteBackgroundSaved>(_whiteBackgroundSaved);
     on<DrawZoomChanged>(_drawingZoomChanged);
     on<DrawLinkIconButtonPressed>(_linkPressed);
+    on<DrawStarted>(_drawStarted);
+    on<DrawEnded>(_drawEnded);
+    on<DrawCancelled>(_drawCancelled);
   }
 
   void _penSelectorIconButtonPressed(
@@ -563,6 +566,24 @@ class DrawBloc extends Bloc<DrawEvent, DrawState> {
   void _linkPressed(DrawLinkIconButtonPressed event, Emitter<DrawState> emit) {
     emit(state.copyWith(
       isLinked: !state.isLinked,
+    ));
+  }
+
+  void _drawStarted(DrawStarted event, Emitter<DrawState> emit) {
+    emit(state.copyWith(
+      isDrawing: true,
+    ));
+  }
+
+  void _drawEnded(DrawEnded event, Emitter<DrawState> emit) {
+    emit(state.copyWith(
+      isDrawing: false,
+    ));
+  }
+
+  void _drawCancelled(DrawCancelled event, Emitter<DrawState> emit) {
+    emit(state.copyWith(
+      isDrawing: false,
     ));
   }
 }
