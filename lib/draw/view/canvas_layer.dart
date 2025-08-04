@@ -25,7 +25,8 @@ class _CanvasLayerState extends State<CanvasLayer> {
   var offset = Offset.zero;
   DrawState? _previousState;
   bool _hasReset = false;
-  Offset _initialFocalPoint = Offset.zero;
+  Offset _panOffset = Offset.zero;
+
   Matrix4 _initialMatrix = Matrix4.identity();
 
   @override
@@ -183,43 +184,44 @@ class _CanvasLayerState extends State<CanvasLayer> {
                 children: [
                   GestureDetector(
                     onScaleStart: (details) {
-                      if (details.pointerCount < 2) {
-                        return;
-                      }
-                      _initialFocalPoint = details.focalPoint;
+                      if (details.pointerCount < 2) return;
+
                       _initialMatrix =
                           widget.transformationController.value.clone();
                     },
                     onScaleUpdate: (details) {
                       if (details.pointerCount < 2) return;
 
-                      const double rotationSensitivity = 0.3;
-                      const double scaleSensitivity = 0.3;
+                      const rotationSensitivity = 1.0;
+                      const scaleSensitivity = 1.0;
 
-                      final Offset focalPointDelta =
-                          details.focalPoint - _initialFocalPoint;
-                      final double adjustedScale =
-                          1.0 + ((details.scale - 1.0) * scaleSensitivity);
+                      final double rotation =
+                          details.rotation * rotationSensitivity;
+                      final double scale =
+                          details.scale.clamp(0.5, 3.0) * scaleSensitivity;
 
-                      Matrix4 newMatrix = _initialMatrix.clone();
+                      _panOffset += details.focalPointDelta;
 
-                      newMatrix = Matrix4.identity()
-                        ..translate(focalPointDelta.dx, focalPointDelta.dy)
-                        ..multiply(newMatrix);
+                      final RenderBox box =
+                          context.findRenderObject() as RenderBox;
+                      final Offset canvasCenter = box.size.center(Offset.zero);
 
-                      if (details.scale != 1.0 || details.rotation != 0.0) {
-                        final Matrix4 transform = Matrix4.identity()
-                          ..translate(
-                              details.focalPoint.dx, details.focalPoint.dy)
-                          ..rotateZ(details.rotation * rotationSensitivity)
-                          ..scale(adjustedScale)
-                          ..translate(
-                              -details.focalPoint.dx, -details.focalPoint.dy);
+                      Matrix4 matrix = Matrix4.identity();
 
-                        newMatrix = transform..multiply(newMatrix);
-                      }
+                      matrix.translate(_panOffset.dx, _panOffset.dy);
 
-                      widget.transformationController.value = newMatrix;
+                      matrix.translate(canvasCenter.dx, canvasCenter.dy);
+                      matrix.rotateZ(rotation);
+                      matrix.scale(scale, scale);
+                      matrix.translate(-canvasCenter.dx, -canvasCenter.dy);
+
+                      widget.transformationController.value =
+                          matrix.multiplied(_initialMatrix.clone());
+                    },
+                    onScaleEnd: (_) {
+                      _initialMatrix =
+                          widget.transformationController.value.clone();
+                      _panOffset = Offset.zero;
                     },
                     child: Transform(
                       transform: widget.transformationController.value,
