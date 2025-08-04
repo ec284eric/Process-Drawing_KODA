@@ -43,19 +43,21 @@ class ModifiableImageItem extends StatelessWidget {
                               ? Image.asset(
                                   modifiableImage.src ?? '',
                                   fit: BoxFit.contain,
-                                  height: 550,
+                                  height: 400,
+                                  filterQuality: FilterQuality.high,
                                 )
                               : Image.memory(
                                   modifiableImage.imageBytes ?? Uint8List(0),
                                   fit: BoxFit.contain,
-                                  height: 550,
+                                  filterQuality: FilterQuality.high,
                                 ),
                         ),
                       )
                     : Image.asset(
                         modifiableImage.src ?? '',
                         fit: BoxFit.contain,
-                        height: 550,
+                        height: 400,
+                        filterQuality: FilterQuality.high,
                       ),
               ),
             ),
