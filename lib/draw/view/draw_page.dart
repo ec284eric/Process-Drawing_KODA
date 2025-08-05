@@ -173,7 +173,9 @@ class _DrawPageState extends State<DrawPage> {
             listenWhen: (previous, current) =>
                 previous.strokeWidth != current.strokeWidth,
             listener: (context, state) {
-              _drawingController.setStyle(strokeWidth: state.strokeWidth);
+              _drawingController.setStyle(
+                strokeWidth: state.strokeWidth,
+              );
             },
           ),
           BlocListener<DrawBloc, DrawState>(

@@ -39,6 +39,9 @@ class DrawBloc extends Bloc<DrawEvent, DrawState> {
     on<DrawWhiteBackgroundSaved>(_whiteBackgroundSaved);
     on<DrawZoomChanged>(_drawingZoomChanged);
     on<DrawLinkIconButtonPressed>(_linkPressed);
+    on<DrawStarted>(_drawStarted);
+    on<DrawEnded>(_drawEnded);
+    on<DrawCancelled>(_drawCancelled);
   }
 
   void _penSelectorIconButtonPressed(
@@ -69,7 +72,7 @@ class DrawBloc extends Bloc<DrawEvent, DrawState> {
   void _brushIconPressed(
       DrawBrushIconButtonPressed event, Emitter<DrawState> emit) {
     const base = 4.0;
-    final zoom = state.scale;
+    // final zoom = state.scale;
 
     emit(state.copyWith(
       color: const Color(0xff000000),
@@ -78,7 +81,8 @@ class DrawBloc extends Bloc<DrawEvent, DrawState> {
       penSelector: false,
       canDraw: true,
       strokeWidth: base,
-      baseStrokeWidth: base / (zoom * 0.7),
+      // baseStrokeWidth: base / (zoom * 1.1),
+      baseStrokeWidth: base,
     ));
   }
 
@@ -171,14 +175,53 @@ class DrawBloc extends Bloc<DrawEvent, DrawState> {
     }
 
     double? newScale;
+
     if (event.details.scale != 1.0 && event.index == 0) {
       final currentScale = currentImage.scale;
       const zoomSensitivity = 0.05;
       final deltaScale = (event.details.scale - 1) * zoomSensitivity;
-      newScale = (currentScale + deltaScale).clamp(0.25, 3.0);
+
+      final proposedScale = currentScale + deltaScale;
+
+      print("Current scale: $currentScale");
+
+      if (proposedScale > 1.0) {
+        newScale = 1.0;
+      } else {
+        newScale = proposedScale.clamp(0.25, 1.0);
+      }
     }
 
-    final newOffset = currentImage.offset + event.details.focalPointDelta;
+    final delta = event.details.focalPointDelta;
+    Offset newOffset = currentImage.offset + delta;
+
+    final canvasSize = event.canvasSize;
+    final effectiveScale = newScale ?? currentImage.scale;
+    final imageWidth =
+        (currentImage.originalSize?.width ?? 300) * effectiveScale;
+    final imageHeight =
+        (currentImage.originalSize?.height ?? 300) * effectiveScale;
+
+    final halfImageWidth = imageWidth / 2;
+    final halfImageHeight = imageHeight / 2;
+    final halfCanvasWidth = canvasSize.width / 2;
+    final halfCanvasHeight = canvasSize.height / 2;
+
+    const edgePaddingDX = 220.0;
+
+    const edgeMinPaddingDY = 183.0;
+    const edgeMaxPaddingDY = 189.0;
+
+    final minDx = -halfCanvasWidth + halfImageWidth + edgePaddingDX;
+    final maxDx = halfCanvasWidth - halfImageWidth - edgePaddingDX;
+
+    final minDy = -halfCanvasHeight + halfImageHeight + edgeMinPaddingDY;
+    final maxDy = halfCanvasHeight - halfImageHeight - edgeMaxPaddingDY;
+
+    newOffset = Offset(
+      newOffset.dx.clamp(minDx, maxDx),
+      newOffset.dy.clamp(minDy, maxDy),
+    );
 
     modifiableImages[event.index] = currentImage.copyWith(
       rotation: newRotation,
@@ -513,27 +556,34 @@ class DrawBloc extends Bloc<DrawEvent, DrawState> {
 
   void _drawingZoomChanged(DrawZoomChanged event, Emitter<DrawState> emit) {
     final zoom = event.zoom.clamp(0.1, 10.0);
-    final base = state.baseStrokeWidth;
-
-    double adjusted = base;
-
-    if (state.pencilSelected) {
-      adjusted = base;
-    } else if (state.brushSelected) {
-      final zoomFactor = (zoom * 0.7).clamp(0.1, double.infinity);
-      adjusted = base / zoomFactor;
-      adjusted = adjusted.clamp(0.5, 50.0);
-    }
 
     emit(state.copyWith(
       scale: zoom,
-      strokeWidth: adjusted,
+      strokeWidth: state.baseStrokeWidth,
     ));
   }
 
   void _linkPressed(DrawLinkIconButtonPressed event, Emitter<DrawState> emit) {
     emit(state.copyWith(
       isLinked: !state.isLinked,
+    ));
+  }
+
+  void _drawStarted(DrawStarted event, Emitter<DrawState> emit) {
+    emit(state.copyWith(
+      isDrawing: true,
+    ));
+  }
+
+  void _drawEnded(DrawEnded event, Emitter<DrawState> emit) {
+    emit(state.copyWith(
+      isDrawing: false,
+    ));
+  }
+
+  void _drawCancelled(DrawCancelled event, Emitter<DrawState> emit) {
+    emit(state.copyWith(
+      isDrawing: false,
     ));
   }
 }

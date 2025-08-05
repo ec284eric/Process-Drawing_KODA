@@ -16,7 +16,7 @@ dependencies:
   extended_image: ^9.0.7
   flex_color_picker: ^3.6.0
   flutter_bloc: ^8.1.6
-  flutter_drawing_board: ^0.9.5
+  flutter_drawing_board: ^0.9.8
   flutter_feather_icons: ^2.0.0+1
   flutter_launcher_icons: ^0.13.1
   freezed: ^2.5.2

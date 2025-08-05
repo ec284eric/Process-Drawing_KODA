@@ -69,10 +69,12 @@ class DrawResizerScaleUpdated extends DrawEvent {
 class DrawImageScaleUpdated extends DrawEvent {
   final int index;
   final ScaleUpdateDetails details;
+  final Size canvasSize;
 
   const DrawImageScaleUpdated({
     required this.index,
     required this.details,
+    required this.canvasSize,
   });
 }
 
@@ -212,4 +214,16 @@ class DrawZoomChanged extends DrawEvent {
 
 class DrawLinkIconButtonPressed extends DrawEvent {
   const DrawLinkIconButtonPressed();
+}
+
+class DrawStarted extends DrawEvent {
+  const DrawStarted();
+}
+
+class DrawEnded extends DrawEvent {
+  const DrawEnded();
+}
+
+class DrawCancelled extends DrawEvent {
+  const DrawCancelled();
 }

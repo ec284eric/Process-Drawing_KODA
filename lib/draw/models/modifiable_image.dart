@@ -13,5 +13,6 @@ class ModifiableImage with _$ModifiableImage {
     @Default(0) double rotation,
     @Default(1) double scale,
     @Default(Offset(0, 0)) Offset offset,
+    Size? originalSize,
   }) = _ModifiableImage;
 }

@@ -16,6 +16,7 @@ class DrawState with _$DrawState {
     @Default(false) bool hideMontage,
     @Default(false) bool imageFlipped,
     @Default(false) bool isLinked,
+    @Default(false) bool isDrawing,
     @Default(false) bool isToggled,
     @Default(false) bool locked,
     @Default(false) bool newDrawingSelected,
