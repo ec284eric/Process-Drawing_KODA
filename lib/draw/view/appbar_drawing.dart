@@ -89,7 +89,7 @@ class AppBarDrawing extends StatelessWidget {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Text(
-                          AppLocalizations.of(context)?.wellnessDrawing ?? '',
+                          AppLocalizations.of(context)?.processDrawing ?? '',
                           style: const TextStyle(
                             color: Colors.white,
                             fontWeight: FontWeight.bold,
@@ -101,7 +101,7 @@ class AppBarDrawing extends StatelessWidget {
                         ),
                         Text(
                           AppLocalizations.of(context)
-                                  ?.wellnessDrawingWasConceived ??
+                                  ?.processDrawingWasConceived ??
                               '',
                           style: const TextStyle(
                             color: Colors.white,
@@ -113,7 +113,7 @@ class AppBarDrawing extends StatelessWidget {
                           height: 8,
                         ),
                         Text(
-                          '${AppLocalizations.of(context)?.wellnessDrawingAndMontage ?? ''}\n${AppLocalizations.of(context)?.allRightsReserved ?? ''}',
+                          '${AppLocalizations.of(context)?.processDrawingAndMontage ?? ''}\n${AppLocalizations.of(context)?.allRightsReserved ?? ''}',
                           style: const TextStyle(
                             color: Colors.white,
                             fontSize: 14,
@@ -135,21 +135,94 @@ class AppBarDrawing extends StatelessWidget {
                         const SizedBox(
                           height: 12,
                         ),
-                        Text(
-                          '${AppLocalizations.of(context)?.workingGlobally ?? ''}\n\n'
-                          '${AppLocalizations.of(context)?.war ?? ''}\n\n'
-                          '${AppLocalizations.of(context)?.revolution ?? ''}\n\n'
-                          '${AppLocalizations.of(context)?.humanTrafficking ?? ''}\n\n'
-                          '${AppLocalizations.of(context)?.energy ?? ''}\n\n'
-                          '${AppLocalizations.of(context)?.urbanPlanning ?? ''}\n\n'
-                          '${AppLocalizations.of(context)?.democracy ?? ''}\n\n'
-                          '${AppLocalizations.of(context)?.refugees ?? ''}\n\n'
-                          '${AppLocalizations.of(context)?.firstNations ?? ''}\n\n'
-                          '${AppLocalizations.of(context)?.climateChange ?? ''}',
-                          style: const TextStyle(
-                            color: Colors.white,
-                            fontSize: 14,
-                            height: 1.4,
+                        Text.rich(
+                          TextSpan(
+                            text:
+                                AppLocalizations.of(context)?.workingGlobally ??
+                                    '',
+                            style: const TextStyle(
+                              color: Colors.white,
+                              fontSize: 14,
+                              height: 1.4,
+                            ),
+                            children: [
+                              TextSpan(
+                                text: AppLocalizations.of(context)?.war,
+                              ),
+                              TextSpan(
+                                text: AppLocalizations.of(context)
+                                    ?.americanSoldiers,
+                                style: const TextStyle(
+                                  fontStyle: FontStyle.italic,
+                                ),
+                              ),
+                              TextSpan(
+                                text: AppLocalizations.of(context)?.revolution,
+                              ),
+                              TextSpan(
+                                text: AppLocalizations.of(context)
+                                    ?.studentsAndCitizen,
+                                style: const TextStyle(
+                                  fontStyle: FontStyle.italic,
+                                ),
+                              ),
+                              TextSpan(
+                                text: AppLocalizations.of(context)
+                                    ?.humanTrafficking,
+                              ),
+                              TextSpan(
+                                text: AppLocalizations.of(context)
+                                    ?.statelessChildren,
+                                style: const TextStyle(
+                                  fontStyle: FontStyle.italic,
+                                ),
+                              ),
+                              TextSpan(
+                                text: AppLocalizations.of(context)?.democracy,
+                              ),
+                              TextSpan(
+                                text: AppLocalizations.of(context)?.citizens,
+                                style: const TextStyle(
+                                  fontStyle: FontStyle.italic,
+                                ),
+                              ),
+                              TextSpan(
+                                text:
+                                    AppLocalizations.of(context)?.climateChange,
+                              ),
+                              TextSpan(
+                                text: AppLocalizations.of(context)
+                                    ?.climatScientist,
+                                style: const TextStyle(
+                                  fontStyle: FontStyle.italic,
+                                ),
+                              ),
+                              TextSpan(
+                                text:
+                                    AppLocalizations.of(context)?.firstNations,
+                              ),
+                              TextSpan(
+                                text: AppLocalizations.of(context)?.hoChunk,
+                                style: const TextStyle(
+                                  fontStyle: FontStyle.italic,
+                                ),
+                              ),
+                              TextSpan(
+                                text: AppLocalizations.of(context)?.refugees,
+                              ),
+                              TextSpan(
+                                text: AppLocalizations.of(context)?.asylum,
+                                style: const TextStyle(
+                                  fontStyle: FontStyle.italic,
+                                ),
+                              ),
+                              TextSpan(
+                                text: AppLocalizations.of(context)?.andWar,
+                              ),
+                              TextSpan(
+                                text: AppLocalizations.of(context)?.amongOthers,
+                              ),
+                            ],
                           ),
                         ),
                         const SizedBox(

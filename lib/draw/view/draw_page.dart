@@ -173,7 +173,9 @@ class _DrawPageState extends State<DrawPage> {
             listenWhen: (previous, current) =>
                 previous.strokeWidth != current.strokeWidth,
             listener: (context, state) {
-              _drawingController.setStyle(strokeWidth: state.strokeWidth);
+              _drawingController.setStyle(
+                strokeWidth: state.strokeWidth,
+              );
             },
           ),
           BlocListener<DrawBloc, DrawState>(
@@ -211,6 +213,7 @@ class _DrawPageState extends State<DrawPage> {
         child: Builder(
           builder: (context) {
             return Scaffold(
+              backgroundColor: Colors.white,
               resizeToAvoidBottomInset: false,
               appBar: PreferredSize(
                   preferredSize: const Size.fromHeight(kToolbarHeight),

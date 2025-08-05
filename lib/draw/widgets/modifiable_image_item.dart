@@ -6,7 +6,7 @@ import 'package:flutter/material.dart';
 class ModifiableImageItem extends StatelessWidget {
   final ModifiableImage modifiableImage;
   final ValueChanged<ScaleUpdateDetails>? onScaleUpdate;
-  final VoidCallback? onScaleEnd; // <-- Add this line
+  final VoidCallback? onScaleEnd;
 
   final double opacity;
   final bool secondImage;
@@ -15,22 +15,23 @@ class ModifiableImageItem extends StatelessWidget {
     super.key,
     required this.modifiableImage,
     this.onScaleUpdate,
-    this.onScaleEnd, // <-- Add this to the constructor
+    this.onScaleEnd,
     this.opacity = 1,
     required this.secondImage,
   });
 
   @override
   Widget build(BuildContext context) {
-    return Transform.translate(
-      offset: modifiableImage.offset,
-      child: Transform.scale(
-        scale: modifiableImage.scale,
-        child: GestureDetector(
-          onScaleUpdate: onScaleUpdate,
-          child: Transform.rotate(
-            angle: modifiableImage.rotation,
-            child: Opacity(
+    return Center(
+      child: Transform.translate(
+        offset: modifiableImage.offset,
+        child: Transform.scale(
+          scale: modifiableImage.scale,
+          child: GestureDetector(
+            onScaleUpdate: onScaleUpdate,
+            child: Transform.rotate(
+              angle: modifiableImage.rotation,
+              child: Opacity(
                 opacity: opacity,
                 child: secondImage == true
                     ? Transform(
@@ -42,19 +43,24 @@ class ModifiableImageItem extends StatelessWidget {
                               ? Image.asset(
                                   modifiableImage.src ?? '',
                                   fit: BoxFit.contain,
-                                  width: MediaQuery.of(context).size.width,
+                                  height: 400,
+                                  filterQuality: FilterQuality.high,
                                 )
                               : Image.memory(
                                   modifiableImage.imageBytes ?? Uint8List(0),
                                   fit: BoxFit.contain,
-                                  width: MediaQuery.of(context).size.width,
+                                  filterQuality: FilterQuality.high,
                                 ),
-                        ))
+                        ),
+                      )
                     : Image.asset(
                         modifiableImage.src ?? '',
                         fit: BoxFit.contain,
-                        width: MediaQuery.of(context).size.width,
-                      )),
+                        height: 400,
+                        filterQuality: FilterQuality.high,
+                      ),
+              ),
+            ),
           ),
         ),
       ),
