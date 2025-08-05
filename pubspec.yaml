@@ -41,7 +41,7 @@ dev_dependencies:
 flutter_launcher_icons:
   android: true
   ios: true
-  image_path: "assets/icons/appstore.png"
+  image_path: "assets/icons/wellness.png"
 
 flutter:
   uses-material-design: true
