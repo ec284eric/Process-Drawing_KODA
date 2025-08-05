@@ -510,7 +510,8 @@ class Tools extends StatelessWidget {
                                       Assets.resizeIcon,
                                       width: 32,
                                       height: 32,
-                                      color: (state.modifiableImages
+                                      color: (state.locked &&
+                                              state.modifiableImages
                                                   .isNotEmpty &&
                                               state.modifiableImages.length ==
                                                   2)
@@ -526,13 +527,16 @@ class Tools extends StatelessWidget {
                                         ? Colors.black54
                                         : Colors.transparent,
                                     child: IconButton(
-                                      onPressed:
-                                          state.locked ? onFlipPressed : null,
+                                      onPressed: (state.pencilSelected ||
+                                              state.brushSelected)
+                                          ? onFlipPressed
+                                          : null,
                                       icon: Image.asset(
                                         Assets.copyDrawingIcon,
                                         width: 32,
                                         height: 32,
-                                        color: state.locked
+                                        color: (state.pencilSelected ||
+                                                state.brushSelected)
                                             ? (state.drawingFlipped
                                                 ? const Color.fromARGB(
                                                     255, 37, 150, 190)
