@@ -114,440 +114,433 @@ class Tools extends StatelessWidget {
                           ),
                         ),
                         SizedBox(
-                          height: 470,
-                          child: SingleChildScrollView(
-                            child: Column(
-                              mainAxisSize: MainAxisSize.min,
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                // Plus Icon
-                                SizedBox.square(
-                                  dimension: 45,
-                                  child: CircleAvatar(
-                                    backgroundColor:
-                                        state.modifiableImages.isEmpty &&
-                                                state.newDrawingSelected
-                                            ? Colors.black54
-                                            : Colors.transparent,
-                                    child: IconButton(
-                                      onPressed: state.modifiableImages.isEmpty
-                                          ? () {
-                                              bloc.add(const DrawIconPresed());
+                          height: 570,
+                          child: Column(
+                            mainAxisSize: MainAxisSize.min,
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              // Plus Icon
+                              SizedBox.square(
+                                dimension: 45,
+                                child: CircleAvatar(
+                                  backgroundColor:
+                                      state.modifiableImages.isEmpty &&
+                                              state.newDrawingSelected
+                                          ? Colors.black54
+                                          : Colors.transparent,
+                                  child: IconButton(
+                                    onPressed: state.modifiableImages.isEmpty
+                                        ? () {
+                                            bloc.add(const DrawIconPresed());
+                                          }
+                                        : null,
+                                    icon: Image.asset(
+                                      Assets.plusIcon,
+                                      width: 32,
+                                      height: 32,
+                                      color: state.modifiableImages.isEmpty
+                                          ? (state.newDrawingSelected
+                                              ? const Color.fromARGB(
+                                                  255, 37, 150, 190)
+                                              : Colors.white)
+                                          : Colors.grey,
+                                    ),
+                                  ),
+                                ),
+                              ),
+                              SizedBox.square(
+                                dimension: 45,
+                                child: CircleAvatar(
+                                  backgroundColor: state.hideMontage &&
+                                          state.modifiableImages.isNotEmpty &&
+                                          state.modifiableImages.length != 2 &&
+                                          !state.locked &&
+                                          !state.imageFlipped
+                                      ? Colors.black54
+                                      : Colors.transparent,
+                                  child: IconButton(
+                                    onPressed: state.newDrawingSelected &&
+                                            !state.locked &&
+                                            !state.imageFlipped
+                                        ? () {
+                                            bloc.add(
+                                                const DrawHideMontageIconButtonPressed());
+                                            if (Navigator.of(context)
+                                                .canPop()) {
+                                              Navigator.of(context).pop();
                                             }
-                                          : null,
-                                      icon: Image.asset(
-                                        Assets.plusIcon,
+                                          }
+                                        : null,
+                                    icon: Image.asset(Assets.halfToneIcon,
                                         width: 32,
                                         height: 32,
-                                        color: state.modifiableImages.isEmpty
-                                            ? (state.newDrawingSelected
+                                        color: state.newDrawingSelected &&
+                                                !state.locked &&
+                                                !state.imageFlipped
+                                            ? (state.hideMontage &&
+                                                    (state.modifiableImages
+                                                            .isNotEmpty &&
+                                                        state.modifiableImages
+                                                                .length !=
+                                                            2)
                                                 ? const Color.fromARGB(
                                                     255, 37, 150, 190)
                                                 : Colors.white)
-                                            : Colors.grey,
-                                      ),
-                                    ),
+                                            : Colors.grey),
                                   ),
                                 ),
-                                SizedBox.square(
-                                  dimension: 45,
-                                  child: CircleAvatar(
-                                    backgroundColor: state.hideMontage &&
-                                            state.modifiableImages.isNotEmpty &&
-                                            state.modifiableImages.length !=
-                                                2 &&
-                                            !state.locked &&
-                                            !state.imageFlipped
-                                        ? Colors.black54
-                                        : Colors.transparent,
-                                    child: IconButton(
-                                      onPressed: state.newDrawingSelected &&
-                                              !state.locked &&
-                                              !state.imageFlipped
-                                          ? () {
-                                              bloc.add(
-                                                  const DrawHideMontageIconButtonPressed());
-                                              if (Navigator.of(context)
-                                                  .canPop()) {
-                                                Navigator.of(context).pop();
-                                              }
-                                            }
-                                          : null,
-                                      icon: Image.asset(Assets.halfToneIcon,
-                                          width: 32,
-                                          height: 32,
-                                          color: state.newDrawingSelected &&
-                                                  !state.locked &&
-                                                  !state.imageFlipped
-                                              ? (state.hideMontage &&
-                                                      (state.modifiableImages
-                                                              .isNotEmpty &&
-                                                          state.modifiableImages
-                                                                  .length !=
-                                                              2)
+                              ),
+
+                              SizedBox.square(
+                                dimension: 45,
+                                child: CircleAvatar(
+                                  backgroundColor: state.imageFlipped &&
+                                          !state.drawingFlipped &&
+                                          !state.locked
+                                      ? Colors.black54
+                                      : Colors.transparent,
+                                  child: IconButton(
+                                    onPressed: () => state
+                                                .modifiableImages.isNotEmpty &&
+                                            !state.locked
+                                        ? bloc.add(
+                                            const DrawImageFlippedIconButtonPressed())
+                                        : null,
+                                    icon: Image.asset(
+                                      Assets.icon2Icon,
+                                      width: 32,
+                                      height: 32,
+                                      color:
+                                          state.modifiableImages.isNotEmpty &&
+                                                  !state.locked
+                                              ? (state.imageFlipped
                                                   ? const Color.fromARGB(
                                                       255, 37, 150, 190)
                                                   : Colors.white)
-                                              : Colors.grey),
+                                              : Colors.grey,
                                     ),
                                   ),
                                 ),
+                              ),
 
-                                SizedBox.square(
-                                  dimension: 45,
-                                  child: CircleAvatar(
-                                    backgroundColor: state.imageFlipped &&
-                                            !state.drawingFlipped &&
-                                            !state.locked
-                                        ? Colors.black54
-                                        : Colors.transparent,
-                                    child: IconButton(
-                                      onPressed: () => state.modifiableImages
-                                                  .isNotEmpty &&
-                                              !state.locked
-                                          ? bloc.add(
-                                              const DrawImageFlippedIconButtonPressed())
-                                          : null,
-                                      icon: Image.asset(
-                                        Assets.icon2Icon,
-                                        width: 32,
-                                        height: 32,
-                                        color:
-                                            state.modifiableImages.isNotEmpty &&
-                                                    !state.locked
-                                                ? (state.imageFlipped
-                                                    ? const Color.fromARGB(
-                                                        255, 37, 150, 190)
-                                                    : Colors.white)
-                                                : Colors.grey,
-                                      ),
-                                    ),
-                                  ),
-                                ),
+                              // SizedBox.square(
+                              //   dimension: 45,
+                              //   child: IconButton(
+                              //     onPressed: () {},
+                              //     icon: Image.asset(
+                              //       Assets.layerIcon,
+                              //       width: 32,
+                              //       height: 32,
+                              //       color: Colors.grey,
+                              //     ),
+                              //   ),
+                              // ),
 
-                                SizedBox.square(
-                                  dimension: 45,
+                              SizedBox.square(
+                                dimension: 45,
+                                child: CircleAvatar(
+                                  backgroundColor: state.locked &&
+                                          state.modifiableImages.length == 2 &&
+                                          !state.drawingFlipped
+                                      ? Colors.black54
+                                      : Colors.transparent,
                                   child: IconButton(
-                                    onPressed: () {},
-                                    icon: Image.asset(
-                                      Assets.layerIcon,
-                                      width: 32,
-                                      height: 32,
-                                      color: Colors.grey,
-                                    ),
-                                  ),
-                                ),
-
-                                SizedBox.square(
-                                  dimension: 45,
-                                  child: CircleAvatar(
-                                    backgroundColor: state.locked &&
+                                    onPressed: (state
+                                                .modifiableImages.isNotEmpty &&
                                             state.modifiableImages.length ==
                                                 2 &&
-                                            !state.drawingFlipped
-                                        ? Colors.black54
-                                        : Colors.transparent,
-                                    child: IconButton(
-                                      onPressed: (state.modifiableImages
+                                            !state.drawingFlipped)
+                                        ? () {
+                                            bloc.add(const DrawLockPressed());
+                                          }
+                                        : null,
+                                    icon: Image.asset(
+                                      Assets.fileIcon,
+                                      width: 32,
+                                      height: 32,
+                                      color: (state.modifiableImages
                                                   .isNotEmpty &&
                                               state.modifiableImages.length ==
                                                   2 &&
                                               !state.drawingFlipped)
-                                          ? () {
-                                              bloc.add(const DrawLockPressed());
-                                            }
-                                          : null,
-                                      icon: Image.asset(
-                                        Assets.fileIcon,
-                                        width: 32,
-                                        height: 32,
-                                        color: (state.modifiableImages
-                                                    .isNotEmpty &&
-                                                state.modifiableImages.length ==
-                                                    2 &&
-                                                !state.drawingFlipped)
-                                            ? (state.locked
-                                                ? const Color.fromARGB(
-                                                    255, 37, 150, 190)
-                                                : Colors.white)
-                                            : Colors.grey,
-                                      ),
+                                          ? (state.locked
+                                              ? const Color.fromARGB(
+                                                  255, 37, 150, 190)
+                                              : Colors.white)
+                                          : Colors.grey,
                                     ),
                                   ),
                                 ),
-                                // SizedBox.square(
-                                //   dimension: 45,
-                                //   child: CircleAvatar(
-                                //     backgroundColor: state.locked
-                                //         ? Colors.black54
-                                //         : Colors.transparent,
-                                //     child: IconButton(
-                                //       onPressed: () =>
-                                //           {bloc.add(const DrawLockPressed())},
-                                //       icon: Image.asset('assets/icons/file-01.png',
-                                //           width: 32,
-                                //           height: 32,
-                                //           color: (state.locked
-                                //               ? const Color.fromARGB(
-                                //                   255, 37, 150, 190)
-                                //               : Colors.white)),
-                                //     ),
-                                //   ),
-                                // ),
-                                SizedBox.square(
-                                  dimension: 45,
-                                  child: CircleAvatar(
-                                    backgroundColor: state.penSelector &&
-                                            state.modifiableImages.isNotEmpty
-                                        ? Colors.black54
-                                        : Colors.transparent,
-                                    child: IconButton(
-                                      onPressed: (state.locked &&
-                                              state.modifiableImages
-                                                  .isNotEmpty &&
-                                              !state.drawingFlipped)
-                                          ? () {
-                                              bloc.add(
-                                                  const DrawPenSelectorButtonPressed());
-                                            }
-                                          : null,
-                                      icon: Image.asset(
-                                        Assets.editIcon,
-                                        width: 32,
-                                        height: 32,
-                                        color: (state.locked &&
-                                                state.modifiableImages
-                                                    .isNotEmpty &&
-                                                !state.drawingFlipped)
-                                            ? (state.penSelector
-                                                ? const Color.fromARGB(
-                                                    255, 37, 150, 190)
-                                                : Colors.white)
-                                            : Colors.grey,
-                                      ),
-                                    ),
-                                  ),
-                                ),
-
-                                SizedBox.square(
-                                  dimension: 45,
+                              ),
+                              // SizedBox.square(
+                              //   dimension: 45,
+                              //   child: CircleAvatar(
+                              //     backgroundColor: state.locked
+                              //         ? Colors.black54
+                              //         : Colors.transparent,
+                              //     child: IconButton(
+                              //       onPressed: () =>
+                              //           {bloc.add(const DrawLockPressed())},
+                              //       icon: Image.asset('assets/icons/file-01.png',
+                              //           width: 32,
+                              //           height: 32,
+                              //           color: (state.locked
+                              //               ? const Color.fromARGB(
+                              //                   255, 37, 150, 190)
+                              //               : Colors.white)),
+                              //     ),
+                              //   ),
+                              // ),
+                              SizedBox.square(
+                                dimension: 45,
+                                child: CircleAvatar(
+                                  backgroundColor: state.penSelector &&
+                                          state.modifiableImages.isNotEmpty
+                                      ? Colors.black54
+                                      : Colors.transparent,
                                   child: IconButton(
-                                    onPressed: () => state.locked ? {} : null,
-                                    icon: Image.asset(
-                                      Assets.eraserIcon,
-                                      width: 32,
-                                      height: 32,
-                                      color: Colors.grey,
-                                    ),
-                                  ),
-                                ),
-                                // SizedBox.square(
-                                //   dimension: 45,
-                                //   child: IconButton(
-                                //     onPressed: () => state.locked
-                                //         ? {
-                                //             showDialog(
-                                //               context: context,
-                                //               builder: (context) => Dialog(
-                                //                 child: colorPicker,
-                                //               ),
-                                //             ),
-                                //           }
-                                //         : null,
-                                //     icon: Image.asset(
-                                //       'assets/icons/color-01.png',
-                                //       width: 32,
-                                //       height: 32,
-                                //       color:
-                                //           state.locked ? state.color : Colors.grey,
-                                //     ),
-                                //   ),
-                                // ),
-                                // SizedBox.square(
-                                //   dimension: 45,
-                                //   child: IconButton(
-                                //     onPressed: state.locked ? () {} : null,
-                                //     icon: Image.asset(
-                                //       'assets/icons/toggle-left.png',
-                                //       width: 32,
-                                //       height: 32,
-                                //       color: state.locked
-                                //           ? state.color
-                                //           : Colors.grey,
-                                //     ),
-                                //   ),
-                                // ),
-                                SizedBox.square(
-                                  dimension: 45,
-                                  child: CircleAvatar(
-                                    backgroundColor: state.isToggled
-                                        ? Colors.black54
-                                        : Colors.transparent,
-                                    child: IconButton(
-                                      onPressed: (state.pencilSelected ||
-                                              state.brushSelected)
-                                          ? () {
-                                              final bloc =
-                                                  context.read<DrawBloc>();
-                                              bloc.add(
-                                                  const DrawToggleSwitchPressed());
-                                            }
-                                          : null,
-                                      icon: Icon(
-                                        state.isToggled
-                                            ? Icons.toggle_on
-                                            : Icons.toggle_off,
-                                        size: 30,
-                                        color: (state.pencilSelected ||
-                                                state.brushSelected)
-                                            ? (state.isToggled
-                                                ? const Color.fromARGB(
-                                                    255, 37, 150, 190)
-                                                : Colors.white)
-                                            : Colors.grey,
-                                      ),
-                                    ),
-                                  ),
-                                ),
-
-                                SizedBox.square(
-                                  dimension: 45,
-                                  child: CircleAvatar(
-                                    backgroundColor: state.isLinked
-                                        ? Colors.black54
-                                        : Colors.transparent,
-                                    child: IconButton(
-                                      onPressed: state.locked
-                                          ? () {
-                                              bloc.add(
-                                                  const DrawLinkIconButtonPressed());
-                                            }
-                                          : null,
-                                      icon: Image.asset(
-                                        Assets.linkIcon,
-                                        width: 23,
-                                        height: 23,
-                                        color: (state.drawingFlipped ||
-                                                state.isLinked)
-                                            ? (state.isLinked
-                                                ? const Color.fromARGB(
-                                                    255, 37, 150, 190)
-                                                : Colors.white)
-                                            : Colors.grey,
-                                      ),
-                                    ),
-                                  ),
-                                ),
-                                SizedBox.square(
-                                  dimension: 45,
-                                  child: IconButton(
-                                    onPressed: state.trashEnabled
+                                    onPressed: (state.locked &&
+                                            state.modifiableImages.isNotEmpty &&
+                                            !state.drawingFlipped)
                                         ? () {
                                             bloc.add(
-                                                const DrawSecondMontageDeleted());
+                                                const DrawPenSelectorButtonPressed());
                                           }
                                         : null,
                                     icon: Image.asset(
-                                      Assets.trashIcon,
-                                      width: 32,
-                                      height: 32,
-                                      color: state.trashEnabled
-                                          ? Colors.white
-                                          : Colors.grey,
-                                    ),
-                                  ),
-                                ),
-
-                                SizedBox.square(
-                                  dimension: 45,
-                                  child: IconButton(
-                                    onPressed: state.canUndo
-                                        ? () => drawingController.undo()
-                                        : null,
-                                    icon: Image.asset(
-                                      Assets.undoIcon,
-                                      width: 32,
-                                      height: 32,
-                                      color: state.canUndo
-                                          ? Colors.white
-                                          : Colors.grey,
-                                    ),
-                                  ),
-                                ),
-
-                                SizedBox.square(
-                                  dimension: 45,
-                                  child: IconButton(
-                                    onPressed: state.canRedo
-                                        ? () => drawingController.redo()
-                                        : null,
-                                    icon: Image.asset(
-                                      Assets.redoIcon,
-                                      width: 32,
-                                      height: 32,
-                                      color: state.canRedo
-                                          ? Colors.white
-                                          : Colors.grey,
-                                    ),
-                                  ),
-                                ),
-
-                                SizedBox.square(
-                                  dimension: 45,
-                                  child: IconButton(
-                                    onPressed: (state
-                                                .modifiableImages.isNotEmpty &&
-                                            state.modifiableImages.length == 2)
-                                        ? () {
-                                            WidgetsBinding.instance
-                                                .addPostFrameCallback((_) {
-                                              transformationController.value =
-                                                  Matrix4.identity();
-                                            });
-                                          }
-                                        : null,
-                                    icon: Image.asset(
-                                      Assets.resizeIcon,
+                                      Assets.editIcon,
                                       width: 32,
                                       height: 32,
                                       color: (state.locked &&
                                               state.modifiableImages
                                                   .isNotEmpty &&
-                                              state.modifiableImages.length ==
-                                                  2)
-                                          ? Colors.white
+                                              !state.drawingFlipped)
+                                          ? (state.penSelector
+                                              ? const Color.fromARGB(
+                                                  255, 37, 150, 190)
+                                              : Colors.white)
                                           : Colors.grey,
                                     ),
                                   ),
                                 ),
-                                SizedBox.square(
-                                  dimension: 45,
-                                  child: CircleAvatar(
-                                    backgroundColor: state.drawingFlipped
-                                        ? Colors.black54
-                                        : Colors.transparent,
-                                    child: IconButton(
-                                      onPressed: (state.pencilSelected ||
+                              ),
+
+                              // SizedBox.square(
+                              //   dimension: 45,
+                              //   child: IconButton(
+                              //     onPressed: () => state.locked ? {} : null,
+                              //     icon: Image.asset(
+                              //       Assets.eraserIcon,
+                              //       width: 32,
+                              //       height: 32,
+                              //       color: Colors.grey,
+                              //     ),
+                              //   ),
+                              // ),
+                              // SizedBox.square(
+                              //   dimension: 45,
+                              //   child: IconButton(
+                              //     onPressed: () => state.locked
+                              //         ? {
+                              //             showDialog(
+                              //               context: context,
+                              //               builder: (context) => Dialog(
+                              //                 child: colorPicker,
+                              //               ),
+                              //             ),
+                              //           }
+                              //         : null,
+                              //     icon: Image.asset(
+                              //       'assets/icons/color-01.png',
+                              //       width: 32,
+                              //       height: 32,
+                              //       color:
+                              //           state.locked ? state.color : Colors.grey,
+                              //     ),
+                              //   ),
+                              // ),
+                              // SizedBox.square(
+                              //   dimension: 45,
+                              //   child: IconButton(
+                              //     onPressed: state.locked ? () {} : null,
+                              //     icon: Image.asset(
+                              //       'assets/icons/toggle-left.png',
+                              //       width: 32,
+                              //       height: 32,
+                              //       color: state.locked
+                              //           ? state.color
+                              //           : Colors.grey,
+                              //     ),
+                              //   ),
+                              // ),
+                              SizedBox.square(
+                                dimension: 45,
+                                child: CircleAvatar(
+                                  backgroundColor: state.isToggled
+                                      ? Colors.black54
+                                      : Colors.transparent,
+                                  child: IconButton(
+                                    onPressed: (state.pencilSelected ||
+                                            state.brushSelected)
+                                        ? () {
+                                            final bloc =
+                                                context.read<DrawBloc>();
+                                            bloc.add(
+                                                const DrawToggleSwitchPressed());
+                                          }
+                                        : null,
+                                    icon: Icon(
+                                      state.isToggled
+                                          ? Icons.toggle_on
+                                          : Icons.toggle_off,
+                                      size: 30,
+                                      color: (state.pencilSelected ||
                                               state.brushSelected)
-                                          ? onFlipPressed
-                                          : null,
-                                      icon: Image.asset(
-                                        Assets.copyDrawingIcon,
-                                        width: 32,
-                                        height: 32,
-                                        color: (state.pencilSelected ||
-                                                state.brushSelected)
-                                            ? (state.drawingFlipped
-                                                ? const Color.fromARGB(
-                                                    255, 37, 150, 190)
-                                                : Colors.white)
-                                            : Colors.grey,
-                                      ),
+                                          ? (state.isToggled
+                                              ? const Color.fromARGB(
+                                                  255, 37, 150, 190)
+                                              : Colors.white)
+                                          : Colors.grey,
                                     ),
                                   ),
                                 ),
-                              ],
-                            ),
+                              ),
+
+                              SizedBox.square(
+                                dimension: 45,
+                                child: CircleAvatar(
+                                  backgroundColor: state.isLinked
+                                      ? Colors.black54
+                                      : Colors.transparent,
+                                  child: IconButton(
+                                    onPressed: state.locked
+                                        ? () {
+                                            bloc.add(
+                                                const DrawLinkIconButtonPressed());
+                                          }
+                                        : null,
+                                    icon: Image.asset(
+                                      Assets.linkIcon,
+                                      width: 23,
+                                      height: 23,
+                                      color: (state.drawingFlipped ||
+                                              state.isLinked)
+                                          ? (state.isLinked
+                                              ? const Color.fromARGB(
+                                                  255, 37, 150, 190)
+                                              : Colors.white)
+                                          : Colors.grey,
+                                    ),
+                                  ),
+                                ),
+                              ),
+                              SizedBox.square(
+                                dimension: 45,
+                                child: IconButton(
+                                  onPressed: state.trashEnabled
+                                      ? () {
+                                          bloc.add(
+                                              const DrawSecondMontageDeleted());
+                                        }
+                                      : null,
+                                  icon: Image.asset(
+                                    Assets.trashIcon,
+                                    width: 32,
+                                    height: 32,
+                                    color: state.trashEnabled
+                                        ? Colors.white
+                                        : Colors.grey,
+                                  ),
+                                ),
+                              ),
+
+                              SizedBox.square(
+                                dimension: 45,
+                                child: IconButton(
+                                  onPressed: state.canUndo
+                                      ? () => drawingController.undo()
+                                      : null,
+                                  icon: Image.asset(
+                                    Assets.undoIcon,
+                                    width: 32,
+                                    height: 32,
+                                    color: state.canUndo
+                                        ? Colors.white
+                                        : Colors.grey,
+                                  ),
+                                ),
+                              ),
+
+                              SizedBox.square(
+                                dimension: 45,
+                                child: IconButton(
+                                  onPressed: state.canRedo
+                                      ? () => drawingController.redo()
+                                      : null,
+                                  icon: Image.asset(
+                                    Assets.redoIcon,
+                                    width: 32,
+                                    height: 32,
+                                    color: state.canRedo
+                                        ? Colors.white
+                                        : Colors.grey,
+                                  ),
+                                ),
+                              ),
+
+                              SizedBox.square(
+                                dimension: 45,
+                                child: IconButton(
+                                  onPressed: (state
+                                              .modifiableImages.isNotEmpty &&
+                                          state.modifiableImages.length == 2)
+                                      ? () {
+                                          WidgetsBinding.instance
+                                              .addPostFrameCallback((_) {
+                                            transformationController.value =
+                                                Matrix4.identity();
+                                          });
+                                        }
+                                      : null,
+                                  icon: Image.asset(
+                                    Assets.resizeIcon,
+                                    width: 32,
+                                    height: 32,
+                                    color: (state.locked &&
+                                            state.modifiableImages.isNotEmpty &&
+                                            state.modifiableImages.length == 2)
+                                        ? Colors.white
+                                        : Colors.grey,
+                                  ),
+                                ),
+                              ),
+                              SizedBox.square(
+                                dimension: 45,
+                                child: CircleAvatar(
+                                  backgroundColor: state.drawingFlipped
+                                      ? Colors.black54
+                                      : Colors.transparent,
+                                  child: IconButton(
+                                    onPressed: (state.pencilSelected ||
+                                            state.brushSelected)
+                                        ? onFlipPressed
+                                        : null,
+                                    icon: Image.asset(
+                                      Assets.copyDrawingIcon,
+                                      width: 32,
+                                      height: 32,
+                                      color: (state.pencilSelected ||
+                                              state.brushSelected)
+                                          ? (state.drawingFlipped
+                                              ? const Color.fromARGB(
+                                                  255, 37, 150, 190)
+                                              : Colors.white)
+                                          : Colors.grey,
+                                    ),
+                                  ),
+                                ),
+                              ),
+                            ],
                           ),
                         ),
                         SizedBox.square(
