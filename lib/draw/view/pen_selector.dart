@@ -63,7 +63,7 @@ class _PenSelectorState extends State<PenSelector> {
                               OutlinedButton(
                                 onPressed: () {
                                   bloc.add(const DrawPencilIconButtonPressed(
-                                    baseStrokeWidth: 1.5,
+                                    baseStrokeWidth: 1.3,
                                   ));
                                 },
                                 style: FilledButton.styleFrom(

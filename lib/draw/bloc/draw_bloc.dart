@@ -56,7 +56,7 @@ class DrawBloc extends Bloc<DrawEvent, DrawState> {
 
   void _pencilIconPressed(
       DrawPencilIconButtonPressed event, Emitter<DrawState> emit) {
-    const base = 2.7;
+    const base = 2.2;
 
     emit(state.copyWith(
       color: const Color.fromARGB(255, 58, 61, 59),
