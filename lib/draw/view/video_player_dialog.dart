@@ -19,23 +19,23 @@ class VideoPlayerDialog extends StatefulWidget {
 
 class _VideoPlayerDialogState extends State<VideoPlayerDialog> {
   late ChewieController chewieController;
-  late Chewie playerWidget;
 
   final videoPlayerController = VideoPlayerController.networkUrl(Uri.parse(
       'https://videos.pexels.com/video-files/20422317/20422317-hd_1920_1080_25fps.mp4'));
+
+  bool showPlaceholder = true; // track if placeholder is visible
 
   @override
   void initState() {
     super.initState();
     videoPlayerController.initialize();
+
     chewieController = ChewieController(
       videoPlayerController: videoPlayerController,
-      autoPlay: true,
+      autoPlay: false, // prevent placeholder from disappearing automatically
       looping: true,
       aspectRatio: 16 / 9,
-    );
-    playerWidget = Chewie(
-      controller: chewieController,
+      showControls: true, // user can play video manually
     );
   }
 
@@ -59,8 +59,39 @@ class _VideoPlayerDialogState extends State<VideoPlayerDialog> {
               children: [
                 AspectRatio(
                   aspectRatio: 16 / 9,
-                  child: Container(
-                    child: playerWidget,
+                  child: Stack(
+                    children: [
+                      // Video Player
+                      Chewie(controller: chewieController),
+
+                      // Permanent Placeholder
+                      if (showPlaceholder)
+                        Positioned.fill(
+                          child: Image.asset(
+                            'assets/images/art_placeholder.jpg', // your hand drawing image
+                            fit: BoxFit.cover,
+                          ),
+                        ),
+
+                      // Play Button to start video and remove placeholder
+                      if (showPlaceholder)
+                        Positioned.fill(
+                          child: Center(
+                            child: IconButton(
+                              iconSize: 64,
+                              icon: const Icon(Icons.play_circle_fill,
+                                  color: Colors.white),
+                              onPressed: () {
+                                chewieController.play();
+                                setState(() {
+                                  showPlaceholder =
+                                      false; // remove overlay when play pressed
+                                });
+                              },
+                            ),
+                          ),
+                        ),
+                    ],
                   ),
                 ),
               ],
