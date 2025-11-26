@@ -82,7 +82,7 @@ class Tools extends StatelessWidget {
 
     final buttonSize = (screenHeight * 0.055).clamp(35.0, 50.0);
     final iconSize = (buttonSize * 0.7).clamp(24.0, 36.0);
-    final toolbarHeight = buttonSize * 13;
+    final toolbarHeight = buttonSize * 14;
     final penSelectorTop = buttonSize * 5.5;
     final montageLeft = buttonSize + 5;
     final penSelectorLeft = buttonSize + 5;
@@ -231,18 +231,18 @@ class Tools extends StatelessWidget {
                                 ),
                               ),
 
-                              // SizedBox.square(
-                              //   dimension: 45,
-                              //   child: IconButton(
-                              //     onPressed: () {},
-                              //     icon: Image.asset(
-                              //       Assets.layerIcon,
-                              //       width: 32,
-                              //       height: 32,
-                              //       color: Colors.grey,
-                              //     ),
-                              //   ),
-                              // ),
+                              SizedBox.square(
+                                dimension: buttonSize,
+                                child: IconButton(
+                                  onPressed: () {},
+                                  icon: Image.asset(
+                                    Assets.layerIcon,
+                                    width: iconSize,
+                                    height: iconSize,
+                                    color: Colors.grey,
+                                  ),
+                                ),
+                              ),
 
                               SizedBox.square(
                                 dimension: buttonSize,
@@ -333,18 +333,18 @@ class Tools extends StatelessWidget {
                                 ),
                               ),
 
-                              // SizedBox.square(
-                              //   dimension: 45,
-                              //   child: IconButton(
-                              //     onPressed: () => state.locked ? {} : null,
-                              //     icon: Image.asset(
-                              //       Assets.eraserIcon,
-                              //       width: 32,
-                              //       height: 32,
-                              //       color: Colors.grey,
-                              //     ),
-                              //   ),
-                              // ),
+                              SizedBox.square(
+                                dimension: buttonSize,
+                                child: IconButton(
+                                  onPressed: () => state.locked ? {} : null,
+                                  icon: Image.asset(
+                                    Assets.eraserIcon,
+                                    width: iconSize,
+                                    height: iconSize,
+                                    color: Colors.grey,
+                                  ),
+                                ),
+                              ),
                               // SizedBox.square(
                               //   dimension: 45,
                               //   child: IconButton(
