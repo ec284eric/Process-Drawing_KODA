@@ -286,23 +286,23 @@ abstract class AppLocalizations {
   /// **'(Ukraine-Russia), '**
   String get ukraine;
 
-  /// No description provided for @wellnessDrawing.
+  /// No description provided for @processDrawing.
   ///
   /// In en, this message translates to:
-  /// **'Wellness Drawing'**
-  String get wellnessDrawing;
+  /// **'Process Drawing'**
+  String get processDrawing;
 
-  /// No description provided for @wellnessDrawingWasConceived.
+  /// No description provided for @processDrawingWasConceived.
   ///
   /// In en, this message translates to:
-  /// **'Wellness Drawing was conceived by Eric Chan and has been created for you.'**
-  String get wellnessDrawingWasConceived;
+  /// **'Process Drawing was conceived by Eric Chan and has been created for you.'**
+  String get processDrawingWasConceived;
 
-  /// No description provided for @wellnessDrawingAndMontage.
+  /// No description provided for @processDrawingAndMontage.
   ///
   /// In en, this message translates to:
-  /// **'\"Wellness Drawing\" and \"Montage Acetates\" are copyright © Eric A. Chan.'**
-  String get wellnessDrawingAndMontage;
+  /// **'\"Process Drawing\" and \"Montage Acetates\" are copyright © Eric A. Chan.'**
+  String get processDrawingAndMontage;
 
   /// No description provided for @war.
   ///

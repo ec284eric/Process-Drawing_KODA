@@ -111,15 +111,15 @@ class AppLocalizationsEn extends AppLocalizations {
   String get ukraine => '(Ukraine-Russia), ';
 
   @override
-  String get wellnessDrawing => 'Wellness Drawing';
+  String get processDrawing => 'Process Drawing';
 
   @override
-  String get wellnessDrawingWasConceived =>
-      'Wellness Drawing was conceived by Eric Chan and has been created for you.';
+  String get processDrawingWasConceived =>
+      'Process Drawing was conceived by Eric Chan and has been created for you.';
 
   @override
-  String get wellnessDrawingAndMontage =>
-      '\"Wellness Drawing\" and \"Montage Acetates\" are copyright © Eric A. Chan.';
+  String get processDrawingAndMontage =>
+      '\"Process Drawing\" and \"Montage Acetates\" are copyright © Eric A. Chan.';
 
   @override
   String get war => 'War ';
