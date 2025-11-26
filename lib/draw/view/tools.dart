@@ -78,6 +78,14 @@ class Tools extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final bloc = context.read<DrawBloc>();
+    final screenHeight = MediaQuery.of(context).size.height;
+
+    final buttonSize = (screenHeight * 0.055).clamp(35.0, 50.0);
+    final iconSize = (buttonSize * 0.7).clamp(24.0, 36.0);
+    final toolbarHeight = buttonSize * 13;
+    final penSelectorTop = buttonSize * 5.5;
+    final montageLeft = buttonSize + 5;
+    final penSelectorLeft = buttonSize + 5;
 
     return BlocBuilder<DrawBloc, DrawState>(
       builder: (context, state) {
@@ -97,7 +105,7 @@ class Tools extends StatelessWidget {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         SizedBox.square(
-                          dimension: 45,
+                          dimension: buttonSize,
                           child: IconButton(
                             onPressed: () {
                               showDialog(
@@ -107,21 +115,21 @@ class Tools extends StatelessWidget {
                             },
                             icon: Image.asset(
                               Assets.videoCamIcon,
-                              width: 32,
-                              height: 32,
+                              width: iconSize,
+                              height: iconSize,
                               color: Colors.white,
                             ),
                           ),
                         ),
                         SizedBox(
-                          height: 570,
+                          height: toolbarHeight,
                           child: Column(
                             mainAxisSize: MainAxisSize.min,
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
                               // Plus Icon
                               SizedBox.square(
-                                dimension: 45,
+                                dimension: buttonSize,
                                 child: CircleAvatar(
                                   backgroundColor:
                                       state.modifiableImages.isEmpty &&
@@ -136,8 +144,8 @@ class Tools extends StatelessWidget {
                                         : null,
                                     icon: Image.asset(
                                       Assets.plusIcon,
-                                      width: 32,
-                                      height: 32,
+                                      width: iconSize,
+                                      height: iconSize,
                                       color: state.modifiableImages.isEmpty
                                           ? (state.newDrawingSelected
                                               ? const Color.fromARGB(
@@ -149,7 +157,7 @@ class Tools extends StatelessWidget {
                                 ),
                               ),
                               SizedBox.square(
-                                dimension: 45,
+                                dimension: buttonSize,
                                 child: CircleAvatar(
                                   backgroundColor: state.hideMontage &&
                                           state.modifiableImages.isNotEmpty &&
@@ -172,8 +180,8 @@ class Tools extends StatelessWidget {
                                           }
                                         : null,
                                     icon: Image.asset(Assets.halfToneIcon,
-                                        width: 32,
-                                        height: 32,
+                                        width: iconSize,
+                                        height: iconSize,
                                         color: state.newDrawingSelected &&
                                                 !state.locked &&
                                                 !state.imageFlipped
@@ -192,7 +200,7 @@ class Tools extends StatelessWidget {
                               ),
 
                               SizedBox.square(
-                                dimension: 45,
+                                dimension: buttonSize,
                                 child: CircleAvatar(
                                   backgroundColor: state.imageFlipped &&
                                           !state.drawingFlipped &&
@@ -208,8 +216,8 @@ class Tools extends StatelessWidget {
                                         : null,
                                     icon: Image.asset(
                                       Assets.icon2Icon,
-                                      width: 32,
-                                      height: 32,
+                                      width: iconSize,
+                                      height: iconSize,
                                       color:
                                           state.modifiableImages.isNotEmpty &&
                                                   !state.locked
@@ -237,7 +245,7 @@ class Tools extends StatelessWidget {
                               // ),
 
                               SizedBox.square(
-                                dimension: 45,
+                                dimension: buttonSize,
                                 child: CircleAvatar(
                                   backgroundColor: state.locked &&
                                           state.modifiableImages.length == 2 &&
@@ -256,8 +264,8 @@ class Tools extends StatelessWidget {
                                         : null,
                                     icon: Image.asset(
                                       Assets.fileIcon,
-                                      width: 32,
-                                      height: 32,
+                                      width: iconSize,
+                                      height: iconSize,
                                       color: (state.modifiableImages
                                                   .isNotEmpty &&
                                               state.modifiableImages.length ==
@@ -292,7 +300,7 @@ class Tools extends StatelessWidget {
                               //   ),
                               // ),
                               SizedBox.square(
-                                dimension: 45,
+                                dimension: buttonSize,
                                 child: CircleAvatar(
                                   backgroundColor: state.penSelector &&
                                           state.modifiableImages.isNotEmpty
@@ -309,8 +317,8 @@ class Tools extends StatelessWidget {
                                         : null,
                                     icon: Image.asset(
                                       Assets.editIcon,
-                                      width: 32,
-                                      height: 32,
+                                      width: iconSize,
+                                      height: iconSize,
                                       color: (state.locked &&
                                               state.modifiableImages
                                                   .isNotEmpty &&
@@ -374,7 +382,7 @@ class Tools extends StatelessWidget {
                               //   ),
                               // ),
                               SizedBox.square(
-                                dimension: 45,
+                                dimension: buttonSize,
                                 child: CircleAvatar(
                                   backgroundColor: state.isToggled
                                       ? Colors.black54
@@ -393,7 +401,7 @@ class Tools extends StatelessWidget {
                                       state.isToggled
                                           ? Icons.toggle_on
                                           : Icons.toggle_off,
-                                      size: 30,
+                                      size: iconSize * 0.95,
                                       color: (state.pencilSelected ||
                                               state.brushSelected)
                                           ? (state.isToggled
@@ -407,7 +415,7 @@ class Tools extends StatelessWidget {
                               ),
 
                               SizedBox.square(
-                                dimension: 45,
+                                dimension: buttonSize,
                                 child: CircleAvatar(
                                   backgroundColor: state.isLinked
                                       ? Colors.black54
@@ -421,8 +429,8 @@ class Tools extends StatelessWidget {
                                         : null,
                                     icon: Image.asset(
                                       Assets.linkIcon,
-                                      width: 23,
-                                      height: 23,
+                                      width: iconSize * 0.72,
+                                      height: iconSize * 0.72,
                                       color: (state.drawingFlipped ||
                                               state.isLinked)
                                           ? (state.isLinked
@@ -435,7 +443,7 @@ class Tools extends StatelessWidget {
                                 ),
                               ),
                               SizedBox.square(
-                                dimension: 45,
+                                dimension: buttonSize,
                                 child: IconButton(
                                   onPressed: state.trashEnabled
                                       ? () {
@@ -445,8 +453,8 @@ class Tools extends StatelessWidget {
                                       : null,
                                   icon: Image.asset(
                                     Assets.trashIcon,
-                                    width: 32,
-                                    height: 32,
+                                    width: iconSize,
+                                    height: iconSize,
                                     color: state.trashEnabled
                                         ? Colors.white
                                         : Colors.grey,
@@ -455,15 +463,15 @@ class Tools extends StatelessWidget {
                               ),
 
                               SizedBox.square(
-                                dimension: 45,
+                                dimension: buttonSize,
                                 child: IconButton(
                                   onPressed: state.canUndo
                                       ? () => drawingController.undo()
                                       : null,
                                   icon: Image.asset(
                                     Assets.undoIcon,
-                                    width: 32,
-                                    height: 32,
+                                    width: iconSize,
+                                    height: iconSize,
                                     color: state.canUndo
                                         ? Colors.white
                                         : Colors.grey,
@@ -472,15 +480,15 @@ class Tools extends StatelessWidget {
                               ),
 
                               SizedBox.square(
-                                dimension: 45,
+                                dimension: buttonSize,
                                 child: IconButton(
                                   onPressed: state.canRedo
                                       ? () => drawingController.redo()
                                       : null,
                                   icon: Image.asset(
                                     Assets.redoIcon,
-                                    width: 32,
-                                    height: 32,
+                                    width: iconSize,
+                                    height: iconSize,
                                     color: state.canRedo
                                         ? Colors.white
                                         : Colors.grey,
@@ -489,7 +497,7 @@ class Tools extends StatelessWidget {
                               ),
 
                               SizedBox.square(
-                                dimension: 45,
+                                dimension: buttonSize,
                                 child: IconButton(
                                   onPressed: (state
                                               .modifiableImages.isNotEmpty &&
@@ -504,8 +512,8 @@ class Tools extends StatelessWidget {
                                       : null,
                                   icon: Image.asset(
                                     Assets.resizeIcon,
-                                    width: 32,
-                                    height: 32,
+                                    width: iconSize,
+                                    height: iconSize,
                                     color: (state.locked &&
                                             state.modifiableImages.isNotEmpty &&
                                             state.modifiableImages.length == 2)
@@ -515,7 +523,7 @@ class Tools extends StatelessWidget {
                                 ),
                               ),
                               SizedBox.square(
-                                dimension: 45,
+                                dimension: buttonSize,
                                 child: CircleAvatar(
                                   backgroundColor: state.drawingFlipped
                                       ? Colors.black54
@@ -527,8 +535,8 @@ class Tools extends StatelessWidget {
                                         : null,
                                     icon: Image.asset(
                                       Assets.copyDrawingIcon,
-                                      width: 32,
-                                      height: 32,
+                                      width: iconSize,
+                                      height: iconSize,
                                       color: (state.pencilSelected ||
                                               state.brushSelected)
                                           ? (state.drawingFlipped
@@ -544,7 +552,7 @@ class Tools extends StatelessWidget {
                           ),
                         ),
                         SizedBox.square(
-                          dimension: 45,
+                          dimension: buttonSize,
                           child: IconButton(
                             onPressed: state.newDrawingSelected &&
                                     state.modifiableImages.isNotEmpty
@@ -552,7 +560,7 @@ class Tools extends StatelessWidget {
                                 : null,
                             icon: Icon(
                               Icons.refresh,
-                              size: 32,
+                              size: iconSize,
                               color: state.newDrawingSelected &&
                                       state.modifiableImages.isNotEmpty
                                   ? Colors.white
@@ -567,17 +575,17 @@ class Tools extends StatelessWidget {
                 Visibility(
                   visible: state.modifiableImages.isEmpty ||
                       state.modifiableImages.length < 2,
-                  child: const Positioned(
-                    left: 50,
-                    child: MontageAcetate(),
+                  child: Positioned(
+                    left: montageLeft,
+                    child: const MontageAcetate(),
                   ),
                 ),
                 Visibility(
                   visible: state.penSelector,
-                  child: const Positioned(
-                    top: 270,
-                    left: 50,
-                    child: PenSelector(),
+                  child: Positioned(
+                    top: penSelectorTop,
+                    left: penSelectorLeft,
+                    child: const PenSelector(),
                   ),
                 ),
               ],
